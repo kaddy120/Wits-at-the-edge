@@ -7,6 +7,6 @@
 + Ntepela Letsoela (1652736)
 
 # Database Credentials
-ServerName: 'mywits.database.windows.net'
-Server admin login: mywitsadmin
-Password: Project123
++ ServerName: 'mywits.database.windows.net'
++ Server admin login: mywitsadmin
++ Password: Project123
