@@ -1,8 +1,6 @@
 require('dotenv').config({ path: '.env' })
 const mssql = require('mssql')
 // Make sure this is private to this module
-console.log(process.env.user_name)
-console.log(process.env.password)
 const config = {
   server: 'mywits.database.windows.net',
   database: 'MyWitsieDb',
