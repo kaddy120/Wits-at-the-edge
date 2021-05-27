@@ -4,9 +4,14 @@ const express = require('express')
 const path = require('path')
 const cookieParser = require('cookie-parser')
 const logger = require('morgan')
+const bodyParser = require('body-parser')
+
+const passport = require('passport')
+const LocalStrategy = require('passport-local').Strategy
 
 const indexRouter = require('./routes/index')
 const usersRouter = require('./routes/users')
+const accountRouter = require('./routes/accountManager')
 
 const app = express()
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'))
@@ -17,12 +22,25 @@ app.set('view engine', 'pug')
 
 app.use(logger('dev'))
 app.use(express.json())
+app.use(bodyParser.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
 
+// passport.use(new LocalStrategy(
+//   function (username, password, done) {
+//     // User.findOne({ username: username }, function (err, user) {
+//     //   if (err) { return done(err) }
+//     //   if (!user) { return done(null, false) }
+//     //   if (!user.verifyPassword(password)) { return done(null, false) }
+//       return done(null, user)
+//     })
+//   }
+// ))
+
 app.use('/', indexRouter)
 app.use('/users', usersRouter)
+app.use('/', accountRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
