@@ -22,30 +22,23 @@ const config = {
 // Get a mssql connection instance
 let isConnected = true
 let connectionError = null
-let pools = null
 
-const getPools = async () => {
-  if (pools) {
-    return pools
-  }
-  pools = new mssql.ConnectionPool(config)
-    .connect()
-    .then(pool => {
-      console.log('Connected to DB')
-      return pool
-    })
+const pools = new mssql.ConnectionPool(config)
+  .connect()
+  .then(pool => {
+    console.log('Connected to DB')
+    return pool
+  })
 
-    .catch(err => {
+  .catch(err => {
     // Handle errors
-      isConnected = false
-      connectionError = err
-      console.log(err)
-    })
-}
-
+    isConnected = false
+    connectionError = err
+    console.log(err)
+  })
 module.exports = {
   sql: mssql,
-  pools: getPools,
+  pools: pools,
   isConnected: isConnected,
   connectionError: connectionError
 }

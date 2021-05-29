@@ -16,14 +16,15 @@
     "dotenv": "^10.0.0",
     "express": "~4.16.1",
     "express-validator": "^6.11.1",
+    "fs-extra": "^7.0.1",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
     "knex": "^0.95.6",
     "morgan": "~1.9.1",
     "mssql": "7.1.0",
+    "objection": "^2.2.15",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
-    "objection": "^2.2.15",
     "pug": "^3.0.2"
   },
   "devDependencies": {

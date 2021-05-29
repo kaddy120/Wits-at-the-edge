@@ -6,9 +6,6 @@ const cookieParser = require('cookie-parser')
 const logger = require('morgan')
 const bodyParser = require('body-parser')
 
-const passport = require('passport')
-const LocalStrategy = require('passport-local').Strategy
-
 const indexRouter = require('./routes/index')
 const usersRouter = require('./routes/users')
 

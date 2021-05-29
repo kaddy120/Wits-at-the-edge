@@ -5,17 +5,20 @@ block content
     h4= title
     form(action="/signup" method="POST")
         div.mb-3 
-            label(for="exampleInputEmail1" class="form-label") First name
+            label(for="name" class="form-label") First name
             input(type="text" placeholder="Name" name="name" class="form-control" id="exampleInputEmail1")
         div.mb-3 
-            label(for="exampleInputEmail1" class="form-label") Surname
+            label(for="surname" class="form-label") Surname
             input(type="text" placeholder="Last Name" name="surname" class="form-control" id="exampleInputEmail1")
         div.mb-3 
-            label(for="exampleInputEmail1" class="form-label") Email address
-            input(type="text" placeholder="e.g kaddy120@gmail.com" name="emailAddress" class="form-control" id="exampleInputEmail1")
+            label(for="email" class="form-label") Email address
+            input(type="text" placeholder="e.g kaddy120@gmail.com" name="email" class="form-control" id="exampleInputEmail1")
         div.mb-3 
-            label(for="exampleInputEmail1" class="form-label") Student number
-            input(type="text" placeholder="e.g 1416262" name="studentNumber" class="form-control" id="exampleInputEmail1")
+            label(for="exampleInputEmail1" class="form-label") School
+            input(type="text" placeholder="e.g 1416262" name="school" class="form-control" id="exampleInputEmail1")
+        div.mb-3 
+            label(for="yearOfStudy" class="form-label") Year of study
+            input(type="text" placeholder="e.g first year" name="yearOfStudy" class="form-control" id="exampleInputEmail1")
         div.mb-3
             label(for="password" class="form-label") Password
             input(type="text" placeholder="password" name="password" id="password" class="form-control")
