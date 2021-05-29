@@ -1,27 +1,41 @@
-const records = [
-  { id: 1, username: 'jack', password: 'secret', displayName: 'Jack', emails: [{ value: 'jack@example.com' }] },
-  { id: 2, username: 'jill', password: 'birthday', displayName: 'Jill', emails: [{ value: 'jill@example.com' }] }
-]
+const db = require('../db')
 
-exports.findById = function (id, cb) {
-  process.nextTick(function () {
-    const idx = id - 1
-    if (records[idx]) {
-      cb(null, records[idx])
-    } else {
-      cb(new Error('User ' + id + ' does not exist'))
-    }
-  })
+async function getUsers () {
+  const pools = await db.pools()
+  const users = await pools.request().query('SELECT * from dbo.[User]')
+  return users
 }
 
-exports.findByUsername = function (username, cb) {
-  process.nextTick(function () {
-    for (let i = 0, len = records.length; i < len; i++) {
-      const record = records[i]
-      if (record.username === username) {
-        return cb(null, record)
-      }
-    }
-    return cb(null, null)
-  })
+// async function getOrder (orderId) {
+//   try {
+//     const pool = await sql.connect(config)
+//     const product = await pool.request()
+//       .input('input_parameter', sql.Int, orderId)
+//       .query('SELECT * from Orders where Id = @input_parameter')
+//     return product.recordsets
+//   } catch (error) {
+//     console.log(error)
+//   }
+// }
+
+// async function addOrder (order) {
+//   try {
+//     const pool = await sql.connect(config)
+//     const insertProduct = await pool.request()
+//       .input('Id', sql.Int, order.Id)
+//       .input('Title', sql.NVarChar, order.Title)
+//       .input('Quantity', sql.Int, order.Quantity)
+//       .input('Message', sql.NVarChar, order.Message)
+//       .input('City', sql.NVarChar, order.City)
+//       .execute('InsertOrders')
+//     return insertProduct.recordsets
+//   } catch (err) {
+//     console.log(err)
+//   }
+// }
+
+module.exports = {
+  getUsers: getUsers
+  // ,getOrder: getOrder,
+  // addOrder: addOrder
 }

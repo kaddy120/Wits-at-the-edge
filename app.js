@@ -11,9 +11,11 @@ const LocalStrategy = require('passport-local').Strategy
 
 const indexRouter = require('./routes/index')
 const usersRouter = require('./routes/users')
-const accountRouter = require('./routes/accountManager')
 
+const accountRouter = require('./routes/accountManager')
+const databaseRouter = require('./routes/database')
 const app = express()
+
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'))
 
 // view engine setup
@@ -42,6 +44,7 @@ app.use('/', indexRouter)
 app.use('/users', usersRouter)
 app.use('/', accountRouter)
 
+// app.use('/database', databaseRouter)
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404))
