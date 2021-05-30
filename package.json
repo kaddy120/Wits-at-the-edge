@@ -4,7 +4,6 @@
   "private": true,
   "scripts": {
     "start": "nodemon ./bin/www",
-    "test:watch": "jest --watch",
     "test": "jest"
   },
   "dependencies": {
