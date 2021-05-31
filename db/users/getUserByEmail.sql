@@ -1,0 +1,1 @@
+SELECT * from dbo.[User] WHERE email= @email
