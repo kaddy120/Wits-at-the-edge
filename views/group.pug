@@ -1,0 +1,18 @@
+extends layout
+
+block content
+    h1 Create A Group
+    form(action='/group/group', method='post')
+        div(#creategroup='#creategroup', .creating='.creating')
+            label(for='GroupName') GroupName
+            input(type='text', name='GroupName', #groupname='#GroupName', placeholder='Enter Group name')
+        div(.creating='.creating')
+            label(for='school') School
+            input(type='text', name='school', #school='#school', placeholder='Enter your school')
+        div(.creating='.creating')
+            label(for='Thumbnail') Thumbnail
+            input(type='text', name='Thumbnail', #Thumbnail, placeholder='Group Icon')
+        div(.creating='.creating')
+            label(for='adminId') adminId
+            input(type='email', name='adminId', #adminId, placeholder='Enter your email')
+        button(type='submit', .group-button='.group-button') Submit
