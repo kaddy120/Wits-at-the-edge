@@ -14,6 +14,10 @@ class userManager {
       return res.status(400).json({ errors: errors.array() })
     }
     const user = { ...req.body }
+    const temp = await this.userRepository.getUserByEmail(user.email)
+    if (temp.length === 1) {
+      return res.status(400).json({ errors: 'the email already exists' })
+    }
     bcrypt.genSalt(saltRounds, function (err, salt) {
       if (err) {
         console.log(err)

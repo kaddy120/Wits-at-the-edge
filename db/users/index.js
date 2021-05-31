@@ -21,9 +21,10 @@ class userRepository {
   async getUserByEmail (email) {
     const sqlQueries = await utils.loadSqlQueries('users')
     const pool = await this.pools
-    return await pool.request()
+    const result = await pool.request()
       .input('email', sql.VarChar(50), email)
       .query(sqlQueries.getUserByEmail)
+    return result.recordset
   }
 
   async addUser (user) {
