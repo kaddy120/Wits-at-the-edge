@@ -3,10 +3,12 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www",
+    "start": "node ./bin/www",
+    "dev": "nodemon ./bin/www",
     "test": "jest"
   },
   "dependencies": {
+    "awilix": "^4.3.4",
     "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
     "bootstrap": "^4.6.0",

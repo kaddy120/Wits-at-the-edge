@@ -6,9 +6,10 @@ const cookieParser = require('cookie-parser')
 const logger = require('morgan')
 const bodyParser = require('body-parser')
 
+const just = require('./di-setup')
+
 const indexRouter = require('./routes/index')
 const usersRouter = require('./routes/users')
-
 const accountRouter = require('./routes/accountManager')
 const databaseRouter = require('./routes/database')
 const app = express()
@@ -20,29 +21,16 @@ app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'pug')
 
 app.use(logger('dev'))
-app.use(express.json())
 app.use(bodyParser.json())
+app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(cookieParser())
 app.use(express.static(path.join(__dirname, 'public')))
-
-// passport.use(new LocalStrategy(
-//   function (username, password, done) {
-//     // User.findOne({ username: username }, function (err, user) {
-//     //   if (err) { return done(err) }
-//     //   if (!user) { return done(null, false) }
-//     //   if (!user.verifyPassword(password)) { return done(null, false) }
-//       return done(null, user)
-//     })
-//   }
-// ))
 
 app.use('/', indexRouter)
 app.use('/users', usersRouter)
 app.use('/', accountRouter)
 
-// app.use('/database', databaseRouter)
-// catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404))
 })
