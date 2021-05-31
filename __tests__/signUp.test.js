@@ -42,7 +42,7 @@ describe('POST /sign-up', () => {
       .send(unmatchingPassword)
       .set('Accept', 'application/json')
     expect(response.statusCode).toBe(400)
-    expect(response.body).toStrictEqual({ errors: [{ value: 'password', msg: 'Password must match', param: 'password1', location: 'body' }] })
+    expect(response.body).toStrictEqual({ errors: [{ value: 'password', msg: 'Password confirmation does not match password', param: 'password1', location: 'body' }] })
   })
 })
 
