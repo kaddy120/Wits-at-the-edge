@@ -1,6 +1,6 @@
 require('dotenv').config({ path: '.env' })
 const mssql = require('mssql')
-// Make sure this is private to this module
+
 const config = {
   server: 'mywits.database.windows.net',
   database: 'MyWitsieDb',
@@ -22,6 +22,7 @@ const config = {
 // Get a mssql connection instance
 let isConnected = true
 let connectionError = null
+
 const pools = new mssql.ConnectionPool(config)
   .connect()
   .then(pool => {
