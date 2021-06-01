@@ -18,13 +18,14 @@ class userManager {
     if (temp.length === 1) {
       return res.status(400).json({ errors: 'the email already exists' })
     }
+    const repo = this.userRepository
     bcrypt.genSalt(saltRounds, function (err, salt) {
       if (err) {
         console.log(err)
       }
       bcrypt.hash(user.password, salt, function (err, hash) {
         user.password = hash
-        this.userRepository.addUser(user).then(addUser => {
+        repo.addUser(user).then(addUser => {
           res.render('index')
         }).catch(err => {
           console.log(err)
