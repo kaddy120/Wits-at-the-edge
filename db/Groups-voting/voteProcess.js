@@ -9,23 +9,33 @@ List of pending requests
 {id, userid, groupid},
 {id, userid, groupid},
 */
-const requestGroup_id = 2
-// when a user clicks to vote, I need to send the id of the current group
-async function getRequestsToJoin (group_id) {
+
+async function getVoterGroup (VOTER) {
     try {
        const sqlQueries = await utils.loadSqlQueries('Groups-voting')
        const pool = await pools
-       const getRequest = await pool.request()
-            .input('_groupId', sql.Int, group_id)
-            .query(sqlQueries.getRequestsToJoin)
-            console.log(getRequest.recordset)
-            return getRequest.recordset
-    }catch (err){
+       const getGroup = await pool.request()
+           .input('voter', sql.VarChar(50), VOTER.email)
+           .query(sqlQueries.getVoterGroup)
+           return getGroup
+    } catch (err){
         console.log(err)
     }
 }
 
-async function validateVotes(voterEmail, groupId) {
+async function getRequestsToJoin () {
+    try {
+       const sqlQueries = await utils.loadSqlQueries('Groups-voting')
+       const pool = await pools
+       const getRequests = await pool.request()
+            .query(sqlQueries.getRequestsToJoin)
+            return getRequests
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+/*async function validateVotes(voterEmail, groupId) {
     try {
         const sqlQueries = await utils.loadSqlQueries('Groups-voting')
         const pool = await pools
@@ -80,15 +90,17 @@ async function acceptRequest() {
     } catch (err) {
         console.log(err)
     }
-}
+}*/
 
-//getRequestsToJoin(2)
-validateVotes(voters.vote1.email, requestGroup_id)
+//getRequestsToJoin()
+//validateVotes(voters.vote1.email, requestGroup_id)
 //addVotes(voters.vote1)
 //countVotes()
+//getVoterGroup(voters.vote1)
 module.exports = {
+    getVoterGroup,
     getRequestsToJoin,
-    validateVotes,
+    /*validateVotes,
     addVotes,
-    countVotes
+    countVotes*/
 }
