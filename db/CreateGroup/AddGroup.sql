@@ -1,0 +1,1 @@
+INSERT INTO [dbo].[Group](groupName,thumbnail,adminId,school)  VALUES (@groupname_,@thumbnail_,@adminId_,@school_)
