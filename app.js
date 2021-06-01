@@ -11,7 +11,7 @@ const indexRouter = require('./routes/index')
 const usersRouter = require('./routes/users')
 const accountRouter = require('./routes/accountManager')
 const databaseRouter = require('./routes/database')
-const grouprouter = require('./routes/group')
+const grouprouter = require('./routes/Creategroup')
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'))
 
 // view engine setup

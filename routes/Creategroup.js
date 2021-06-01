@@ -5,11 +5,11 @@ const Grouping = require('../db/CreateGroup/Group')
 const GroupCreater = require('../models/Creater')
 const Verify = require('../models/Verification')
 
-router.get('/group', function (req, res, next) {
-  res.render('group', { title: 'Create Group Page' })
+router.get('/Creategroup', function (req, res, next) {
+  res.render('Creategroup', { title: 'Create Group Page' })
 })
 
-router.post('/group', async function (req, res, next) {
+router.post('/Creategroup', async function (req, res, next) {
   const email = req.body.adminId
   const found = await Grouping.Validation(email).then((data) => {
     return data.recordset
