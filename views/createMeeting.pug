@@ -1,0 +1,13 @@
+extend layout
+
+block content
+    div.
+    h4= title
+    form(action="/group/createMeeting" method="POST")
+        div.mb-3 
+            label(for="meetingDate" class="form-label") Meeeting Date
+            input(type="datetime-local"  name="time" class="form-control" id="date")
+        div.mb-3 
+            label(for="surname" class="form-label") Meeting agenda
+            textarea(type="text" name="agenda" class="form-control" id="exampleInputEmail1")
+        button(type="submit" class="btn btn-primary") Arrange meeting
