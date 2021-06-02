@@ -12,6 +12,7 @@ const indexRouter = require('./routes/index')
 const usersRouter = require('./routes/users')
 const accountRouter = require('./routes/accountManager')
 const databaseRouter = require('./routes/database')
+const voteRouter = require('./routes/votes')
 const app = express()
 
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'))
@@ -30,6 +31,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use('/', indexRouter)
 app.use('/users', usersRouter)
 app.use('/', accountRouter)
+app.use('/', voteRouter)
 
 app.use(function (req, res, next) {
   next(createError(404))

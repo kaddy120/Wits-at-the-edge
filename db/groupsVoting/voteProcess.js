@@ -1,13 +1,12 @@
 const { sql, pools } = require('../../db')
 const utils = require('../utils')
-const voters = require('./user.json')
 
-async function getVoterGroup(VOTER) {
+async function getVoterGroup(voter) {
     try {
-        const sqlQueries = await utils.loadSqlQueries('Groups-voting')
+        const sqlQueries = await utils.loadSqlQueries('groupsVoting')
         const pool = await pools
         const getGroup = await pool.request()
-            .input('voter', sql.VarChar(50), VOTER.email)
+            .input('voter', sql.VarChar(50), voter.email)
             .query(sqlQueries.getVoterGroup)
         return getGroup
     } catch (err) {
@@ -17,7 +16,7 @@ async function getVoterGroup(VOTER) {
 
 async function getRequestsToJoin() {
     try {
-        const sqlQueries = await utils.loadSqlQueries('Groups-voting')
+        const sqlQueries = await utils.loadSqlQueries('groupsVoting')
         const pool = await pools
         const getRequests = await pool.request()
             .query(sqlQueries.getRequestsToJoin)
@@ -30,10 +29,10 @@ async function getRequestsToJoin() {
 
 async function addVotes(Voter) {
     try {
-        const sqlQueries = await utils.loadSqlQueries('Groups-voting')
+        const sqlQueries = await utils.loadSqlQueries('groupsVoting')
         const pool = await pools
         const insertVoter = await pool.request()
-            .input('request_id', sql.Int, Voter.request_id)
+            .input('requestId', sql.Int, Voter.request_id)
             .input('email', sql.VarChar(50), Voter.email)
             .input('voteCount', sql.Int, Voter.Accept)
             .query(sqlQueries.addVotes)
@@ -46,7 +45,7 @@ async function addVotes(Voter) {
 
 async function countVotes() {
     try {
-        const sqlQueries = await utils.loadSqlQueries('Groups-voting')
+        const sqlQueries = await utils.loadSqlQueries('groupsVoting')
         const pool = await pools
         const getVotes = await pool.request()
             .query(sqlQueries.getVotes)
@@ -58,7 +57,7 @@ async function countVotes() {
 
 async function getNumOfGroupMembers (groupNum){
     try {
-     const sqlQueries = await utils.loadSqlQueries('Groups-voting')
+     const sqlQueries = await utils.loadSqlQueries('groupsVoting')
      const pool = await pools
      const getNum = await pool.request()
         .input('group', sql.VarChar(50), groupNum)
@@ -72,11 +71,11 @@ async function getNumOfGroupMembers (groupNum){
 
 async function acceptRequest(email, group) {
     try {
-        const sqlQueries = await utils.loadSqlQueries('Groups-voting')
+        const sqlQueries = await utils.loadSqlQueries('groupsVoting')
         const pool = await pools
         const insertNewMember = await pool.request()
-            .input('_email', sql.VarChar(50), email)
-            .input('_group', sql.Int, group)
+            .input('email', sql.VarChar(50), email)
+            .input('group', sql.Int, group)
             .query(sqlQueries.addToGroup)
     } catch (err) {
         console.log(err)
