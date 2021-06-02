@@ -35,3 +35,12 @@ CREATE TABLE dbo.UserGroup
 	groupId int NOT NULL,
     PRIMARY KEY CLUSTERED ([groupId], [userId])
 );
+
+CREATE TABLE dbo.GroupMeeting
+(
+    meetingId int IDENTITY(1,1) PRIMARY KEY CLUSTERED NOT NULL,
+	groupId int NOT NULL,
+    meetingTime datetime NOT NULL, 
+    agenda VARCHAR(300) NOT NULL,
+    userId VARCHAR(50) references dbo.[User](email)
+);
