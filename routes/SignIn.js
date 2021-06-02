@@ -15,8 +15,6 @@ const user = container.resolve('userRepository')
 const indexRouter = require('./routes/index')
 const accountRouter = require('./routes/user')
 const databaseRouter = require('./routes/database')
-const voteRouter = require('./routes/votes')
-const groupRouter = require('./routes/group')
 const app = express()
 
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'))
@@ -61,6 +59,11 @@ app.set('view engine', 'pug')
 app.use(logger('dev'))
 app.use(require('morgan')('combined'))
 app.use(require('body-parser').urlencoded({ extended: true }))
+// app.use(bodyParser.json())
+// app.use(express.json())
+// app.use(express.urlencoded({ extended: false }))
+// app.use(cookieParser())
+// app.use(cookieParser({ secret: 'keyboard cat' }))
 app.use(express.static(path.join(__dirname, 'public')))
 
 app.use(session({
@@ -76,9 +79,6 @@ app.use('/', indexRouter)
 
 app.use('/', accountRouter)
 
-app.use('/', voteRouter)
-app.use('/group', groupRouter)
-
 app.get('/login', (req, res) => {
   res.render('login')
 })
@@ -91,6 +91,7 @@ app.post('/login',
   function (req, res) {
     res.redirect('/')
   })
+
 app.use(function (req, res, next) {
   next(createError(404))
 })
