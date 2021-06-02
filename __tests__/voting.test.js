@@ -1,6 +1,6 @@
 /* eslint-env jest */
 const modules = require('../models/voteValidation')
-const Voters =
+const voters =
 [
     {
         email: "kad@gmail.com",
@@ -24,19 +24,18 @@ const Voters =
     }
 ]
 
-const Requester = {
+const requester = {
     groupRequested: 3,
     email: "roch@gmail.com"
 }
 
 test('Users can only vote if they belong to the requested group', () => {
-    const validate = modules.relevantRequest(Voters[0].group, Requester.groupRequested)
+    const validate = modules.relevantRequest(voters[0].group, requester.groupRequested)
     expect(validate).toBe(0)
 })
 
 test('If more than 49% are in favour, the user can join', () => {
-    const membersInAGroup = 4
-    const validate = modules.countVotes(Voters, 4)
+    const validate = modules.countVotes(voters, voters.length)
     expect(validate).toBe(true)
 })
 

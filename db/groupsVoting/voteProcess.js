@@ -82,7 +82,6 @@ async function acceptRequest(email, group) {
     }
 }
 
-getNumOfGroupMembers(3)
 module.exports = {
     getVoterGroup,
     getRequestsToJoin,

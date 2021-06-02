@@ -17,8 +17,6 @@ router.get('/voting', async function (req, res) {
     const voteCount = await votingProcess.countVotes().then(result => { return result.recordset })
     const numOfGroupMembers = await votingProcess.getNumOfGroupMembers(requestGroup[0].groupId)
     const counter = model.countVotes(voteCount, numOfGroupMembers)
-    console.log(counter)
-    console.log(numOfGroupMembers)
     if (counter == true)
         await votingProcess.acceptRequest(requestGroup[0].email, requestGroup[0].groupId)
 })
