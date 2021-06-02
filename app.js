@@ -11,7 +11,7 @@ const indexRouter = require('./routes/index')
 const usersRouter = require('./routes/users')
 const accountRouter = require('./routes/accountManager')
 const databaseRouter = require('./routes/database')
-const grouprouter = require('./routes/Creategroup')
+const groupRouter = require('./routes/createGroup')
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'))
 
 // view engine setup
@@ -28,7 +28,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use('/', indexRouter)
 app.use('/users', usersRouter)
 app.use('/database', databaseRouter)
-app.use('/', grouprouter)
+app.use('/', groupRouter)
 // catch 404 and forward to error handler
 app.use('/', accountRouter)
 

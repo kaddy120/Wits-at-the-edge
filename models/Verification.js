@@ -1,15 +1,15 @@
 'use strict'
 
-function Userfound (users, useremail) {
+function userFound (users, userEmail) {
   const register = users.filter((element) => {
-    return element.email === useremail
+    return element.email === userEmail
   })
   if (register.length > 0) {
     return true
   } else { return false }
 }
 
-function CanCreateGroup (groups) {
+function canCreateGroup (groups) {
   if (groups.length <= 9) {
     return true
   } else {
@@ -17,4 +17,4 @@ function CanCreateGroup (groups) {
   }
 }
 
-module.exports = { Userfound, CanCreateGroup }
+module.exports = { userFound, canCreateGroup }

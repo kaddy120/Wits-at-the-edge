@@ -1,10 +1,10 @@
-class Creater {
-  constructor (groupname, email, school, thumbnail) {
+class creater {
+  constructor (groupName, email, school, thumbnail) {
     this.email = email
-    this.groupname = groupname
+    this.groupName = groupName
     this.school = school
     this.thumbnail = thumbnail
   }
 }
 
-module.exports = Creater
+module.exports = creater
