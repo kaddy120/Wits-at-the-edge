@@ -1,14 +1,6 @@
 const { sql, pools } = require('../../db')
 const utils = require('../utils')
 const voters = require('./user.json')
-/*
-List of pending requests
-{id, userid, groupid},
-{id, userid, groupid},
-{id, userid, groupid},
-{id, userid, groupid},
-{id, userid, groupid},
-*/
 
 async function getVoterGroup(VOTER) {
     try {
@@ -64,6 +56,19 @@ async function countVotes() {
     }
 }
 
+async function getNumOfGroupMembers (groupNum){
+    try {
+     const sqlQueries = await utils.loadSqlQueries('Groups-voting')
+     const pool = await pools
+     const getNum = await pool.request()
+        .input('group', sql.VarChar(50), groupNum)
+        .query(sqlQueries.getNumOfGroupMembers)
+        return getNum.rowsAffected[0]
+    } catch (err) {
+        console.log(err)
+    }
+}
+
 
 async function acceptRequest(email, group) {
     try {
@@ -78,10 +83,12 @@ async function acceptRequest(email, group) {
     }
 }
 
+getNumOfGroupMembers(3)
 module.exports = {
     getVoterGroup,
     getRequestsToJoin,
     addVotes,
     countVotes,
-    acceptRequest
+    acceptRequest,
+    getNumOfGroupMembers
 }
