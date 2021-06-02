@@ -1,0 +1,19 @@
+extends layout
+
+block content
+    a(href="/") Home page
+    h1= title
+    form(action='/creategroup', method='post')
+        div.creating
+            label(for='groupName') GroupName
+            input(type='text', name='groupName', id = 'groupName',class ='Group-info', placeholder='Enter Group name')
+        div.creating
+            label(for='school') School
+            input(type='text', name='school', id ='school',class ='Group-info', placeholder='Enter your school')
+        div.creating
+            label(for='thumbnail') Thumbnail
+            input(type='text', name='thumbnail', id='thumbnail',class ='Group-info', placeholder='Group Icon')
+        div.creating
+            label(for='adminId') adminId
+            input(type='email', name='adminId', id='adminId',class ='Group-info', placeholder='Enter your email')
+        button(type='submit', class ='btn btn-primary') Submit
