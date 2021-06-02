@@ -1,9 +1,9 @@
 'use strict'
 const express = require('express')
 const router = express.Router()
-const grouping = require('../db/createGroup1/createGroup1')
-const GroupCreator = require('../models/creater1')
-const verify = require('../models/verification1')
+const grouping = require('../db/createGroup/createGroup')
+const GroupCreator = require('../models/creater')
+const verify = require('../models/verification')
 
 router.get('/createGroup', function (req, res, next) {
   res.render('createGroup', { title: 'Create Group Page' })

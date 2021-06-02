@@ -1,6 +1,6 @@
 /* eslint-env jest */
-const GroupCreater = require('../models/creater1')
-const verify = require('../models/verification1')
+const GroupCreater = require('../models/creater')
+const verify = require('../models/verification')
 const Users = require('../models/user')
 const userTable = []
 const user1 = new Users('kad@gmail.com', 'Lebo', 'Hello', 'King', 'first year')
