@@ -1,0 +1,18 @@
+
+{ 
+  
+     "userOne" :{
+                "email" : "kaddy1248@gmail.com",
+               "groupId" : 5
+}, 
+
+  "userTwo" : {
+                "email" : "kaddy122@gmail.com",
+                "groupId" : 6
+              },
+  "userThree":
+   {
+    "email" : "kad@gmail.com",
+    "groupId" : 7
+   }
+}
