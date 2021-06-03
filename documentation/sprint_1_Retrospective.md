@@ -48,7 +48,7 @@ velocity = StoriesDoneSp - storiesLeftSp
 1. plan user and developer stories together
 1. continue knowledge sharing and helping each other.
 
-### For the next sprint we are aiming for a velocity of 30.
+### For the next sprint we are aiming for a velocity of 31.
 
 
 
