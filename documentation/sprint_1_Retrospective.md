@@ -1,19 +1,19 @@
-## Sprint 1 Retrospective
+# Sprint 1 Retrospective
 
 ## Stories Done for sprint 1
-1. ### Create a group (3sp):
+ ### 1. Create a group (3sp):
 As an app member, I should be able to create a study group so that I can connect with other students
-1. ### Accepting a group join request (5sp):
+### 2. Accepting a group join request (5sp):
 As a member requesting to join a group, I will need to be accepted by the majority of members.
-1. ### Orgranize study session (5sp):
+### 3. Orgranize study session (5sp):
 As a group member, I should be able to organize a study session.
-1. ### User sign-in (3sp):
+### 4. User sign-in (3sp):
 As a member of the app, I should be able to sign in so that I can access the app functionality.
-1. ### User sign-up (3sp):
+### 5. User sign-up (3sp):
 As an unregistered user, I want to sign up so that I can be a member of the application.
-1. ### Add database (1sp): 
+### 6. Add database (1sp): 
 Add a database to the project
-1. ### Request to join a group (1sp):
+### 7. Request to join a group (1sp):
 As an app member, I should be able to send a request to join a group.
 
 ## Stories Done for sprint 1
