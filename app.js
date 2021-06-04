@@ -20,7 +20,7 @@ const indexRouter = require('./routes/index')
 const accountRouter = container.resolve('accountManagerRouters')
 const createGroupRouter = require('./routes/createGroup')
 const voteRouter = require('./routes/votes')
-const groupRouter = require('./routes/group')
+const meetingRouter = container.resolve('meetingRouters')
 
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'))
 
@@ -57,7 +57,7 @@ app.use('/', createGroupRouter)
 
 app.use('/', accountRouter)
 app.use('/', voteRouter)
-app.use('/group', groupRouter)
+app.use('/meeting', meetingRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
