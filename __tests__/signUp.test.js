@@ -35,7 +35,7 @@ describe('POST /sign-up', () => {
     // expect(response.body)
   })
 
-  test('Password must match', async () => {
+test('Password must match', async () => {
     const unmatchingPassword = { ...correctFormInput }
     unmatchingPassword.password = 'wrong password'
     unmatchingPassword.name = 'name'

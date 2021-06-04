@@ -4,7 +4,10 @@ const express = require('express')
 const path = require('path')
 const cookieParser = require('cookie-parser')
 const logger = require('morgan')
-// const bodyParser = require('body-parser')
+const bodyParser = require('body-parser')
+require('./di-setup')
+const app = express()
+
 const passport = require('passport')
 const session = require('express-session')
 const flash = require('express-flash')
@@ -15,8 +18,9 @@ const user = container.resolve('userRepository')
 const indexRouter = require('./routes/index')
 const accountRouter = require('./routes/user')
 const databaseRouter = require('./routes/database')
+const createGroupRouter = require('./routes/createGroup')
+const voteRouter = require('./routes/votes')
 const groupRouter = require('./routes/group')
-
 const app = express()
 
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'))
@@ -73,8 +77,14 @@ app.use(passport.session())
 app.use(flash())
 
 app.use('/', indexRouter)
+app.use('/users', usersRouter)
+app.use('/database', databaseRouter)
+app.use('/', createGroupRouter)
+// catch 404 and forward to error handler
 
 app.use('/', accountRouter)
+
+app.use('/', voteRouter)
 app.use('/group', groupRouter)
 
 app.get('/login', (req, res) => {
@@ -89,7 +99,6 @@ app.post('/login',
   function (req, res) {
     res.redirect('/')
   })
-
 app.use(function (req, res, next) {
   next(createError(404))
 })
