@@ -14,14 +14,12 @@ const flash = require('express-flash')
 require('./di-setup')
 const { container } = require('./di-setup')
 const user = container.resolve('userRepository')
-
 const indexRouter = require('./routes/index')
 const accountRouter = require('./routes/user')
 const databaseRouter = require('./routes/database')
 const createGroupRouter = require('./routes/createGroup')
 const voteRouter = require('./routes/votes')
 const groupRouter = require('./routes/group')
-const app = express()
 
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'))
 
@@ -77,7 +75,7 @@ app.use(passport.session())
 app.use(flash())
 
 app.use('/', indexRouter)
-app.use('/users', usersRouter)
+app.use('/users', accountRouter)
 app.use('/database', databaseRouter)
 app.use('/', createGroupRouter)
 // catch 404 and forward to error handler
