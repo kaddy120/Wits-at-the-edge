@@ -17,7 +17,6 @@ const user = container.resolve('userRepository')
 const indexRouter = require('./routes/index')
 const accountRouter = require('./routes/user')
 const databaseRouter = require('./routes/database')
-const createGroupRouter = require('./routes/createGroup')
 const voteRouter = require('./routes/votes')
 const groupRouter = require('./routes/group')
 
@@ -77,7 +76,6 @@ app.use(flash())
 app.use('/', indexRouter)
 app.use('/users', accountRouter)
 app.use('/database', databaseRouter)
-app.use('/', createGroupRouter)
 // catch 404 and forward to error handler
 
 app.use('/', accountRouter)

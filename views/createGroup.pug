@@ -3,7 +3,7 @@ extends layout
 block content
     a(href="/") Home page
     h1= title
-    form(action='/creategroup', method='post')
+    form(action='/group/createGroup', method='post')
         div.creating
             label(for='groupName') GroupName
             input(type='text', name='groupName', id = 'groupName',class ='Group-info', placeholder='Enter Group name')
