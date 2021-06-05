@@ -1,3 +1,4 @@
+const { pool } = require('mssql')
 const { sql, pools } = require('../../db')
 const utils = require('../utils')
 
@@ -7,6 +8,7 @@ class votes {
         this.pools = dbpool
     }
 }
+
 async function getVoterGroup(voter) {
     try {
         const sqlQueries = await utils.loadSqlQueries('voting')
@@ -47,14 +49,14 @@ async function getNameOfRequester(email){
 }
 
 
-async function addVotes(Voter) {
+async function addVotes(requestId, email, vote) {
     try {
         const sqlQueries = await utils.loadSqlQueries('voting')
         const pool = await pools
         const insertVoter = await pool.request()
-            .input('requestId', sql.Int, Voter.request_id)
-            .input('email', sql.VarChar(50), Voter.email)
-            .input('voteCount', sql.Int, Voter.Accept)
+            .input('requestId', sql.Int, requestId)
+            .input('email', sql.VarChar(50), email)
+            .input('voteCount', sql.Int, vote)
             .query(sqlQueries.addVotes)
         return insertVoter
     } catch (err) {
@@ -63,11 +65,12 @@ async function addVotes(Voter) {
 }
 
 
-async function countVotes() {
+async function countVotes(requestId) {
     try {
         const sqlQueries = await utils.loadSqlQueries('voting')
         const pool = await pools
         const getVotes = await pool.request()
+            .input('requestId', sql.Int, requestId)
             .query(sqlQueries.getVotes)
         return getVotes
     } catch (err) {
@@ -88,6 +91,17 @@ async function getNumOfGroupMembers (groupNum){
     }
 }
 
+async function removeFromJoinRequests (requestId) {
+   try{
+     const sqlQueries = await utils.loadSqlQueries('voting')
+     const pool = await pools
+     const remove = await pool.request()
+       .input('requestId', sql.Int, requestId)
+       .query(sqlQueries.removeFromJoinRequests)
+   } catch (err) {
+       console.log(err)
+   }
+}
 
 async function acceptRequest(email, group) {
     try {
@@ -109,5 +123,6 @@ module.exports = {
     countVotes,
     acceptRequest,
     getNumOfGroupMembers,
-    getNameOfRequester
+    getNameOfRequester,
+    removeFromJoinRequests
 }
