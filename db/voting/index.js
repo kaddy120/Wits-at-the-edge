@@ -1,9 +1,15 @@
 const { sql, pools } = require('../../db')
 const utils = require('../utils')
 
+
+class votes {
+    constructor ({dbpool}) {
+        this.pools = dbpool
+    }
+}
 async function getVoterGroup(voter) {
     try {
-        const sqlQueries = await utils.loadSqlQueries('groupsVoting')
+        const sqlQueries = await utils.loadSqlQueries('voting')
         const pool = await pools
         const getGroup = await pool.request()
             .input('voter', sql.VarChar(50), voter.email)
@@ -16,7 +22,7 @@ async function getVoterGroup(voter) {
 
 async function getRequestsToJoin() {
     try {
-        const sqlQueries = await utils.loadSqlQueries('groupsVoting')
+        const sqlQueries = await utils.loadSqlQueries('voting')
         const pool = await pools
         const getRequests = await pool.request()
             .query(sqlQueries.getRequestsToJoin)
@@ -26,10 +32,24 @@ async function getRequestsToJoin() {
     }
 }
 
+async function getNameOfRequester(email){
+    try{
+      const sqlQueries = await utils.loadSqlQueries('voting')
+      const pool = await pools
+      const getName = await pool.request()
+            .input('email', sql.VarChar(50), email)
+            .query(sqlQueries.getNameOfRequester)
+      console.log(getName)
+        return getName
+    } catch (err) {
+        console.log(err)
+    }
+}
+
 
 async function addVotes(Voter) {
     try {
-        const sqlQueries = await utils.loadSqlQueries('groupsVoting')
+        const sqlQueries = await utils.loadSqlQueries('voting')
         const pool = await pools
         const insertVoter = await pool.request()
             .input('requestId', sql.Int, Voter.request_id)
@@ -45,7 +65,7 @@ async function addVotes(Voter) {
 
 async function countVotes() {
     try {
-        const sqlQueries = await utils.loadSqlQueries('groupsVoting')
+        const sqlQueries = await utils.loadSqlQueries('voting')
         const pool = await pools
         const getVotes = await pool.request()
             .query(sqlQueries.getVotes)
@@ -57,7 +77,7 @@ async function countVotes() {
 
 async function getNumOfGroupMembers (groupNum){
     try {
-     const sqlQueries = await utils.loadSqlQueries('groupsVoting')
+     const sqlQueries = await utils.loadSqlQueries('voting')
      const pool = await pools
      const getNum = await pool.request()
         .input('group', sql.VarChar(50), groupNum)
@@ -71,7 +91,7 @@ async function getNumOfGroupMembers (groupNum){
 
 async function acceptRequest(email, group) {
     try {
-        const sqlQueries = await utils.loadSqlQueries('groupsVoting')
+        const sqlQueries = await utils.loadSqlQueries('voting')
         const pool = await pools
         const insertNewMember = await pool.request()
             .input('email', sql.VarChar(50), email)
@@ -88,5 +108,6 @@ module.exports = {
     addVotes,
     countVotes,
     acceptRequest,
-    getNumOfGroupMembers
+    getNumOfGroupMembers,
+    getNameOfRequester
 }

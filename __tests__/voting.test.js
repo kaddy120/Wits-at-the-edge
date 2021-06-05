@@ -39,4 +39,5 @@ test('If more than 49% are in favour, the user can join', () => {
     expect(validate).toBe(true)
 })
 
+
   

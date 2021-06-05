@@ -1,0 +1,20 @@
+extends layout
+
+block content
+      h1=title
+      if message != '**No join requests'
+          each val in message
+           ul
+             li
+               a(href="")=`${val[0].firstName} ${val[0].surname} wants to be a member`
+               |
+               |
+               form(action=`/upVote/${val[0].firstName}/${val[0].surname}`, method='post')
+                 input(type='submit' name="accept" value="accept" class='btn btn-success btn-sm')
+                 |
+                 |
+                 button(type='submit', class ='btn btn-danger btn-sm', style="height:30px;width:60px", action='/vote', method='post') decline
+  
+      else 
+       h4=message
+         
