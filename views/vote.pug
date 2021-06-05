@@ -9,7 +9,7 @@ block content
                a(href="")=`${val[0].firstName} ${val[0].surname} wants to be a member`
                |
                |
-               form(action=`/upVote/${val[0].firstName}/${val[0].surname}`, method='post')
+               form(action=`/upVote/${email}/${requestId}`, method='post')
                  input(type='submit' name="accept" value="accept" class='btn btn-success btn-sm')
                  |
                  |

@@ -24,14 +24,17 @@ router.get('/join_requests', async function (req, res, next) {
         console.log("name:", name)
         console.log("email:", email)
         console.log("requestId: ", requestId)
-          res.render('vote', { title: 'Join Requests', message: name, userId: email, requestId: requestId })
+          res.render('vote', { title: 'Join Requests', message: name, email: email, requestId: requestId })
     }
     else res.render('vote', { title: 'Join Requests', message: '**No join requests' })
 })
 
-router.post('/upVote/:name/:surname', function (req, res, next) {
-  console.log(req.params.name)
-    res.send('page')
+router.post('/upVote/:userId/:requestId', function (req, res, next) {
+  //console.log(req.params.requestId, req.params.userId)
+  const emails = req.params.userId
+  const requestIds = req.params.requestId
+  console.log("email length:", emails.length)
+    res.send('Your vote was successfully recorded.')
     //req.params.groupId = 
 })
 
