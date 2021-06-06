@@ -8,11 +8,11 @@ block content
             - for (var x = 0; x < length; x++)
               li
                 a(href="")=`${message[x][0].firstName} ${message[x][0].surname} wants to be a member`
-                form(action=`/upVote/${requestId[x]}/${email[x]}`, method='post')
+                form(action=`/vote/${requestId[x]}/${email[x]}/voteChoice/${1}`, method='post')
                     input(type='submit' name="accept" value="accept" class='btn btn-success btn-sm')
                     |
                     |
-                    input(type='submit' name="decline" value="decline" class='btn btn-danger btn-sm' formaction=`/downVote/${requestId[x]}/${email[x]}`)
+                    input(type='submit' name="decline" value="decline" class='btn btn-danger btn-sm' formaction=`/vote/${requestId[x]}/${email[x]}/voteChoice/${-1}`)
       else 
         h4=message
          
