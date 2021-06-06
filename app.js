@@ -14,13 +14,13 @@ const flash = require('express-flash')
 require('./di-setup')
 const { container } = require('./di-setup')
 const user = container.resolve('userRepository')
+const voteRouter = container.resolve('votingRouters')
 
 const indexRouter = require('./routes/index')
 const accountRouter = require('./routes/user')
 const databaseRouter = require('./routes/database')
 const createGroupRouter = require('./routes/createGroup')
 const groupRouter = require('./routes/group')
-const voteRouter = require('./routes/votes')
 
 
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'))
