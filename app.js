@@ -21,6 +21,7 @@ const accountRouter = container.resolve('accountManagerRouters')
 const createGroupRouter = require('./routes/createGroup')
 const voteRouter = require('./routes/votes')
 const meetingRouter = container.resolve('meetingRouters')
+const { authorization } = require('./middleware/authorization')
 
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'))
 
@@ -42,10 +43,16 @@ app.use(require('morgan')('combined'))
 app.use(require('body-parser').urlencoded({ extended: true }))
 app.use(express.static(path.join(__dirname, 'public')))
 
+app.set('trust proxy', 1)
+
 app.use(session({
   secret: 'keyboard cat',
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  cookie: {
+    secure: false, // this should get set to true in production
+    httpOnly: false // if true: prevents client side JS from reading the cookie
+  }
 }))
 
 app.use(passport.initialize())
@@ -53,11 +60,13 @@ app.use(passport.session())
 app.use(flash())
 
 app.use('/', indexRouter)
-app.use('/', createGroupRouter)
 
 app.use('/', accountRouter)
-app.use('/', voteRouter)
-app.use('/meeting', meetingRouter)
+
+// app.use() // all end-points under this middleware can only be accessed by signed in user
+app.use('/', authorization, createGroupRouter)
+app.use('/', authorization, voteRouter)
+app.use('/meeting', authorization, meetingRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
