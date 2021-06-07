@@ -8,20 +8,10 @@ const group = require('../db/groups')
 const groupCreator = require('../models/groupDetails')
 const verify = require('../models/verification')
 const multer = require('multer')
-const { Storage } = require('@google-cloud/storage')
 const { memoryStorage } = require('multer')
-const storage = new Storage({ projectId: process.env.GCLOUD_PROJECT, credentials: { client_email: process.env.GCLOUD_CLIENT_EMAIL, private_key: process.env.GCLOUD_PRIVATE_KEY } })
-const fileStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, './public')
-  },
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + '--' + file.originalname)
-  }
-})
-
 const upload = multer({ storage: memoryStorage() })
-const bucket = storage.bucket(process.env.GCS_BUCKET)
+const imageSaver = require('../models/saveImagesToCloud')
+
 router.get('/', async (req, res) => {
   res.render('group')
 })
@@ -60,14 +50,7 @@ router.get('/createGroup', function (req, res, next) {
 
 router.post('/createGroup', upload.single('thumbnail'), async function (req, res, next) {
   const email = req.body.adminId
-  const filename = Date.now() + '--' + req.file.originalname
-  const blob = bucket.file(filename)
-  const blobStream = blob.createWriteStream()
-  blobStream.on('error', (err) => { console.log(err) })
-  blobStream.on('finish', () => {
-    const publicUrl = `http://storage.googleapis.com/${process.env.GCS_BUCKET}/${blob.name}`
-  })
-  blobStream.end(req.file.buffer)
+  imageSaver(req.file)
   const found = await createGroups.userIsRegistered(email)
   console.log(`found: ${found}`)
   if (found) {
