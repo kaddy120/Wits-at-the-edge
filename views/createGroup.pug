@@ -3,7 +3,7 @@ extends layout
 block content
     a(href="/") Home page
     h1= title
-    form(action='/group/createGroup', method='post')
+    form(action='/group/createGroup',enctype ='multipart/form-data', method='post')
         div.creating
             label(for='groupName') GroupName
             input(type='text', name='groupName', id = 'groupName',class ='Group-info', placeholder='Enter Group name')
@@ -12,8 +12,9 @@ block content
             input(type='text', name='school', id ='school',class ='Group-info', placeholder='Enter your school')
         div.creating
             label(for='thumbnail') Thumbnail
-            input(type='text', name='thumbnail', id='thumbnail',class ='Group-info', placeholder='Group Icon')
+            input(type='file', name='thumbnail', id='thumbnail',class ='Group-info', placeholder='Group Icon')
         div.creating
             label(for='adminId') adminId
             input(type='email', name='adminId', id='adminId',class ='Group-info', placeholder='Enter your email')
         button(type='submit', class ='btn btn-primary') Submit
+        
