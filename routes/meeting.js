@@ -15,6 +15,10 @@ function meetingRouters ({ groupRepository }) {
       res.render('dashboard', {title: 'Dashboard', userGroups: groups})
   })
 
+  router.get('/groupHomepage', async (req, res) => {
+     res.render('Group home page')
+  })
+
   router.get('/create', async (req, res) => {
     res.render('createMeeting')
   })
