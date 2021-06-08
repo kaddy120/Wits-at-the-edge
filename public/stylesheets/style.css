@@ -7,3 +7,21 @@ a {
   color: #00B7FF;
 }
 
+.card {
+  transform-style: preserve-3d;
+  text-align: center;
+  align-self: right;
+  height: 18rem;
+  width: 18rem;
+  border-radius: 30px;
+  box-shadow: 0 20px 20px rgba(0, 0, 0, 0.281), 0px 0px 50px rgba(0, 0, 0, 0.2);
+  border: #cecece;
+  margin: 50px;
+}
+
+.card-image-top{
+  width: 17.9rem; 
+  height: 10rem;
+}
+
+

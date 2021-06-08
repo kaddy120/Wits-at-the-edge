@@ -11,12 +11,12 @@ function meetingRouters ({ groupRepository }) {
   router.get('/dashboard', async (req, res) => {
     const user = req.user  
     const groups = await groupRepository.getUserGroups(user.email).then(result => {return result.recordset})
-    //*console.log("groups", groups[0].groupName)*//
-      res.render('dashboard', {title: 'Dashboard', userGroups: groups})
+    res.render('dashboard', {title: 'Dashboard', userGroups: groups})
   })
 
-  router.get('/groupHomepage', async (req, res) => {
-     res.render('Group home page')
+  router.get('/groupName/:groupId/groupHomepage', async (req, res) => {
+     const groupName = req.params.groupId
+     res.send( `${groupName} group home page`)
   })
 
   router.get('/create', async (req, res) => {
