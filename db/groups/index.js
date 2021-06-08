@@ -17,10 +17,10 @@ class groupRepository {
     try {
       const sqlQueries = await utils.loadSqlQueries('groups')
       const pool = await this.dbpool
-      const user = pool.request()
+      const user = await pool.request()
         .input('userId', sql.Char(50), email)
         .query(sqlQueries.getUserByEmail)
-      console.log(user)
+
       return user.recordset.length === 1
     } catch (error) {
       console.log(error)
@@ -31,7 +31,7 @@ class groupRepository {
     try {
       const sqlQueries = await utils.loadSqlQueries('groups')
       const pool = await this.dbpool
-      const getUser = pool.request().input('email', sql.Char(50), emails)
+      const getUser = await pool.request().input('email', sql.Char(50), emails)
         .query(sqlQueries.getGroupByAdminId)
       return getUser
     } catch (error) {
@@ -43,10 +43,10 @@ class groupRepository {
     try {
       const sqlQueries = await utils.loadSqlQueries('groups')
       const pool = await this.dbpool
-      pool.request().input('groupName_', sql.Char(50), user.groupName)
-        .input('thumbnail_', sql.Char(50), user.thumbnail)
-        .input('adminId_', sql.Char(50), user.email)
-        .input('school_', sql.Char(50), user.school)
+      await pool.request().input('groupName_', sql.Char(50), user.groupName)
+        .input('thumbnail_', sql.Char(250), user.thumbnail)
+        .input('adminId_', sql.Char(250), user.email)
+        .input('school_', sql.Char(250), user.school)
         .query(sqlQueries.addGroup)
     } catch (error) {
       console.log(error)
@@ -57,7 +57,7 @@ class groupRepository {
     try {
       const sqlQueries = await utils.loadSqlQueries('groups')
       const pool = await this.dbpool
-      pool.request().input('adminId_', sql.Char(50), userId)
+      await pool.request().input('adminId_', sql.Char(50), userId)
         .input('groupId_', sql.Int, groupId)
         .query(sqlQueries.addFirstGroupMember)
     } catch (error) {

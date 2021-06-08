@@ -14,6 +14,10 @@ async function saveImages (file) {
       const publicUrl = `http://storage.googleapis.com/${process.env.GCS_BUCKET}/${blob.name}`
     })
     blobStream.end(file.buffer)
+    console.log(blob.publicUrl())
+    let data = ''
+    data = blob.publicUrl()
+    return data
   } catch (err) {
     console.log(err)
   }

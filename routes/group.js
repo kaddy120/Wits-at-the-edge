@@ -48,29 +48,35 @@ router.get('/createGroup', function (req, res, next) {
   res.render('createGroup', { title: 'Create Group Page' })
 })
 
-router.post('/createGroup', upload.single('thumbnail'), async function (req, res, next) {
-  const email = req.body.adminId
-  imageSaver(req.file)
-  const found = await createGroups.userIsRegistered(email)
-  console.log(`found: ${found}`)
-  if (found) {
-    const groups = await createGroups.getNumberOfGroups(email).then((data) => {
-      return data.recordset
-    })
-    if (verify.canCreateGroup(groups)) {
-      const creater = new groupCreator(req.body.groupName, req.body.adminId, req.body.school, req.body.thumbnail)
-      createGroups.addingGroup(creater)
-      const allgroups = await createGroups.getNumberOfGroups(email).then((data) => {
+router.post('/createGroup', body('groupName', 'Group name cant be empty').notEmpty(),
+  body('school', 'school name cant be empty').notEmpty()
+  , upload.single('thumbnail'), async function (req, res, next) {
+    const errors = validationResult(req)
+
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() })
+    }
+    const email = req.body.adminId
+    const imageUrl = await imageSaver(req.file)
+    const found = await createGroups.userIsRegistered(email)
+    if (found) {
+      const groups = await createGroups.getNumberOfGroups(email).then((data) => {
         return data.recordset
       })
+      if (verify.canCreateGroup(groups)) {
+        const creater = new groupCreator(req.body.groupName, req.body.adminId, req.body.school, imageUrl)
+        createGroups.addingGroup(creater)
+        const allgroups = await createGroups.getNumberOfGroups(email).then((data) => {
+          return data.recordset
+        })
 
-      createGroups.addFirstMember(allgroups[allgroups.length - 1].groupId, allgroups[allgroups.length - 1].adminId)
-      res.redirect('/group')
+        createGroups.addFirstMember(allgroups[allgroups.length - 1].groupId, allgroups[allgroups.length - 1].adminId)
+        res.redirect('/group')
+      } else {
+        res.redirect('/group')
+      }
     } else {
-      res.redirect('/group')
+      res.redirect('/signup')
     }
-  } else {
-    res.redirect('/signup')
-  }
-})
+  })
 module.exports = router
