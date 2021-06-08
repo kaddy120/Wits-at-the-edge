@@ -21,6 +21,7 @@ const accountRouter = container.resolve('accountManagerRouters')
 const createGroupRouter = require('./routes/createGroup')
 const voteRouter = require('./routes/votes')
 const meetingRouter = container.resolve('meetingRouters')
+const dashboardRouter = container.resolve('meetingRouters')
 const { authorization } = require('./middleware/authorization')
 
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'))
@@ -67,6 +68,7 @@ app.use('/', accountRouter)
 app.use('/', authorization, createGroupRouter)
 app.use('/', authorization, voteRouter)
 app.use('/meeting', authorization, meetingRouter)
+app.use('/', authorization, dashboardRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

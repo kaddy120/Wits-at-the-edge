@@ -1,0 +1,17 @@
+extend layout
+
+block content
+    div.
+    h4= title
+    .row
+        - for (var x = 0; x < userGroups.length; x++)
+            div.creating
+                    .col-sm-6
+                        .card(style="width: 18rem; height: 18rem;" class="border border-primary border-rounded")
+                            .card-block
+                                img(src='https://www.seekpng.com/png/detail/215-2156215_diversity-people-in-group-icon.png' style="width: 17.9rem; height: 10rem")
+                                h5.card-title
+                                     a(href="")=userGroups[x].groupName
+                                p.card-text Group description
+            div.creating
+    
