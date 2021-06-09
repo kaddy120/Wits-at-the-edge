@@ -1,8 +1,8 @@
+
 'use strict'
-const utils = require('../utils')
-const { pools, sql } = require('../../db')
-const { container } = require('../../di-setup')
 // const user = container.resolve('userRepository')
+const { sql } = require('../../db')
+const utils = require('../utils')
 
 class groupRepository {
   constructor ({ dbpool }) {
@@ -64,39 +64,35 @@ class groupRepository {
       console.log(error)
     }
   }
-}
 
-async function createMeeting (meeting) {
-  try {
-    const pool = await pools
-    const sqlQueries = await utils.loadSqlQueries('groups')
-    await pool.request()
-      .input('groupId', sql.Int, meeting.groupId)
-      .input('meetingTime', sql.DateTime, meeting.time)
-      .input('agenda', sql.VarChar(250), meeting.agenda)
-      .input('userId', sql.VarChar(50), meeting.userId)
-      .query(sqlQueries.createMeeting)
-  } catch (err) {
-    console.log(err)
+  async createMeeting (meeting) {
+    try {
+      const pool = await this.dbpool
+      const sqlQueries = await utils.loadSqlQueries('groups')
+      await pool.request()
+        .input('groupId', sql.Int, meeting.groupId)
+        .input('meetingTime', sql.DateTime, meeting.time)
+        .input('agenda', sql.VarChar(250), meeting.agenda)
+        .input('userId', sql.VarChar(50), meeting.userId)
+        .query(sqlQueries.createMeeting)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  async userIsMember (userId, groupId) {
+    try {
+      const pool = await this.dbpool
+      const sqlQueries = await utils.loadSqlQueries('groups')
+      const member = await pool.request()
+        .input('userId', sql.VarChar(50), userId)
+        .input('groupId', sql.Int, groupId)
+        .query(sqlQueries.userIsMember)
+      return member.recordset.length === 1
+    } catch (err) {
+      console.log(err)
+    }
   }
 }
 
-async function userIsMember (userId, groupId) {
-  try {
-    const pool = await pools
-    const sqlQueries = await utils.loadSqlQueries('groups')
-    const member = await pool.request()
-      .input('userId', sql.VarChar(50), userId)
-      .input('groupId', sql.Int, groupId)
-      .query(sqlQueries.userIsMember)
-    return member.recordset.length === 1
-  } catch (err) {
-    console.log(err)
-  }
-}
-
-module.exports = {
-  groupRepository,
-  createMeeting,
-  userIsMember
-}
+module.exports = groupRepository
