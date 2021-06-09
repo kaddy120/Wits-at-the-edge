@@ -93,6 +93,32 @@ class groupRepository {
       console.log(err)
     }
   }
+
+  async getUserGroups (userId) {
+    try {
+      const pool = await this.dbpool
+      const sqlQueries = await utils.loadSqlQueries('groups')
+      const groups = await pool.request()
+      .input('user', sql.VarChar(50), userId)
+      .query(sqlQueries.getUserGroups)
+      return groups
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  async getGroupThumbnail (userId) {
+    try {
+      const pool = await this.dbpool
+      const sqlQueries = await utils.loadSqlQueries('groups')
+      const thumbnail = await pool.request()
+      .input('user', sql.VarChar(50), userId)
+      .query(sqlQueries.getGroupThumbnail)
+      return thumbnail
+    } catch (err) {
+      console.log(err)
+    }
+  }
 }
 
 module.exports = groupRepository
