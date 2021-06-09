@@ -8,10 +8,12 @@
     "test": "jest"
   },
   "dependencies": {
+    "@google-cloud/storage": "^5.8.5",
     "awilix": "^4.3.4",
     "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
     "bootstrap": "^4.6.0",
+    "connect-mssql-v2": "^2.0.2",
     "cookie-parser": "^1.4.5",
     "debug": "~2.6.9",
     "dotenv": "^10.0.0",
@@ -25,10 +27,12 @@
     "knex": "^0.95.6",
     "morgan": "~1.9.1",
     "mssql": "^7.1.0",
+    "multer": "^1.4.2",
     "objection": "^2.2.15",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
-    "pug": "^3.0.2"
+    "pug": "^3.0.2",
+    "socket.io": "^4.1.2"
   },
   "devDependencies": {
     "jest": "^26.6.3",

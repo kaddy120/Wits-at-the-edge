@@ -3,7 +3,7 @@ extend layout
 block content
     div.
     h4= title
-    form(action="/group/createMeeting" method="POST")
+    form(action="/meeting/create" method="POST")
         div.mb-3 
             label(for="meetingDate" class="form-label") Meeeting Date
             input(type="datetime-local"  name="time" class="form-control" id="date")

@@ -1,7 +1,9 @@
 /* eslint-env jest */
-const GroupCreater = require('../models/creater')
+const app = require('../app')
+const GroupCreater = require('../models/groupDetails')
 const verify = require('../models/verification')
 const Users = require('../models/user')
+const request = require('supertest')
 const userTable = []
 const user1 = new Users('kad@gmail.com', 'Lebo', 'Hello', 'King', 'first year')
 const user2 = new Users('kadt@gmail.com', 'Lebog', 'Hello', 'Kingk', 'first year')
@@ -70,5 +72,47 @@ describe('Creating groups', () => {
       groups.push(creater)
     }
     expect(getLength(groups)).toBe(length + 1)
+  })
+})
+
+describe('Testing http response', () => {
+  describe('GET /createGroup', () => {
+    test('request createGroup form', async (done) => {
+      const response = await request(app).get('/group/createGroup')
+      expect(response.status).toBe(200)
+      done()
+    })
+  })
+
+  describe('POST /createGroup', () => {
+    test('an empty form return 404', async () => {
+      const response = await request(app).post('/createGroup')
+        .send({})
+        .set('Accept', 'application/json')
+      expect(response.statusCode).toBe(404)
+    })
+    const groupCreatorInput = {
+      groupName: 'HELL BOYS',
+      school: 'EIE',
+      thumbnail: 'group.png',
+      adminId: 'finalTest.gmail.com'
+    }
+    test('A form missing groupname  returns 404', async () => {
+      const missingInput = { ...groupCreatorInput }
+      missingInput.groupName = null
+      const response = await request(app).post('/createGroup')
+        .send(missingInput)
+        .set('Accept', 'application/json')
+      expect(response.statusCode).toBe(404)
+    })
+
+    test('A form missing school  returns 404', async () => {
+      const missingInput = { ...groupCreatorInput }
+      missingInput.school = null
+      const response = await request(app).post('/createGroup')
+        .send(missingInput)
+        .set('Accept', 'application/json')
+      expect(response.statusCode).toBe(404)
+    })
   })
 })
