@@ -1,0 +1,1 @@
+INSERT INTO [dbo].[UserGroup] (userId,groupId) VALUES (@adminId_,@groupId_)

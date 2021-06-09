@@ -12,6 +12,7 @@ const flash = require('express-flash')
 require('./di-setup')
 const { container } = require('./di-setup')
 const user = container.resolve('userRepository')
+const groupRouter = require('./routes/group')
 const passport = container.resolve('passport')
 const configPassport = require('./config/passportConfig')
 configPassport(user, passport)
@@ -20,7 +21,10 @@ const indexRouter = require('./routes/index')
 const accountRouter = container.resolve('accountManagerRouters')
 const createGroupRouter = require('./routes/createGroup')
 const voteRouter = require('./routes/votes')
+const groupRouter = require('./routes/group')
+const searchGroupRouter = require('./routes/SearchGroup')
 const meetingRouter = container.resolve('meetingRouters')
+const dashboardRouter = container.resolve('meetingRouters')
 const { authorization } = require('./middleware/authorization')
 
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'))
@@ -60,6 +64,11 @@ app.use(passport.session())
 app.use(flash())
 
 app.use('/', indexRouter)
+app.use('/users', accountRouter)
+app.use('/database', databaseRouter)
+// catch 404 and forward to error handler
+app.use('/', createGroupRouter)
+app.use('/', searchGroupRouter)
 
 app.use('/', accountRouter)
 
@@ -67,6 +76,7 @@ app.use('/', accountRouter)
 app.use('/', authorization, createGroupRouter)
 app.use('/', authorization, voteRouter)
 app.use('/meeting', authorization, meetingRouter)
+app.use('/', authorization, dashboardRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
