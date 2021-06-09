@@ -26,6 +26,7 @@ class userManager {
       bcrypt.hash(user.password, salt, function (err, hash) {
         user.password = hash
         repo.addUser(user).then(addUser => {
+          // req.login()
           res.render('index')
         }).catch(err => {
           console.log(err)

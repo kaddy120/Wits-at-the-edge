@@ -7,6 +7,12 @@ const votesRepository = require('./db/voting')
 const { votingRouters } = require('./routes/votes')
 // const passwordConfig = require('./config')
 
+const groupRepository = require('./db/groups')
+const { accountManagerRouters } = require('./routes/accountManager')
+const { meetingRouters } = require('./routes/meeting')
+const passport = require('passport')
+
+
 const container = awilix.createContainer({
   injectionMode: awilix.InjectionMode.PROXY
 })
@@ -17,10 +23,14 @@ container.register(
   {
     dbpool: awilix.asValue(pools),
     userManager: awilix.asClass(userManager, { lifetime: Lifetime.SINGLETON }),
-    userRepository: awilix.asClass(userRepository, { lifetime: Lifetime.SINGLETON }),
     voteManager: awilix.asClass(voteManager, { lifetime: Lifetime.SINGLETON }),
     votesRepository: awilix.asClass(votesRepository, { lifetime: Lifetime.SINGLETON }),
     votingRouters: awilix.asFunction(votingRouters)
+    groupRepository: awilix.asClass(groupRepository, { lifetime: Lifetime.SCOPED }),
+    passport: awilix.asValue(passport),
+    meetingRouters: awilix.asFunction(meetingRouters),
+    accountManagerRouters: awilix.asFunction(accountManagerRouters)
+    userRepository: awilix.asClass(userRepository, { lifetime: Lifetime.SINGLETON }),
     // passport: awilix.asClass(passwordConfig, { lifetime: Lifetime.SINGLETON })
   })
 

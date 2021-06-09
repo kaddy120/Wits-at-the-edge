@@ -2,52 +2,32 @@ require('dotenv').config()
 const createError = require('http-errors')
 const express = require('express')
 const path = require('path')
-const cookieParser = require('cookie-parser')
 const logger = require('morgan')
-const bodyParser = require('body-parser')
 require('./di-setup')
 const app = express()
 
-const passport = require('passport')
 const session = require('express-session')
 const flash = require('express-flash')
+
 require('./di-setup')
 const { container } = require('./di-setup')
 const user = container.resolve('userRepository')
+const passport = container.resolve('passport')
+const configPassport = require('./config/passportConfig')
+configPassport(user, passport)
 const voteRouter = container.resolve('votingRouters')
 
 const indexRouter = require('./routes/index')
-const accountRouter = require('./routes/user')
-const databaseRouter = require('./routes/database')
+const accountRouter = container.resolve('accountManagerRouters')
 const createGroupRouter = require('./routes/createGroup')
 const groupRouter = require('./routes/group')
+const searchGroupRouter = require('./routes/SearchGroup')
+const meetingRouter = container.resolve('meetingRouters')
+const dashboardRouter = container.resolve('meetingRouters')
+const { authorization } = require('./middleware/authorization')
 
 
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'))
-
-const Strategy = require('passport-local').Strategy
-
-const bycrpt = require('bcrypt')
-
-passport.use(new Strategy(
-  { // or whatever you want to use
-    usernameField: 'email', // define the parameter in req.body that passport can use as username and password
-    passwordField: 'password'
-  },
-  function (username, password, done) {
-    user.getUserByEmail(username).then(user => {
-      if (user.length === 0) { return done(null, false, { message: ' user is not found' }) }
-
-      bycrpt.compare(password, user[0].passwordHash, function (err, result) {
-        if (!result) {
-          return done(null, false, { message: 'password donnot match' })
-        }
-        if (err) { done(err) }
-        return done(null, user[0])
-      })
-    }).catch(err => done(err))
-  })
-)
 
 passport.serializeUser(function (user, cb) {
   cb(null, user.email)
@@ -67,36 +47,40 @@ app.use(require('morgan')('combined'))
 app.use(require('body-parser').urlencoded({ extended: true }))
 app.use(express.static(path.join(__dirname, 'public')))
 
+app.set('trust proxy', 1)
+
 app.use(session({
   secret: 'keyboard cat',
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  cookie: {
+    secure: false, // this should get set to true in production
+    httpOnly: false // if true: prevents client side JS from reading the cookie
+  }
 }))
+
 app.use(passport.initialize())
 app.use(passport.session())
 app.use(flash())
 
 app.use('/', indexRouter)
+app.use('/users', accountRouter)
 app.use('/database', databaseRouter)
-app.use('/', createGroupRouter)
 // catch 404 and forward to error handler
+app.use('/', createGroupRouter)
+app.use('/', searchGroupRouter)
 
 app.use('/', accountRouter)
+
+// app.use() // all end-points under this middleware can only be accessed by signed in user
+app.use('/', authorization, createGroupRouter)
+app.use('/', authorization, voteRouter)
+app.use('/meeting', authorization, meetingRouter)
+app.use('/', authorization, dashboardRouter)
 app.use('/group', groupRouter)
 app.use('/', voteRouter)
 
-app.get('/login', (req, res) => {
-  res.render('login')
-})
-
-app.post('/login',
-  passport.authenticate('local', {
-    failureRedirect: '/login',
-    failureFlash: true
-  }),
-  function (req, res) {
-    res.redirect('/')
-  })
+// catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404))
 })

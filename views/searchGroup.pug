@@ -1,0 +1,16 @@
+extend layout
+
+block content
+    div.
+    link(rel='stylesheet', href='/css/bootstrap.min.css')
+
+    h1= title
+    form(action="/searchGroup" method="POST")
+
+        div.mb-3 
+            label(for="groupName" class="form-label") Graoup Name
+            input(type="text" placeholder="Maths" name="groupName" class="form-control" id="exampleInputEmail1")
+
+        button(type="submit" class="btn btn-primary") Search 
+ 
+
