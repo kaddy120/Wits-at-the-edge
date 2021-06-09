@@ -2,7 +2,7 @@
 const express = require('express')
 const router = express.Router()
 const Search = require('../db/groups/index')
-const joinProcess = require('../db/joinGroup/joinGroupRequest')
+// const joinProcess = require('../db/joinGroup/joinGroupRequest')
 const requests = {
   email: '',
   groupId: 0
@@ -34,7 +34,7 @@ router.get('/groupName/:groupId', async (req, res) => {
   const groupId = req.params.groupId
   requests.email = user.email
   requests.groupId = groupId
-  await joinProcess.addJoinRequest(requests).then(result => { return result.recordset })
+  // await joinProcess.addJoinRequest(requests)
   // res.send(`${groupName} group home page`)
 })
 
