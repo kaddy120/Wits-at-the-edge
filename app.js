@@ -21,6 +21,7 @@ const indexRouter = require('./routes/index')
 const accountRouter = container.resolve('accountManagerRouters')
 const createGroupRouter = require('./routes/createGroup')
 const voteRouter = require('./routes/votes')
+const searchGroupRouter = require('./routes/SearchGroup')
 const meetingRouter = container.resolve('meetingRouters')
 const dashboardRouter = container.resolve('meetingRouters')
 const { authorization } = require('./middleware/authorization')
@@ -64,6 +65,8 @@ app.use(flash())
 app.use('/', indexRouter)
 app.use('/users', accountRouter)
 // catch 404 and forward to error handler
+app.use('/', createGroupRouter)
+app.use('/', searchGroupRouter)
 
 app.use('/', accountRouter)
 
