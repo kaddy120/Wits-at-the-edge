@@ -12,6 +12,7 @@ const flash = require('express-flash')
 require('./di-setup')
 const { container } = require('./di-setup')
 const user = container.resolve('userRepository')
+const groupRouter = require('./routes/group')
 const passport = container.resolve('passport')
 const configPassport = require('./config/passportConfig')
 configPassport(user, passport)
@@ -60,6 +61,8 @@ app.use(passport.session())
 app.use(flash())
 
 app.use('/', indexRouter)
+app.use('/users', accountRouter)
+// catch 404 and forward to error handler
 
 app.use('/', accountRouter)
 
