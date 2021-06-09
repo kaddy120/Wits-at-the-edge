@@ -17,13 +17,10 @@ const groupRouter = require('./routes/group')
 const passport = container.resolve('passport')
 const configPassport = require('./config/passportConfig')
 configPassport(user, passport)
-const voteRouter = container.resolve('votingRouters')
 
 const indexRouter = require('./routes/index')
 const accountRouter = container.resolve('accountManagerRouters')
 const createGroupRouter = require('./routes/createGroup')
-
-const voteRouter = require('./routes/votes')
 const searchGroupRouter = require('./routes/SearchGroup')
 const meetingRouter = container.resolve('meetingRouters')
 const dashboardRouter = container.resolve('meetingRouters')
