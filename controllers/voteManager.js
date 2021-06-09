@@ -9,34 +9,33 @@ class voteManager {
     }
 
     async joinRequests (req, res) {
-    const voter = voters.vote1
-    const groupId = 2
+    const voter = req.user
+    const groupId = 58
     const voterGroups = await this.votesRepository.getVoterGroup(voter).then(result => { return result.recordset })
     const requests = await this.votesRepository.getRequestsToJoin().then(result => { return result.recordset })
     const requestGroup = model.relevantRequest(requests, voterGroups, groupId)
-    console.log(requestGroup)
     let name = []
     let email = []
     let requestId = []
     if (requestGroup != 0) {
-        for(i = 0;i < requestGroup.length;i++){
+        for(let i = 0;i < requestGroup.length;i++){
+
           name[i] = await this.votesRepository.getNameOfRequester(requestGroup[i].email).then(result => {return result.recordset})
           email[i] = requestGroup[i].email
           requestId[i] = requestGroup[i].requestId
         }
-        console.log("name:", name)
-        console.log("email:", email)
-        console.log("requestId: ", requestId)
-          res.render('vote', { title: 'Pending Join Requests', message: name, length: requestId.length, requestId: requestId, email: email })
+         res.render('vote', { title: 'Pending Join Requests', message: name, length: requestId.length, requestId: requestId, email: email })
+        
     }
     else res.render('vote', { title: 'Pending Join Requests', message: '**There are currently no pending join requests.' })
     }
 
     async placeVote (req, res) {
-        const voter = voters.vote5
+        const voter = req.user
         const groupId = 2
         const requestId = req.params.requestId
-        console.log("requestId:", requestId, "email: ", req.params.userId)
+      
+       
         await this.votesRepository.addVotes(requestId, voter.email, req.params.choice)
         const voteCount = await this.votesRepository.countVotes(requestId).then(result => { return result.recordset})
         const getNumOfGroupMembers = await this.votesRepository.getNumOfGroupMembers(groupId)

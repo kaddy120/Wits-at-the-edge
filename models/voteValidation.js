@@ -25,6 +25,10 @@ function countVotes(voteCount, numOfGroupMembers) {
     else return false
 }
 
+function getVoterGroup (userId) {
+    
+}
+
 module.exports = {
     relevantRequest,
     countVotes
