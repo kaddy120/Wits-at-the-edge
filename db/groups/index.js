@@ -13,7 +13,7 @@ class groupRepository {
     this.addingGroup = this.addingGroup.bind(this)
   }
 
-async function getGroupName (groupName) {
+async getGroupName (groupName) {
   const pool = await pools
   const sqlQueries = await utils.loadSqlQueries('groups')
   const result = await pool.request()
@@ -22,7 +22,7 @@ async function getGroupName (groupName) {
   return result.recordset
 }
 
-const userIsMember = async (userId, groupId) => {
+async userIsMember (userId, groupId)  {
   try {
     const pool = await pools
     const sqlQueries = await utils.loadSqlQueries('groups')
@@ -33,6 +33,8 @@ const userIsMember = async (userId, groupId) => {
     return member.recordset.length === 1
   } catch (err) {
     console.log(err)
+  }
+}
   async userIsRegistered (email) {
     try {
       const sqlQueries = await utils.loadSqlQueries('groups')
@@ -46,11 +48,6 @@ const userIsMember = async (userId, groupId) => {
       console.log(error)
     }
   }
-
-module.exports = {
-  createMeeting,
-  userIsMember,
-  getGroupName
 
   async getNumberOfGroups (emails) {
     try {

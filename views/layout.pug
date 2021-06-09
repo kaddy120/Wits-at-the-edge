@@ -5,6 +5,22 @@ html
     link(rel='stylesheet', href='/stylesheets/style.css')
     link(rel='stylesheet', href='/css/bootstrap.min.css')
   body
-    h3 this represent a navbar
-    block content
-    h3 thia represet a footer
+    div.main
+      h3
+      ul.nav
+          li.nav-item
+            a.nav-link.aria-current( href="/") Home
+          li.nav-item
+            a.nav-link.aria-current( href="/signup") Sign up
+          li.nav-item
+            a.nav-link.aria-current( href="/creategroup") Create group
+          li.nav-item
+            a.nav-link.aria-current( href="/login") Login
+          li.nav-item
+            a.nav-link.aria-current( href="/logout") Logout
+            
+      .sidenav
+        a( href="/dashboard") Dashbard
+        a( href="#") About
+      div
+         block content
