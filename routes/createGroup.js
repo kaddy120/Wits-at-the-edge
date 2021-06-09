@@ -2,7 +2,7 @@
 const express = require('express')
 const router = express.Router()
 const grouping = require('../db/createGroup/createGroup')
-const GroupCreator = require('../models/creater')
+const GroupCreator = require('../models/groupDetails')
 const verify = require('../models/verification')
 
 router.get('/createGroup', function (req, res, next) {
