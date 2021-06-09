@@ -9,9 +9,16 @@ router.get('/searchGroup', function (req, res, next) {
 
 router.post('/searchGroup', async function (req, res, next) {
   try {
+    const user = req.user
     const groupName = req.body.groupName
     const groups = await Search.getGroupName(groupName)
-    res.render('searchGroups', { title: 'Group Search results', groups: groups })
+    if (groups !== 0) {
+      const thumbnail = []
+      for (let index = 0; index < groups.length; index++) {
+        thumbnail[index] = 'https://www.seekpng.com/png/detail/215-2156215_diversity-people-in-group-icon.png'
+      }
+      res.render('searchResults', { title: 'Group Search results', userGroups: groups, groupIcon: thumbnail })
+    } else res.render('searchGroups', { title: 'Group Search results', userGroups: 'Not found' })
   } catch (err) {
     console.log(err)
   }
