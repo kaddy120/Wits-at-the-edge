@@ -8,13 +8,12 @@ block content
     h4= title
     .row
         - for (var x = 0; x < userGroups.length; x++)
-            div.creating
+            a(href=`/groupName/${userGroups[x].groupName}`)
                     .col-sm-6
                         .card(style='background-color: #cecece;')
                             .card-block
-                                img(src='https://www.seekpng.com/png/detail/215-2156215_diversity-people-in-group-icon.png' style="width: 17.9rem; height: 10rem")
-                                h5.card-title
-                                     a(href=`/groupName/${userGroups[x].groupName}/groupHomepage` method='post')=userGroups[x].groupName
+                                img(src=groupIcon[x] style="width: 17.9rem; height: 10rem")
+                                h5.card-title=userGroups[x].groupName
                                 p.card-text Group description
-            div.creating
+        
     
