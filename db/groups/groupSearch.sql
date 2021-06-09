@@ -1,2 +1,2 @@
-SELECT groupId,groupName FROM [dbo].[Group] 
+SELECT groupId,groupName,thumbnail FROM [dbo].[Group] 
 WHERE groupName LIKE @groupName ;
