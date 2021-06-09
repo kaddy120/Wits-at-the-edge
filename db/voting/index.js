@@ -40,6 +40,7 @@ async getNameOfRequester(email) {
         const getName = await pool.request()
             .input('email', sql.VarChar(50), email)
             .query(sqlQueries.getNameOfRequester)
+
         return getName
     } catch (err) {
         console.log(err)
@@ -111,6 +112,7 @@ async acceptRequest(email, group) {
         console.log(err)
     }
 }
+
 }
 
 module.exports = votesRepository
