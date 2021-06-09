@@ -16,6 +16,15 @@ const createMeeting = async (meeting) => {
   }
 }
 
+async function getGroupName (groupName) {
+  const pool = await pools
+  const sqlQueries = await utils.loadSqlQueries('groups')
+  const result = await pool.request()
+    .input('groupName', sql.VarChar(50), groupName)
+    .query(sqlQueries.groupSearch)
+  return result.recordset
+}
+
 const userIsMember = async (userId, groupId) => {
   try {
     const pool = await pools
@@ -32,5 +41,7 @@ const userIsMember = async (userId, groupId) => {
 
 module.exports = {
   createMeeting,
-  userIsMember
+  userIsMember,
+  getGroupName
+
 }

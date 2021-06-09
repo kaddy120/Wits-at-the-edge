@@ -21,7 +21,7 @@ const databaseRouter = require('./routes/database')
 const createGroupRouter = require('./routes/createGroup')
 const voteRouter = require('./routes/votes')
 const groupRouter = require('./routes/group')
-const app = express()
+const searchGroupRouter = require('./routes/SearchGroup')
 
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'))
 
@@ -77,10 +77,11 @@ app.use(passport.session())
 app.use(flash())
 
 app.use('/', indexRouter)
-app.use('/users', usersRouter)
+app.use('/users', accountRouter)
 app.use('/database', databaseRouter)
-app.use('/', createGroupRouter)
 // catch 404 and forward to error handler
+app.use('/', createGroupRouter)
+app.use('/', searchGroupRouter)
 
 app.use('/', accountRouter)
 
