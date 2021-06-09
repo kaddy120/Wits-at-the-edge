@@ -1,4 +1,4 @@
-class creater {
+class group {
   constructor (groupName, email, school, thumbnail) {
     this.email = email
     this.groupName = groupName
@@ -7,4 +7,4 @@ class creater {
   }
 }
 
-module.exports = creater
+module.exports = group

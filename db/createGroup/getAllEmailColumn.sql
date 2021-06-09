@@ -1,2 +1,2 @@
 SELECT [email]
-  FROM [dbo].[User]
+  FROM [dbo].[User] where email = @userId
