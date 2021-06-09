@@ -12,7 +12,7 @@ function meetingRouters ({ groupRepository }) {
     const user = req.user  
     const groups = await groupRepository.getUserGroups(user.email).then(result => {return result.recordset})
     const groupThumbnail = await groupRepository.getGroupThumbnail(user.email).then(result => {return result.recordset})
-    console.log(groupThumbnail[0].thumbnail)
+  
     let thumbnail = []
     for(let index = 0;index < groupThumbnail.length;index++){
       if(groupThumbnail[index].thumbnail == null)
