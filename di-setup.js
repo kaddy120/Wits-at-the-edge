@@ -18,9 +18,9 @@ container.register(
     dbpool: awilix.asValue(pools),
     userManager: awilix.asClass(userManager, { lifetime: Lifetime.SINGLETON }),
     userRepository: awilix.asClass(userRepository, { lifetime: Lifetime.SINGLETON }),
-    voteManager: awilix.asClass(voteManager, {lifetime: Lifetime.SINGLETON}),
-    votesRepository: awilix.asClass(votesRepository, { lifetime: Lifetime.SINGLETON}),
-    votingRouters: awilix.asFunction(votingRouters),
+    voteManager: awilix.asClass(voteManager, { lifetime: Lifetime.SINGLETON }),
+    votesRepository: awilix.asClass(votesRepository, { lifetime: Lifetime.SINGLETON }),
+    votingRouters: awilix.asFunction(votingRouters)
     // passport: awilix.asClass(passwordConfig, { lifetime: Lifetime.SINGLETON })
   })
 
