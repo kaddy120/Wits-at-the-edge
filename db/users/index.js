@@ -39,7 +39,7 @@ class userRepository {
         .input('thumbnail', sql.VarChar(MAX), user.thumbnail)
         .input('passwordHash', sql.VarChar(MAX), user.password)
         .input('yearOfStudy', sql.Char(10), user.yearOfStudy)
-        .query(sqlQueries.addUser)
+        .query(sqlQueries.addUser) 
       return insertUser.recordset
     } catch (err) {
       console.log(err)
