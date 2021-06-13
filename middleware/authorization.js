@@ -1,5 +1,5 @@
 function authorization (req, res, next) {
-  if (req.user) {
+  if (req.session) {
     next()
   } else {
     res.redirect('/login')
@@ -7,7 +7,7 @@ function authorization (req, res, next) {
 }
 
 function alreadyLogedin (req, res, next) {
-  if (req.user) {
+  if (req.session) {
     res.redirect('/')
   } else {
     next()

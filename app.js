@@ -6,7 +6,21 @@ const logger = require('morgan')
 require('./di-setup')
 const app = express()
 
+const http = require('http')
+const server = http.createServer(app)
+const { Server } = require('socket.io')
+const io = new Server(server)
+
+require('./di-setup')
+const redis = require('redis')
 const session = require('express-session')
+const RedisStore = require('connect-redis')(session)
+const redisClient = redis.createClient(6380, 'wits.redis.cache.windows.net',
+  {
+    auth_pass: '7JW4I0C3jgvgmIdT4m4STMpBvJaAOAWKyuLBXvj0kkk=',
+    tls: { servername: 'wits.redis.cache.windows.net' }
+  })
+
 const flash = require('express-flash')
 
 require('./di-setup')
@@ -25,7 +39,6 @@ const searchGroupRouter = require('./routes/SearchGroup')
 const meetingRouter = container.resolve('meetingRouters')
 const dashboardRouter = container.resolve('meetingRouters')
 const { authorization } = require('./middleware/authorization')
-
 
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'))
 
@@ -49,7 +62,8 @@ app.use(express.static(path.join(__dirname, 'public')))
 
 app.set('trust proxy', 1)
 
-app.use(session({
+const sessionMiddleware = session({
+  store: new RedisStore({ client: redisClient }),
   secret: 'keyboard cat',
   resave: false,
   saveUninitialized: false,
@@ -57,19 +71,42 @@ app.use(session({
     secure: false, // this should get set to true in production
     httpOnly: false // if true: prevents client side JS from reading the cookie
   }
-}))
+})
+app.use(sessionMiddleware)
 
 app.use(passport.initialize())
 app.use(passport.session())
 app.use(flash())
 
 app.use('/', indexRouter)
-app.use('/users', accountRouter)
-// catch 404 and forward to error handler
-app.use('/', createGroupRouter)
 app.use('/', searchGroupRouter)
-
 app.use('/', accountRouter)
+
+const wrap = middleware => (socket, next) => middleware(socket.request, {}, next)
+// io.use(wrap(sessionMiddleware))
+io.use((socket, next) => { sessionMiddleware(socket.request, {}, next) })
+io.use(wrap(passport.initialize()))
+io.use(wrap(passport.session()))
+
+io.use((socket, next) => {
+  if (socket.request.user) {
+    next()
+  } else {
+    next(new Error('unauthorized'))
+  }
+})
+
+io.on('connection', (socket) => {
+  let roomname = ''
+  socket.on('join', (msg) => {
+    roomname = `${msg.groupId}`
+    socket.join(`${msg.groupId}`)
+  })
+  // console.log(socket.request.session.passport.user)
+  socket.on('chat message', (msg) => {
+    io.to(roomname).emit('chat message', msg)
+  })
+})
 
 // app.use() // all end-points under this middleware can only be accessed by signed in user
 app.use('/', authorization, createGroupRouter)
@@ -78,8 +115,6 @@ app.use('/meeting', authorization, meetingRouter)
 app.use('/', authorization, dashboardRouter)
 app.use('/group', groupRouter)
 app.use('/', voteRouter)
-
-
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404))
@@ -96,4 +131,4 @@ app.use(function (err, req, res, next) {
   res.render('error')
 })
 
-module.exports = app
+module.exports = { server, app }
