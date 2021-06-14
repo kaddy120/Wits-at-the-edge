@@ -9,11 +9,12 @@ const requests = {
 
 }
 
-router.get('/searchGroup', function (req, res, next) {
+// all groups//
+router.get('/searchGroup', function (req, res) {
   res.render('searchGroup', { title: 'Search Group Page' })
 })
 
-router.post('/searchGroup', async function (req, res, next) {
+router.post('/searchGroup', async function (req, res) {
   try {
     const groupName = req.body.groupName
     const groups = await Search.getGroupName(groupName)

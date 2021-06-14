@@ -3,7 +3,7 @@ const express = require('express')
 const { body, validationResult } = require('express-validator')
 const router = express.Router()
 const { container } = require('../di-setup')
-const createGroups = container.resolve('groupRepository')
+const groupRepository = container.resolve('groupRepository')
 const group = require('../db/groups')
 const groupCreator = require('../models/groupDetails')
 const verify = require('../models/verification')
@@ -14,6 +14,14 @@ const imageSaver = require('../models/saveImagesToCloud')
 
 router.get('/', async (req, res) => {
   res.render('group')
+})
+
+router.get('/all/:pageNo', async (req, res) => {
+  // const all =  groupRepository.getUserGroups
+  const groupsPerPage = 10
+  const offset = groupsPerPage * req.params.pageNo
+  const groups = await groupRepository.firstTop(offset, groupsPerPage)
+  res.render('groups', { title: 'Discover more groups to join', groups })
 })
 
 router.get('/createMeeting', async (req, res) => {
@@ -62,19 +70,19 @@ router.post('/createGroup', body('groupName', 'Group name cant be empty').notEmp
     }
     const email = req.body.adminId
     const imageUrl = await imageSaver(req.file)
-    const found = await createGroups.userIsRegistered(email)
+    const found = await groupRepository.userIsRegistered(email)
     if (found) {
-      const groups = await createGroups.getNumberOfGroups(email).then((data) => {
+      const groups = await groupRepository.getNumberOfGroups(email).then((data) => {
         return data.recordset
       })
       if (verify.canCreateGroup(groups)) {
         const creater = new groupCreator(req.body.groupName, req.body.adminId, req.body.school, imageUrl)
-        createGroups.addingGroup(creater)
-        const allgroups = await createGroups.getNumberOfGroups(email).then((data) => {
+        groupRepository.addingGroup(creater)
+        const allgroups = await groupRepository.getNumberOfGroups(email).then((data) => {
           return data.recordset
         })
 
-        createGroups.addFirstMember(allgroups[allgroups.length - 1].groupId, allgroups[allgroups.length - 1].adminId)
+        groupRepository.addFirstMember(allgroups[allgroups.length - 1].groupId, allgroups[allgroups.length - 1].adminId)
         res.redirect('/group')
       } else {
         res.redirect('/group')
