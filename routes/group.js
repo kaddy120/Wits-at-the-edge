@@ -20,6 +20,10 @@ router.get('/createMeeting', async (req, res) => {
   res.render('createMeeting')
 })
 
+router.get('/chat/:groupId', (req, res) => {
+  res.render('chat', { roomname: req.params.groupId })
+})
+
 router.post('/createMeeting',
   body('aganda', 'Agenda cannot be empy').notEmpty(),
   body('time', 'time can not be null').notEmpty(),
