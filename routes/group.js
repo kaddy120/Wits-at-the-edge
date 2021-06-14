@@ -11,6 +11,7 @@ const multer = require('multer')
 const { memoryStorage } = require('multer')
 const upload = multer({ storage: memoryStorage() })
 const imageSaver = require('../models/saveImagesToCloud')
+const defaultThumbnail = 'https://www.seekpng.com/png/detail/215-2156215_diversity-people-in-group-icon.png'
 
 router.get('/', async (req, res) => {
   res.render('group')
@@ -22,6 +23,22 @@ router.get('/all/:pageNo', async (req, res) => {
   const offset = groupsPerPage * req.params.pageNo
   const groups = await groupRepository.firstTop(offset, groupsPerPage)
   res.render('groups', { title: 'Discover more groups to join', groups })
+})
+
+router.post('/search', async function (req, res) {
+  const groupName = req.body.groupName
+  const results = await groupRepository.searchGroupByName(groupName)
+  if (results.length > 0) {
+    const groups = results.map(group => {
+      if (group.thumbnail == null || group.thumbnail.length < 15) {
+        group.thumbnail = defaultThumbnail
+      }
+      return group
+    })
+    res.render('groups', { title: 'Discover more groups to join', groups })
+    return
+  }
+  res.render('groups', { title: 'Discover more groups to join', groups: [] })
 })
 
 router.get('/createMeeting', async (req, res) => {

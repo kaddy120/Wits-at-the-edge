@@ -35,14 +35,17 @@ class groupRepository {
     }
   }
 
-  // this name don't make any sense...
-  async getGroupName (groupName) {
-    const pool = await pools
-    const sqlQueries = await utils.loadSqlQueries('groups')
-    const result = await pool.request()
-      .input('groupName', sql.VarChar(50), groupName)
-      .query(sqlQueries.groupSearch)
-    return result.recordset
+  async searchGroupByName (groupName) {
+    try {
+      const pool = await pools
+      const sqlQueries = await utils.loadSqlQueries('groups')
+      const result = await pool.request()
+        .input('groupName', sql.VarChar(50), groupName)
+        .query(sqlQueries.groupSearch)
+      return result.recordset
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   async userIsMember (userId, groupId) {
