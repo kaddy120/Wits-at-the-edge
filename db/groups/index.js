@@ -38,10 +38,8 @@ class groupRepository {
   async searchGroupByName (groupName) {
     try {
       const pool = await pools
-      const sqlQueries = await utils.loadSqlQueries('groups')
       const result = await pool.request()
-        .input('groupName', sql.VarChar(50), groupName)
-        .query(sqlQueries.groupSearch)
+        .query(`SELECT groupId,groupName,thumbnail FROM [dbo].[Group] WHERE groupName LIKE '%${groupName}%';`)
       return result.recordset
     } catch (err) {
       console.log(err)
