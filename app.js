@@ -17,8 +17,8 @@ const session = require('express-session')
 const RedisStore = require('connect-redis')(session)
 const redisClient = redis.createClient(6380, 'wits.redis.cache.windows.net',
   {
-    auth_pass: '7JW4I0C3jgvgmIdT4m4STMpBvJaAOAWKyuLBXvj0kkk=',
-    tls: { servername: 'wits.redis.cache.windows.net' }
+    auth_pass: process.env.primaryKey,
+    tls: { servername: process.env.redisServername }
   })
 
 const flash = require('express-flash')
