@@ -96,14 +96,34 @@ io.use((socket, next) => {
   }
 })
 
+function sendMessage (socket, roomname) {
+  redisClient.lrange(roomname, '0', '-1', (err, data) => {
+    if (err) {
+      console.log(err)
+      return
+    }
+    data.map(x => {
+      const usernameMessage = x.split(':')
+      const redisUsername = usernameMessage[0]
+      const redisMessage = usernameMessage[1]
+
+      socket.emit('chat message', redisMessage
+      )
+    })
+  })
+}
+
 io.on('connection', (socket) => {
   let roomname = ''
+  const userId = socket.request.session.passport.user
   socket.on('join', (msg) => {
     roomname = `${msg.groupId}`
     socket.join(`${msg.groupId}`)
+    sendMessage(socket, roomname)
   })
   // console.log(socket.request.session.passport.user)
   socket.on('chat message', (msg) => {
+    redisClient.rpush(roomname, `${userId}:${msg}`)
     io.to(roomname).emit('chat message', msg)
   })
 })
