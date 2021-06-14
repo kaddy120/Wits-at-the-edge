@@ -24,11 +24,15 @@ class groupRepository {
     }
   }
 
-  async firstTop (offsetNumber, number) {
+  async firstTop (offsetNumber, number, userId) {
     try {
+      const sqlQueries = await utils.loadSqlQueries('groups')
       const pool = await pools
       const result = await pool.request()
-        .query(`SELECT * FROM [dbo].[Group] ORDER BY groupId OFFSET ${offsetNumber} ROWS FETCH NEXT ${number} ROWS ONLY`)
+        .input('userId', sql.VarChar(50), userId)
+        .input('offset_', sql.Int, offsetNumber)
+        .input('getNum', sql.Int, number)
+        .query(sqlQueries.getGroupsOffsetBy)
       return result.recordset
     } catch (err) {
       console.log(err)

@@ -1,1 +1,0 @@
-SELECT * FROM [dbo].[Group] ORDER BY groupId OFFSET @offSet ROWS FETCH NEXT @getNum ROWS ONLY;

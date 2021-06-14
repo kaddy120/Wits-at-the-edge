@@ -18,10 +18,11 @@ router.get('/', async (req, res) => {
 })
 
 router.get('/all/:pageNo', async (req, res) => {
-  // const all =  groupRepository.getUserGroups
   const groupsPerPage = 10
-  const offset = groupsPerPage * req.params.pageNo
-  const groups = await groupRepository.firstTop(offset, groupsPerPage)
+  const offset = groupsPerPage * (req.params.pageNo - 1)
+  const userId = req.session.passport.user
+  // const userId = 'test@gmail.com'
+  const groups = await groupRepository.firstTop(offset, groupsPerPage, userId)
   res.render('groups', { title: 'Discover more groups to join', groups })
 })
 
