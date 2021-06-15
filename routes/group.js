@@ -5,7 +5,7 @@ const router = express.Router()
 const { container } = require('../di-setup')
 const createGroups = container.resolve('groupRepository')
 const group = require('../db/groups')
-const exits = require('../db/groups/index')
+const deletUserGroups = container.resolve('groupRepository')
 const groupCreator = require('../models/groupDetails')
 const verify = require('../models/verification')
 const multer = require('multer')
@@ -86,15 +86,14 @@ router.post('/createGroup', body('groupName', 'Group name cant be empty').notEmp
     }
   })
 
-// i cant test until i put the button once the button also confused on how to get the group Id not sure if its right
 router.get('/deleteUser', (req, res) => {
   const groupId = 2
-  const email = 'kad@gmail.com'
+  const email = 'kaddy122@gmail.com'
 
   const userDetails = { ...req.body }
   userDetails.userId = email
   userDetails.groupId = groupId
-  group.exitUserGroup(userDetails)
+  deletUserGroups.exitUserGroup(userDetails)
   res.redirect('/dashboard')
 })
 

@@ -137,7 +137,7 @@ class groupRepository {
       await pool.request()
         .input('groupId', sql.Int, userDetails.groupId)
         .input('userId', sql.VarChar(50), userDetails.userId)
-        .query(sqlQueries.exitGroup)
+        .query(sqlQueries.exitUserGroup)
     } catch (err) {
       console.log(err)
     }
