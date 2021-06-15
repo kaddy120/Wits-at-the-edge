@@ -130,6 +130,19 @@ class groupRepository {
     }
   }
 
+  async exitUserGroup (userDetails) {
+    try {
+      const pool = await this.dbpool
+      const sqlQueries = await utils.loadSqlQueries('groups')
+      await pool.request()
+        .input('groupId', sql.Int, userDetails.groupId)
+        .input('userId', sql.VarChar(50), userDetails.userId)
+        .query(sqlQueries.exitGroup)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   async getGroupThumbnail (userId) {
     try {
       const pool = await this.dbpool
@@ -140,18 +153,6 @@ class groupRepository {
       return thumbnail
     } catch (err) {
       console.log(err)
-    }
-  }
-
-  async exitMember (groupId, userId) {
-    try {
-      const sqlQueries = await utils.loadSqlQueries('groups')
-      const pool = await this.dbpool
-      await pool.request().input('adminId_', sql.Char(50), userId)
-        .input('groupId_', sql.Int, groupId)
-        .query(sqlQueries.existGroup)
-    } catch (error) {
-      console.log(error)
     }
   }
 }
