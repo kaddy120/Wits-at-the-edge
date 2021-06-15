@@ -135,7 +135,7 @@ app.use('/meeting', authorization, meetingRouter)
 app.use('/', authorization, dashboardRouter)
 app.use('/group', groupRouter)
 app.use('/', voteRouter)
-app.use('/request', requestRouter)
+app.use('/request', authorization, requestRouter)
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404))
