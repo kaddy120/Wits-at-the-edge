@@ -24,7 +24,6 @@ async function getMeeting (meeting) {
       .input('userId', sql.VarChar(50), meeting.userId)
       .query(sqlQueries.getMeeting)
     userMeetings = getUser
-    console.log(userMeetings.recordset)
     return getUser.recordset
   } catch (err) {
     console.log(err)
@@ -44,10 +43,6 @@ async function getGroupMembers (groupId)/* (userMeetings) */ {
     console.log(err)
   }
 }
-
-// Testing async functions
-getMeeting(user)
-getGroupMembers(user.groupId)
 
 /* Sending to multiple users with valid email address
  const recipients = userMeetings.map(userMeetings => userMeetings.userId) // .join(',')

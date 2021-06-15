@@ -1,0 +1,18 @@
+extend layout
+
+block content
+
+    h4= title
+    .row
+        - for (var x = 0; x < userMeetings.length; x++)
+                    .col-sm-6
+                        .card(style='background-color: #cecece;')
+                            .card-block
+                                h5.card-title=groupNames[x].groupName
+                                p.card-text=userMeetings[x].agenda
+                            .select 
+                                select(name="Respond to the meeting") 
+                                    option(value="No response") NO RESPONSE
+                                    option(value="ACCEPT") ACCEPT
+                                    option(value="DECLINE")  DECLINE   
+        
