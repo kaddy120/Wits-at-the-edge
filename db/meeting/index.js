@@ -33,7 +33,7 @@ class meetingRepository {
     }
   }
 
-  async getGroupMembers (groupId)/* (userMeetings) */ {
+  async getGroupMembers (groupId) {
     try {
       const sqlQueries = await utils.loadSqlQueries('meeting')
       const pool = await this.dbpool

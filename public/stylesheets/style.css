@@ -20,13 +20,36 @@ a {
   margin-bottom: 30px;
   cursor: pointer;
 }
-
+.meeting-card {
+  transform-style: preserve-3d;
+  text-align: left;
+  align-self: right;
+  height: 13rem;
+  width: 15rem;
+  border-radius: 10px;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.281), 0px 0px 50px rgba(0, 0, 0, 0.2);
+  border: #cecece;
+  margin: 5px;
+  margin-bottom: 5px;
+  margin-left: 0em;
+  cursor: pointer;
+}
 .card:hover{
   transform: scale(1.05);
 box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
 }
+#meeting-hearder{
+  text-align: center;
+  text-transform: capitalize;
+  text-size-adjust: 20px;
+}
+.button{
+  justify-content: space-between;
+  justify-items: flex-end;
+  display: inline;
+  margin: 20px auto;
 
-
+}
 .sidenav {
   height: 100%;
   width: 200px;
@@ -38,18 +61,7 @@ box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
   overflow-x: hidden;
   padding-top: 20px;
 }
-.select{
-  transform-style: preserve-3d;
-  text-align: center;
-  align-self: right;
-  height: 2rem;
-  width: 100%;
-  flex-grow: 1;
-  border-radius: 2px;
-  border: #e2dcdc;
-  margin: 8px;
-  cursor: pointer;
-}
+
 .sidenav a {
   padding: 6px 6px 6px 32px;
   text-decoration: none;

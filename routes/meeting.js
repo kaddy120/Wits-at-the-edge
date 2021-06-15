@@ -59,7 +59,7 @@ function meetingRouters ({ groupRepository, meetingRepository }) {
     })
 
   router.get('/response', async (req, res, next) => {
-    const user = 'kady120@gmail.com'
+    const user = 'kaddy120@gmail.com'
     const getNotifications = await meetingRepository.getAllUserNotifications(user)
     const meetings = []
     const groupNames = []

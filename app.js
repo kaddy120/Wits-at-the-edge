@@ -34,7 +34,6 @@ configPassport(user, passport)
 
 const indexRouter = require('./routes/index')
 const accountRouter = container.resolve('accountManagerRouters')
-const createGroupRouter = require('./routes/createGroup')
 const searchGroupRouter = require('./routes/SearchGroup')
 const meetingRouter = container.resolve('meetingRouters')
 const dashboardRouter = container.resolve('meetingRouters')
@@ -129,7 +128,6 @@ io.on('connection', (socket) => {
 })
 
 // app.use() // all end-points under this middleware can only be accessed by signed in user
-app.use('/', authorization, createGroupRouter)
 app.use('/', authorization, voteRouter)
 app.use('/meeting', authorization, meetingRouter)
 app.use('/', authorization, dashboardRouter)
