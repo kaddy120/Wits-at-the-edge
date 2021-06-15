@@ -15,10 +15,12 @@ block content
                         img.card-img-top(src="https://www.seekpng.com/png/detail/215-2156215_diversity-people-in-group-icon.png")
                         .card-body
                             h5.card-title=group.groupName
-                            if group.email
-                                p wait for members vote
-                            else if group.userId == null
-                                p request to join
+                            div(id=`${group.groupId}`)
+                                if group.email
+                                    p wait for response...
+                                else if group.userId == null
+                                    a(href=`/request/join/${group.groupId}`)
+                                        button.btn.btn-info#req(data-groupId=`${group.groupId}`) join
                             p.card-text Group description
     nav( aria-label="Page navigation example")
     ul.pagination.justify-content-end
@@ -33,7 +35,7 @@ block content
         li.page-item
             a.page-link( href="#") Next
     </li>
-    
+    script(src="/javascript/groups-page.js")
 
     //- .row.row-cols-1.row-cols-md-4.g-4
     //-     each group in groups 

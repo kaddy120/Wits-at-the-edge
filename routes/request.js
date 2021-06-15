@@ -7,7 +7,7 @@ function requestRouter ({ requestRepository }) {
   router.get('/join/:groupId', async (req, res) => {
     const userId = req.session.passport.user
     await requestRepository.addJoinRequest(userId, req.params.groupId)
-    // res.send(request)
+    return res.sendStatus(200)
   })
   return router
 }
