@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  h1= title
+  form(action='/address' method="POST")
+    div.creating
+      label(for="streetAddress" ) Street Address
+      input(type="text", placeholder="eg 49 jorrisen street", name="streetAddress", class="form-control", id="streetAddress")
+    div.creating
+      label(for="suburb" ) Suburb
+      input(type="text", placeholder="eg Braamfontein", name="suburb", class="form-control", id="suburb")
+    div.creating
+      label(for="city") City
+      input(type="text", placeholder="eg johannesburg", name="city", class="form-control" ,id="city")
+    div.creating
+      label(for="zipCode") Zip Code
+      input(type="text", placeholder="eg 2001" ,name="zipCode", class="form-control", id="zipCode")
+    button(type="submit" class="btn btn-primary") Submit
+    
