@@ -36,10 +36,11 @@ configPassport(user, passport)
 const indexRouter = require('./routes/index')
 const accountRouter = container.resolve('accountManagerRouters')
 const createGroupRouter = require('./routes/createGroup')
-const searchGroupRouter = require('./routes/SearchGroup')
+/// //////////////////////////// there is something wrong..
 const meetingRouter = container.resolve('meetingRouters')
 const dashboardRouter = container.resolve('meetingRouters')
 const addressRouter = require('./routes/addressField')
+const requestRouter = container.resolve('requestRouters')
 const { authorization } = require('./middleware/authorization')
 
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'))
@@ -81,7 +82,6 @@ app.use(passport.session())
 app.use(flash())
 
 app.use('/', indexRouter)
-app.use('/', searchGroupRouter)
 app.use('/', accountRouter)
 app.use('/', addressRouter)
 
@@ -139,6 +139,7 @@ app.use('/', authorization, dashboardRouter)
 app.use('/group', groupRouter)
 app.use('/', voteRouter)
 
+app.use('/request', authorization, requestRouter)
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404))
