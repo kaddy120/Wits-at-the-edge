@@ -39,11 +39,17 @@ class groupRepository {
     }
   }
 
-  async searchGroupByName (groupName) {
+  async searchGroupByName (groupName, userId) {
+    const like = `%${groupName}%`
     try {
+      const sqlQueries = await utils.loadSqlQueries('groups')
       const pool = await pools
       const result = await pool.request()
-        .query(`SELECT groupId,groupName,thumbnail FROM [dbo].[Group] WHERE groupName LIKE '%${groupName}%';`)
+        .input('userId', sql.VarChar(50), userId)
+        // .input('offset_', sql.Int, offsetNumber)
+        // .input('getNum', sql.Int, number)
+        .input('like_', sql.VarChar(30), like)
+        .query(sqlQueries.groupSearch)
       return result.recordset
     } catch (err) {
       console.log(err)

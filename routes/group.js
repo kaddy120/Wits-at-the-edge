@@ -27,8 +27,9 @@ router.get('/all/:pageNo', async (req, res) => {
 })
 
 router.post('/search', async function (req, res) {
+  const userId = req.session.passport.user
   const groupName = req.body.groupName
-  const results = await groupRepository.searchGroupByName(groupName)
+  const results = await groupRepository.searchGroupByName(groupName, userId)
   if (results.length > 0) {
     const groups = results.map(group => {
       if (group.thumbnail == null || group.thumbnail.length < 15) {
