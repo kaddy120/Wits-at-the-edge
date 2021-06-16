@@ -1,4 +1,5 @@
-const axios = require('axios');
+const bcrypt = require('bcrypt')
+const saltRounds = 10
 const express = require('express')
 const router = express.Router()
 
@@ -8,13 +9,27 @@ router.get('/address/name/:userName/surname/:userSurname/email/:userEmail/school
     school: req.params.schoolName, YOS: req.params.yos, password: req.params.password})
 })
 
-/*
+
 router.post('/address', async (req, res, next) => {
-    const street = req.body.streetAddress
-    const suburb = req.body.suburb
-    const city = req.body.city
-    const zipCode = req.body.zipCode
- 
-})*/
+    const repo = this.userRepository
+    bcrypt.genSalt(saltRounds, function (err, salt) {
+      if (err) {
+        console.log(err)
+      }
+      bcrypt.hash(user.password, salt, function (err, hash) {
+        user.password = hash
+        repo.addUser(user).then(addUser => {
+          // req.login()
+          res.render('index')
+        }).catch(err => {
+          console.log(err)
+        })
+        if (err) {
+          console.log(err)
+        }
+    }
+}
+   
+})
 
 module.exports = router

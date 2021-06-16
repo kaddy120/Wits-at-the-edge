@@ -1,5 +1,3 @@
-const bcrypt = require('bcrypt')
-const saltRounds = 10
 const { validationResult } = require('express-validator')
 
 class userManager {
@@ -20,7 +18,7 @@ class userManager {
     }
     console.log(user)
     res.redirect(`/address/name/${user.name}/surname/${user.surname}/email/${user.email}/school/${user.school}/YOS/${user.yearOfStudy}/Password/${user.password}`)
-    //res.redirect(`/address/name/${user.name}/surname/${user.surname}/email/${user.email}/school/${user.school}/YOS/${user.yearOfStudy}/Password/${user.password}`)
+
   }
 }
 
