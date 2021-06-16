@@ -12,7 +12,7 @@ const { memoryStorage } = require('multer')
 const upload = multer({ storage: memoryStorage() })
 const imageSaver = require('../models/saveImagesToCloud')
 
-router.get('/', async (req, res) => {
+router.get('/:groupId', async (req, res) => {
   res.render('group')
 })
 

@@ -1,14 +1,10 @@
-doctype html
-html
-  head
-    title Chat
-    link(rel='stylesheet', href='/stylesheets/chat.css')
-  script(src="/socket.io/socket.io.js")
-  body
-    ul(id="messages")
-    form(id="form" action="")
-      input(id="input" autocomplete="off")
-      button Send
+extends groupLayout
+
+block content
+  ul(id="messages")
+  form(id="form" action="")
+    input(id="input" autocomplete="off")
+    button Send
   script(type='text/javascript').
       const groupId = #{roomname}
   script(src="/javascript/chat-frontend.js")

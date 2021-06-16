@@ -1,0 +1,28 @@
+doctype html
+html
+  head
+    title= groupname
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='/stylesheets/chat.css')
+    link(rel='stylesheet', href='/css/bootstrap.min.css')
+  script(src="/socket.io/socket.io.js")
+  body
+    div.main
+      h3
+      ul.nav
+          li.nav-item
+            a.nav-link.aria-current( href="/") Home
+          li.nav-item
+            a.nav-link.aria-current( href="/logout") Logout
+      p Groupname 
+      .sidenav-group
+        a(href="/group/groupId") Group Name
+        a( href="#") Chat 
+        a(href="#") Links
+        a( href="#") Create Meeting
+        a( href="#") JoinRequest List
+        a( href="#") Group Members
+        a( href="#") Exit Group
+
+      div
+         block content

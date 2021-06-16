@@ -13,8 +13,9 @@ block content
                     p=`Agenda :${userMeetings[x].agenda}`
                     p=`MeetingTime: ${userMeetings[x].meetingTime}`
                     p=`MeetingCreator: ${user}`
-                div(class='button',id='user')
-                    a(class = 'btn' href=`/meetings/${notifications[x].notificationId}/Available`)
-                        button(type="submit" class="btn btn-sm btn-primary" id="AVAILABLE" ) AVAILABLE
-                    a(class = 'btn' href=`/meetings/${notifications[x].notificationId}/UnAvailable`)
-                        button(type='submit' class ="btn btn-sm btn-primary" id ="NOT AVAILABLE") NOT AVAILABLE
+                -if(notifications[x].response === null)
+                    div(class='button',id='user')
+                        a(class = 'btn' href=`/meetings/${notifications[x].notificationId}/Available`)
+                            button(type="submit" class="btn btn-sm btn-primary" id="AVAILABLE" ) AVAILABLE
+                        a(class = 'btn' href=`/meetings/${notifications[x].notificationId}/UnAvailable`)
+                            button(type='submit' class ="btn btn-sm btn-primary" id ="NOT AVAILABLE") NOT AVAILABLE

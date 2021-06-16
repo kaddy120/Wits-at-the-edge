@@ -8,12 +8,10 @@ block content
     h4= title
     .row
         - for (var x = 0; x < userGroups.length; x++)
-            a(href=`/groupName/${userGroups[x].groupName}`)
+            a(href=`/group/${userGroups[x].groupId}`)
                     .col-sm-6
                         .card(style='background-color: #cecece;')
                             .card-block
                                 img(src=groupIcon[x] style="width: 17.9rem; height: 10rem")
                                 h5.card-title=userGroups[x].groupName
                                 p.card-text Group description
-        
-    
