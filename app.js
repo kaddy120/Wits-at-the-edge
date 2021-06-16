@@ -36,10 +36,8 @@ configPassport(user, passport)
 const indexRouter = require('./routes/index')
 const accountRouter = container.resolve('accountManagerRouters')
 const createGroupRouter = require('./routes/createGroup')
-/// //////////////////////////// there is something wrong..
 const meetingRouter = container.resolve('meetingRouters')
 const dashboardRouter = container.resolve('meetingRouters')
-const addressRouter = require('./routes/addressField')
 const requestRouter = container.resolve('requestRouters')
 const { authorization } = require('./middleware/authorization')
 
@@ -83,7 +81,6 @@ app.use(flash())
 
 app.use('/', indexRouter)
 app.use('/', accountRouter)
-app.use('/', addressRouter)
 
 const wrap = middleware => (socket, next) => middleware(socket.request, {}, next)
 // io.use(wrap(sessionMiddleware))
