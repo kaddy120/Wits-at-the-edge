@@ -1,0 +1,1 @@
+DELETE FROM [dbo].[UserGroup] WHERE userId = @userId and groupId = @groupId

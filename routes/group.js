@@ -5,12 +5,14 @@ const router = express.Router()
 const { container } = require('../di-setup')
 const groupRepository = container.resolve('groupRepository')
 const group = require('../db/groups')
+const deletUserGroups = container.resolve('groupRepository')
 const groupCreator = require('../models/groupDetails')
 const verify = require('../models/verification')
 const multer = require('multer')
 const { memoryStorage } = require('multer')
 const upload = multer({ storage: memoryStorage() })
 const imageSaver = require('../models/saveImagesToCloud')
+
 const defaultThumbnail = 'https://www.seekpng.com/png/detail/215-2156215_diversity-people-in-group-icon.png'
 
 router.get('/', async (req, res) => {
@@ -110,4 +112,16 @@ router.post('/createGroup', body('groupName', 'Group name cant be empty').notEmp
       res.redirect('/signup')
     }
   })
+
+router.get('/deleteUser', (req, res) => {
+  const groupId = 2
+  const email = 'kaddy122@gmail.com'
+
+  const userDetails = { ...req.body }
+  userDetails.userId = email
+  userDetails.groupId = groupId
+  deletUserGroups.exitUserGroup(userDetails)
+  res.redirect('/dashboard')
+})
+
 module.exports = router
