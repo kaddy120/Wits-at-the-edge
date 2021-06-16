@@ -20,12 +20,14 @@ const redisClient = redis.createClient(6380, 'wits.redis.cache.windows.net',
     auth_pass: process.env.primaryKey,
     tls: { servername: process.env.redisServername }
   })
-
+const bodyParser = require('body-parser')
+app.use(bodyParser.urlencoded({ extended: true }))
 const flash = require('express-flash')
 
 require('./di-setup')
 const { container } = require('./di-setup')
 const user = container.resolve('userRepository')
+// const groupRouter = require('./routes/group')
 const voteRouter = container.resolve('votingRouters')
 const groupRouter = require('./routes/group')
 const passport = container.resolve('passport')
@@ -37,6 +39,8 @@ const accountRouter = container.resolve('accountManagerRouters')
 const searchGroupRouter = require('./routes/SearchGroup')
 const meetingRouter = container.resolve('meetingRouters')
 const dashboardRouter = container.resolve('meetingRouters')
+const covidFormRouter = require('./routes/covidForm')
+const requestRouter = container.resolve('requestRouters')
 const { authorization } = require('./middleware/authorization')
 
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'))
@@ -78,7 +82,6 @@ app.use(passport.session())
 app.use(flash())
 
 app.use('/', indexRouter)
-app.use('/', searchGroupRouter)
 app.use('/', accountRouter)
 
 const wrap = middleware => (socket, next) => middleware(socket.request, {}, next)
@@ -131,8 +134,12 @@ io.on('connection', (socket) => {
 app.use('/', authorization, voteRouter)
 app.use('/meeting', authorization, meetingRouter)
 app.use('/', authorization, dashboardRouter)
+app.use('/', authorization, covidFormRouter)
+
 app.use('/group', groupRouter)
 app.use('/', voteRouter)
+
+app.use('/request', authorization, requestRouter)
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404))

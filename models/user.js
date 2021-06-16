@@ -6,6 +6,7 @@ class user {
     this.thumbnail = thumbnail
     this.password = password
     this.yearOfStudy = yearOfStudy
+    this.school = school
   }
 }
 module.exports = user
