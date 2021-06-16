@@ -1,0 +1,123 @@
+doctype html
+head
+  title Complinance Form
+  meta(charset='utf-8')
+  script(defer='' src='../models/covid.js')
+  // JavaScript File that will dynamically change the webpage
+h5
+  | Department of Health Covid19 24-Hour Hotline Number: 0800 029 999 and WhatsApp number: 0600 12 3456
+  h5
+    | Please complete this daily self-screening questionnaire before leaving home and before coming onto Campus. 
+    h5
+      | NB: Persons are not permitted onto Campus if the below screening has not been done.
+      h5
+        | Full Name(s) 
+        input(type='text' name='fullName' placeholder='Enter your Full Names')
+        h5
+          | Student Number 
+          input(type='number' name='studentNo' placeholder='1416262')
+          h5
+            | From which University entity/division/school 
+            input(type='text' name='universityEntity' placeholder='Wits EIE')
+            h5
+              | Cell Number 
+              input(type='number' name='cellNo' placeholder='071 100 9333')
+              h3
+                | A Symptom Check (Please select the relevant response in the yes / no column)
+                h5
+                  | Are you suffering from fever / high temperature or have temperature fluctuations? Yes
+                  input#feverYes(type='radio' name='fever')
+                  |     No
+                  input#feverNo(type='radio' name='fever')
+                  h5
+                    | Do you have a dry cough? Yes
+                    input#coughYes(type='radio' name='cough')
+                    |  No
+                    input#coughNo(type='radio' name='cough')
+                    h5
+                      | Do you have a sore throat? Yes
+                      input#throatYes(type='radio' name='throat')
+                      |     No
+                      input#throatNo(type='radio' name='throat')
+                      h5
+                        | Do you have redness of eyes? Yes
+                        input#eyesYes(type='radio' name='eyes')
+                        |  No
+                        input#eyesNo(type='radio' name='eyes')
+                        h5
+                          | Do you experience shortness of breath/difficulty in breathing? Yes
+                          input#breathYes(type='radio' name='breath')
+                          |  No
+                          input#breathNo(type='radio' name='breath')
+                          h5
+                            | Have you got unusual body aches/muscle pain? Yes
+                            input#painYes(type='radio' name='muscle')
+                            |  No
+                            input#painNo(type='radio' name='muscle')
+                            h5
+                              | Do you experience a loss of smell / taste? Yes
+                              input#smellYes(type='radio' name='smell')
+                              |  No
+                              input#smellNo(type='radio' name='smell')
+                              h5
+                                | Are you nausea and/or do you experience unusual vomiting? Yes
+                                input#vomitYes(type='radio' name='nausea')
+                                |  No
+                                input#vomitNo(type='radio' name='nausea')
+                                h5
+                                  | Have you got diarrhea? Yes
+                                  input#diarrheaYes(type='radio' name='diarrhea')
+                                  |  No
+                                  input#diarrheaNo(type='radio' name='diarrhea')
+                                  h5
+                                    | Do you suffer from fatigue/ physical weakness/ tiredness? Yes
+                                    input#fatigueYes(type='radio' name='fatigue')
+                                    |  No
+                                    input#fatigueNo(type='radio' name='fatigue')
+                                    h3
+                                      | B Contact / Exposure Risk (Please select the relevant response in the yes / no column)
+                                      h5
+                                        | In the past 10 days have you tested positive for COVID-19? Yes
+                                        input#daysYes(type='radio' name='test')
+                                        |  No
+                                        input#daysNo(type='radio' name='test')
+                                        h5
+                                          | In the past 10 days were you exposed* to someone who is positively diagnosed
+                                          | with COVID-19, or to someone who is in quarantine / self-isolation for COVID-19? * Exposed in family or community setting is spending greater than 15 minutes in infected person&rsquo;s company AND
+                                          | being 1.5m apart AND not wearing a face mask. * Exposed in clinical setting is not wearing proper PPE, or PPE failure AND spending &gt;15 minutes in
+                                          | infected person&rsquo;s company AND being less than 1.5m apart. Yes 
+                                          input#exposureYes(type='radio' name='exposure')
+                                          |  No
+                                          input#exposureNo(type='radio' name='exposure')
+                                          h3
+                                            | C Other Risk Factors (Please select the relevant response in the yes / no column)
+                                            h5
+                                              | Do you suffer from any pre-existing medical condition / chronic illness that may
+                                              | have compromised your immune system, i.e. respiratory disease, diabetes, heart
+                                              | disease, or any other chronic illness that could compromise one&rsquo;s immune system? Yes
+                                              input#chronicYes(type='radio' name='chronic')
+                                              |  No
+                                              input#chronicNo(type='radio' name='chronic')
+                                              h5
+                                                | Are you 60 years of age or older? Yes
+                                                input#ageYes(type='radio' name='age')
+                                                |  No
+                                                input#ageNo(type='radio' name='age')
+                                                br
+                                                p
+                                                  | If you answered &ldquo;YES&rdquo; to any of the questions mentioned in questions A1 to A10 and B1 &amp; B2 then:
+                                                  | i). Don&rsquo;t attempt to enter Campus. ii). Consult your Healthcare Worker to seek advice. iii). Urgently notify your
+                                                  | Supervisor / Manager / HoS / Course Coordinator if you cannot come onto Campus. iv). If you reside on Campus then
+                                                  | remain in your room, seek advice telephonically from relevant CHRL staff and follow the CHRL COVID-19 protocols. v).
+                                                  | Only enter Campus again if cleared by a Healthcare Worker.
+                                                p
+                                                  | If you experience any symptoms mentioned in questions A1 to A10 then this does not mean that you definitely have
+                                                  | COVID-19. This screening questionnaire is used as precautionary indicator to establish whether you should be
+                                                  | quarantined. Tests may be required for a definite diagnosis to be made.
+                                                p
+                                                  | If you answered &ldquo;YES&rdquo; to any of the questions in C1 and C2 (but have none of the symptoms mentioned in A1 to A10),
+                                                  | then this does not mean that you will not be permitted entry onto Campus (a decision may be necessary from CHWC
+                                                  | whether your responses require any further intervention).
+                                                p
+                                                  | Notify Campus Health &amp; Wellness Centre ASAP if your status in Sections A, B or C changes at any time.
+                                                button#submit(type='button') Submit
