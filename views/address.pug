@@ -2,8 +2,21 @@ extends layout
      
 block content
   link(rel='stylesheet', href='/stylesheets/style.css')
-  h2= title
+  h3= title
   form(action="/address",  method="POST")
+    div.mb-3 
+      input(type="hidden" placeholder="Name" name="name" value=name class="form-control" id="firstName")
+    div.mb-3 
+      input(type="hidden" placeholder="Last Name" name="surname" value=surname class="form-control" id="lastName")
+    div.mb-3 
+      input(type="hidden" placeholder="e.g kaddy120@gmail.com" value=email name="email" class="form-control" id="email")
+    div.mb-3 
+      input(type="hidden" placeholder="e.g 1416262" name="school" value=school class="form-control" id="school")
+    div.mb-3 
+      input(type="hidden" placeholder="e.g first year" name="yearOfStudy" value=YOS class="form-control" id="YOS")
+    div.mb-3
+      input(type="hidden" placeholder="password" name="password" value=password id="password" class="form-control")
+
     div(class="form-group")
       label(for="streetAddress") Street Address
       input(type="text", placeholder="eg 49 jorrisen street", name="streetAddress", class="form-control", id="streetAddress")

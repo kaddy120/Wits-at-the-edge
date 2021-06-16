@@ -18,24 +18,9 @@ class userManager {
     if (temp.length === 1) {
       return res.status(400).json({ errors: 'the email already exists' })
     }
-    const repo = this.userRepository
-    bcrypt.genSalt(saltRounds, function (err, salt) {
-      if (err) {
-        console.log(err)
-      }
-      bcrypt.hash(user.password, salt, function (err, hash) {
-        user.password = hash
-        repo.addUser(user).then(addUser => {
-          // req.login()
-          res.render('index')
-        }).catch(err => {
-          console.log(err)
-        })
-        if (err) {
-          console.log(err)
-        }
-      })
-    })
+    console.log(user)
+    res.redirect(`/address/name/${user.name}/surname/${user.surname}/email/${user.email}/school/${user.school}/YOS/${user.yearOfStudy}/Password/${user.password}`)
+    //res.redirect(`/address/name/${user.name}/surname/${user.surname}/email/${user.email}/school/${user.school}/YOS/${user.yearOfStudy}/Password/${user.password}`)
   }
 }
 
