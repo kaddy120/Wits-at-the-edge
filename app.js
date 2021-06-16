@@ -27,6 +27,7 @@ const flash = require('express-flash')
 require('./di-setup')
 const { container } = require('./di-setup')
 const user = container.resolve('userRepository')
+// const groupRouter = require('./routes/group')
 const voteRouter = container.resolve('votingRouters')
 const groupRouter = require('./routes/group')
 const passport = container.resolve('passport')
@@ -35,10 +36,9 @@ configPassport(user, passport)
 
 const indexRouter = require('./routes/index')
 const accountRouter = container.resolve('accountManagerRouters')
-const searchGroupRouter = require('./routes/SearchGroup')
-
 const meetingRouter = container.resolve('meetingRouters')
 const dashboardRouter = container.resolve('meetingRouters')
+const covidFormRouter = require('./routes/covidForm')
 const requestRouter = container.resolve('requestRouters')
 const { authorization } = require('./middleware/authorization')
 
@@ -133,6 +133,8 @@ io.on('connection', (socket) => {
 app.use('/', authorization, voteRouter)
 app.use('/meeting', authorization, meetingRouter)
 app.use('/', authorization, dashboardRouter)
+app.use('/', authorization, covidFormRouter)
+
 app.use('/group', groupRouter)
 app.use('/', voteRouter)
 

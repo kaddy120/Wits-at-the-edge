@@ -67,7 +67,7 @@ class groupRepository {
 
   async userIsMember (userId, groupId) {
     try {
-      const pool = await pools
+      const pool = await this.dbpool
       const sqlQueries = await utils.loadSqlQueries('groups')
       const member = await pool.request()
         .input('userId', sql.VarChar(50), userId)
@@ -103,19 +103,6 @@ class groupRepository {
       return getUser
     } catch (error) {
       console.log(error)
-    }
-  }
-
-  async getUserGroups (userId) {
-    try {
-      const pool = await this.dbpool
-      const sqlQueries = await utils.loadSqlQueries('groups')
-      const groups = await pool.request()
-        .input('user', sql.VarChar(50), userId)
-        .query(sqlQueries.getUserGroups)
-      return groups
-    } catch (err) {
-      console.log(err)
     }
   }
 
