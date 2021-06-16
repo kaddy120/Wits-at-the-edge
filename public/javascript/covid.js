@@ -2,6 +2,7 @@ const response = []
 const responseC = []
 let risky = false
 const button = document.getElementById('submit')
+
 button.addEventListener('click', function () {
   // Getting checkbox/radio box elements by Id
   // If the answer is not yes, it's obviously no
@@ -47,7 +48,8 @@ button.addEventListener('click', function () {
   const ageY = document.getElementById('ageYes')
   const ageN = document.getElementById('ageNo')
 
-  // Record responses
+  // Empty textboxes are not allowed
+
   // Section A of the form
   if (feverY.checked === true) response.push('yes')
   else if (feverN.checked === true) response.push('no')
@@ -93,19 +95,25 @@ button.addEventListener('click', function () {
   if (ageY.checked === true) responseC.push('yes')
   else if (ageN.checked === true)responseC.push('no')
 
+  // Evaluate textBoxes
+
   // Evaluate The Form
   if (response.length === 12 && responseC.length === 2) {
     console.log('complete Form')
     for (let i = 0; i < response.length; i++) {
       if (response[i] === 'yes') {
         risky = true
+        window.alert('You are high risk, do not attempt to enter the University Premises!')
         break
       }
     }
   } else {
     console.log('Incomplete Form')
     risky = true // Did not complete form
+    window.alert('Incomplete Form')
+    return false
   }
+  if (risky === false) window.alert('Access allowed, please follow necessary precautions')
   console.log(risky)
 }, false)
 
