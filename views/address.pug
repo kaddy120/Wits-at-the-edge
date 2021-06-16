@@ -5,17 +5,17 @@ block content
   h3= title
   form(action="/address",  method="POST")
     div.mb-3 
-      input(type="hidden" placeholder="Name" name="name" value=name class="form-control" id="firstName")
+      input(type="hidden" placeholder="Name" name="name" value=user.name class="form-control" id="firstName")
     div.mb-3 
-      input(type="hidden" placeholder="Last Name" name="surname" value=surname class="form-control" id="lastName")
+      input(type="hidden" placeholder="Last Name" name="surname" value=user.surname class="form-control" id="lastName")
     div.mb-3 
-      input(type="hidden" placeholder="e.g kaddy120@gmail.com" value=email name="email" class="form-control" id="email")
+      input(type="hidden" placeholder="e.g kaddy120@gmail.com" value=user.email name="email" class="form-control" id="email")
     div.mb-3 
-      input(type="hidden" placeholder="e.g 1416262" name="school" value=school class="form-control" id="school")
+      input(type="hidden" placeholder="e.g 1416262" name="school" value=user.school class="form-control" id="school")
     div.mb-3 
-      input(type="hidden" placeholder="e.g first year" name="yearOfStudy" value=YOS class="form-control" id="YOS")
+      input(type="hidden" placeholder="e.g first year" name="yearOfStudy" value=user.yearOfStudy class="form-control" id="YOS")
     div.mb-3
-      input(type="hidden" placeholder="password" name="password" value=password id="password" class="form-control")
+      input(type="hidden" placeholder="password" name="password" value=user.password id="password" class="form-control")
 
     div(class="form-group")
       label(for="streetAddress") Street Address

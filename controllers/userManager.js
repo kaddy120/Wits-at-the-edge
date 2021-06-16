@@ -20,7 +20,8 @@ class userManager {
       return res.status(400).json({ errors: 'the email already exists' })
     }
     console.log(user)
-    res.redirect(`/address/name/${user.name}/surname/${user.surname}/email/${user.email}/school/${user.school}/YOS/${user.yearOfStudy}/Password/${user.password}`)
+    res.render('address', {title: 'Fill in Address', user})
+    //res.redirect(`/address/name/${user.name}/surname/${user.surname}/email/${user.email}/school/${user.school}/YOS/${user.yearOfStudy}/Password/${user.password}`)
 
   }
 
@@ -40,14 +41,20 @@ class userManager {
         
         repo.addUser(user).then(addUser => {
           repo.addUserAddress(user.email, address)
-          res.render('index')
+           
         }).catch(err => {
           console.log(err)
         })
+        
         if (err) {
           console.log(err)
         }
      })
+     user.password = req.body.password;
+     req.login(user, function(err) {
+      if (err) { return next(err); }
+      return res.redirect('/');
+    });
    })
   }
 }

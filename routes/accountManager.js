@@ -8,14 +8,7 @@ function accountManagerRouters({ userManager, passport }) {
     res.render('signup', { title: 'Sign-Up page' })
   })
 
-  router.get('/address/name/:userName/surname/:userSurname/email/:userEmail/school/:schoolName/YOS/:yos/Password/:password', function (req, res, next) {
-    res.render('address', {
-      title: 'Fill in Address', name: req.params.userName, surname: req.params.userSurname, email: req.params.userEmail,
-      school: req.params.schoolName, YOS: req.params.yos, password: req.params.password
-    })
-  })
-
-  router.post('/address', userManager.addUser.bind(userManager))
+  router.post('/address', alreadyLogedin, userManager.addUser.bind(userManager))
 
   router.post('/signup', alreadyLogedin,
     body('name', 'Name is required').notEmpty(),
