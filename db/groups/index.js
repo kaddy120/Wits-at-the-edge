@@ -13,6 +13,28 @@ class groupRepository {
     this.addingGroup = this.addingGroup.bind(this)
   }
 
+async getGroupName (groupName) {
+  const pool = await pools
+  const sqlQueries = await utils.loadSqlQueries('groups')
+  const result = await pool.request()
+    .input('groupName', sql.VarChar(50), groupName)
+    .query(sqlQueries.groupSearch)
+  return result.recordset
+}
+
+async userIsMember (userId, groupId)  {
+  try {
+    const pool = await pools
+    const sqlQueries = await utils.loadSqlQueries('groups')
+    const member = await pool.request()
+      .input('userId', sql.VarChar(50), userId)
+      .input('groupId', sql.Int, groupId)
+      .query(sqlQueries.userIsMember)
+    return member.recordset.length === 1
+  } catch (err) {
+    console.log(err)
+  }
+}
   async userIsRegistered (email) {
     try {
       const sqlQueries = await utils.loadSqlQueries('groups')
