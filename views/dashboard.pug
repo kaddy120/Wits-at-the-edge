@@ -3,11 +3,12 @@ extend layout
 block content
     div.
     link(rel='stylesheet', href='/stylesheets/style.css')
-    link(rel='stylesheet', href='/css/bootstrap.min.css')
+    //link(rel='stylesheet', href='/css/bootstrap.min.css')
     
     h4= title
-    .row
+    .row.row-cols-1.row-cols-md-4.g-4
         - for (var x = 0; x < userGroups.length; x++)
+<<<<<<< HEAD
             a(href=`/group/${userGroups[x].groupId}`)
                     .col-sm-6
                         .card(style='background-color: #cecece;')
@@ -15,3 +16,14 @@ block content
                                 img(src=groupIcon[x] style="width: 17.9rem; height: 10rem")
                                 h5.card-title=userGroups[x].groupName
                                 p.card-text Group description
+=======
+            .col(style='margin:15px 0; height: 220px')
+                a(href=`/groupName/${userGroups[x].groupName}`)
+                    .card(style='background-color: #cecece;height: 100%')
+                        img.card-img-top(src=groupIcon[x] style="height: 55%")
+                        .card-body
+                            h5.card-title=userGroups[x].groupName
+                            p.card-text Group description
+        
+    
+>>>>>>> master
