@@ -9,11 +9,9 @@ block content
     .row.row-cols-1.row-cols-md-4.g-4
         - for (var x = 0; x < userGroups.length; x++)
             .col(style='margin:15px 0; height: 220px')
-                a(href=`/groupName/${userGroups[x].groupName}`)
-                    .card(style='background-color: #cecece;height: 100%')
-                        img.card-img-top(src=groupIcon[x] style="height: 55%")
-                        .card-body
+                .card(style='background-color: #cecece;height: 100%')
+                    img.card-img-top(src=groupIcon[x] style="height: 55%")
+                    .card-body
+                        a(href=`/group/${userGroups[x].groupId[0]}`)
                             h5.card-title=userGroups[x].groupName
-                            p.card-text Group description
-        
-    
+                        p.card-text Group description

@@ -36,7 +36,6 @@ configPassport(user, passport)
 
 const indexRouter = require('./routes/index')
 const accountRouter = container.resolve('accountManagerRouters')
-const searchGroupRouter = require('./routes/SearchGroup')
 const meetingRouter = container.resolve('meetingRouters')
 const dashboardRouter = container.resolve('meetingRouters')
 const covidFormRouter = require('./routes/covidForm')

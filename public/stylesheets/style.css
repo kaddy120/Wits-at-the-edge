@@ -6,7 +6,7 @@ body {
 a {
   color: #00B7FF;
 }
-
+/*
  .card {
   transform-style: preserve-3d;
   text-align: center;
@@ -19,7 +19,7 @@ a {
   margin: 20px;
   margin-bottom: 30px;
   cursor: pointer;
-}
+}*/
 .meeting-card {
   transform-style: preserve-3d;
   text-align: left;
@@ -43,14 +43,14 @@ box-shadow: 0 10px 20px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
   text-transform: capitalize;
   text-size-adjust: 20px;
 }
+/*
 .button{
   justify-content: space-between;
   justify-items: flex-end;
   display: inline;
   margin: 20px auto;
-
 }
-
+*/
 .card:hover{
   transform: scale(1.01);
 box-shadow: 0 8px 16px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
@@ -69,6 +69,24 @@ box-shadow: 0 8px 16px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
   padding-top: 20px;
 }
 
+.sidenav-group {
+  height: 100%;
+  width: 200px;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  background-color: rgb(39, 135, 219);
+  overflow-x: hidden;
+  padding-top: 20px;
+}
+.sidenav-group a {
+  padding: 6px 6px 6px 32px;
+  text-decoration: none;
+  font-size: 15px;
+  color: #f0f0f0;
+  display: block;
+}
 .sidenav a {
   padding: 6px 6px 6px 32px;
   text-decoration: none;
@@ -89,6 +107,7 @@ box-shadow: 0 8px 16px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
 @media screen and (max-height: 450px) {
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 18px;}
+  .sidenav-group a{font-size: 15px;}
 }
 
 .required:after {

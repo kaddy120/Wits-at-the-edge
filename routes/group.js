@@ -12,11 +12,11 @@ const multer = require('multer')
 const { memoryStorage } = require('multer')
 const upload = multer({ storage: memoryStorage() })
 const imageSaver = require('../models/saveImagesToCloud')
-
 const defaultThumbnail = 'https://www.seekpng.com/png/detail/215-2156215_diversity-people-in-group-icon.png'
 
-router.get('/', async (req, res) => {
-  res.render('group')
+router.get('/:groupId', async (req, res) => {
+  const groupName = await groupRepository.getUserGroupName(req.params.groupId)
+  res.render('groupHomePage', { title: 'Group Home Page', groupName: groupName[0].groupName, groupId: req.params.groupId })
 })
 
 router.get('/all/:pageNo', async (req, res) => {
