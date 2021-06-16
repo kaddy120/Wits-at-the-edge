@@ -1,7 +1,7 @@
 doctype html
 html
   head
-    title= groupname
+    title=title
     link(rel='stylesheet', href='/stylesheets/style.css')
     link(rel='stylesheet', href='/stylesheets/chat.css')
     link(rel='stylesheet', href='/css/bootstrap.min.css')
@@ -14,9 +14,9 @@ html
             a.nav-link.aria-current( href="/") Home
           li.nav-item
             a.nav-link.aria-current( href="/logout") Logout
-      p Groupname 
+      p=groupName 
       .sidenav-group
-        a(href="/group/groupId") Group Name
+        a(href="/group/:groupId")=groupName
         a( href="#") Chat 
         a(href="#") Links
         a( href="#") Create Meeting
