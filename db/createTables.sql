@@ -44,9 +44,9 @@ CREATE TABLE dbo.GroupMeeting
     agenda VARCHAR(300) NOT NULL,
     userId VARCHAR(50) references dbo.[User](email)
 );
-
-CREATE TABLE [dbo].[sessions](
-    [sid] [nvarchar](255) NOT NULL PRIMARY KEY,
-    [session] [nvarchar](max) NOT NULL,
-    [expires] [datetime] NOT NULL
+CREATE TABLE dbo.[sessionNotifications](
+    [notificationId] int IDENTITY(1,1) PRIMARY KEY CLUSTERED NOT NULL,
+    [meetingId] [int] REFERENCES dbo.[GroupMeeting](meetingId),
+    [userId] VARCHAR(250) NOT NULL,
+    [response] [int]  NULL
 )

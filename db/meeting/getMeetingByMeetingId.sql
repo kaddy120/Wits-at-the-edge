@@ -1,0 +1,1 @@
+select * from [dbo].GroupMeeting where meetingId = @meetingId

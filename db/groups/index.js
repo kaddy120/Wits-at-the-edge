@@ -13,6 +13,15 @@ class groupRepository {
     this.addingGroup = this.addingGroup.bind(this)
   }
 
+  async getGroupName (groupName) {
+    const pool = await this.dbpool
+    const sqlQueries = await utils.loadSqlQueries('groups')
+    const result = await pool.request()
+      .input('groupName', sql.VarChar(50), groupName)
+      .query(sqlQueries.groupSearch)
+    return result.recordset
+  }
+
   async numberOfGroups () {
     try {
       const pool = await pools
@@ -58,7 +67,7 @@ class groupRepository {
 
   async userIsMember (userId, groupId) {
     try {
-      const pool = await pools
+      const pool = await this.dbpool
       const sqlQueries = await utils.loadSqlQueries('groups')
       const member = await pool.request()
         .input('userId', sql.VarChar(50), userId)
@@ -97,19 +106,6 @@ class groupRepository {
     }
   }
 
-  async getUserGroups (userId) {
-    try {
-      const pool = await this.dbpool
-      const sqlQueries = await utils.loadSqlQueries('groups')
-      const groups = await pool.request()
-        .input('user', sql.VarChar(50), userId)
-        .query(sqlQueries.getUserGroups)
-      return groups
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
   async addingGroup (group) {
     try {
       const sqlQueries = await utils.loadSqlQueries('groups')
@@ -140,12 +136,26 @@ class groupRepository {
     try {
       const pool = await this.dbpool
       const sqlQueries = await utils.loadSqlQueries('groups')
-      await pool.request()
+      const getMeeting = await pool.request()
         .input('groupId', sql.Int, meeting.groupId)
         .input('meetingTime', sql.DateTime, meeting.time)
         .input('agenda', sql.VarChar(250), meeting.agenda)
         .input('userId', sql.VarChar(50), meeting.userId)
         .query(sqlQueries.createMeeting)
+      return getMeeting.recordset
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  async getUserGroups (userId) {
+    try {
+      const pool = await this.dbpool
+      const sqlQueries = await utils.loadSqlQueries('groups')
+      const groups = await pool.request()
+        .input('user', sql.VarChar(50), userId)
+        .query(sqlQueries.getUserGroups)
+      return groups
     } catch (err) {
       console.log(err)
     }
@@ -172,6 +182,19 @@ class groupRepository {
         .input('user', sql.VarChar(50), userId)
         .query(sqlQueries.getGroupThumbnail)
       return thumbnail
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  async getUserGroupName (groupId) {
+    try {
+      const pool = await this.dbpool
+      const sqlQueries = await utils.loadSqlQueries('groups')
+      const groupName = await pool.request()
+        .input('groupId', sql.Int, groupId)
+        .query(sqlQueries.getGroupName)
+      return groupName.recordset
     } catch (err) {
       console.log(err)
     }

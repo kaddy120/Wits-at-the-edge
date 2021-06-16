@@ -1,0 +1,21 @@
+extend layout
+
+block content
+
+    h4= title 
+   
+    .row
+        - for (var x = 0; x < userMeetings.length; x++)
+                 
+            .col-sm-6
+                .meeting-card 
+                    h5(id='meeting-header')=groupNames[x].groupName 
+                    p=`Agenda :${userMeetings[x].agenda}`
+                    p=`MeetingTime: ${userMeetings[x].meetingTime}`
+                    p=`MeetingCreator: ${user}`
+                -if(notifications[x].response === null)
+                    div(class='button',id='user')
+                        a(class = 'btn' href=`/meetings/${notifications[x].notificationId}/Available`)
+                            button(type="submit" class="btn btn-sm btn-primary" id="AVAILABLE" ) AVAILABLE
+                        a(class = 'btn' href=`/meetings/${notifications[x].notificationId}/UnAvailable`)
+                            button(type='submit' class ="btn btn-sm btn-primary" id ="NOT AVAILABLE") NOT AVAILABLE

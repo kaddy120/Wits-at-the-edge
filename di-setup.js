@@ -3,6 +3,8 @@ const { pools } = require('./db')
 const userManager = require('./controllers/userManager')
 const voteManager = require('./controllers/voteManager')
 const { votingRouters } = require('./routes/votes')
+const meetingRepository = require('./db/meeting/index')
+// const passwordConfig = require('./config')
 
 const userRepository = require('./db/users')
 const votesRepository = require('./db/voting')
@@ -30,6 +32,7 @@ container.register(
     groupRepository: awilix.asClass(groupRepository, { lifetime: Lifetime.SCOPED }),
     requestRepository: awilix.asClass(requestRepository, { lifetime: Lifetime.SCOPED }),
     passport: awilix.asValue(passport),
+    meetingRepository: awilix.asClass(meetingRepository, { lifetime: Lifetime.SINGLETON }),
     meetingRouters: awilix.asFunction(meetingRouters),
     requestRouters: awilix.asFunction(requestRouters),
     accountManagerRouters: awilix.asFunction(accountManagerRouters)

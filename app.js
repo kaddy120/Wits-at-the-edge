@@ -20,8 +20,8 @@ const redisClient = redis.createClient(6380, 'wits.redis.cache.windows.net',
     auth_pass: process.env.primaryKey,
     tls: { servername: process.env.redisServername }
   })
-let bodyParser=require('body-parser');
-app.use(bodyParser.urlencoded({ extended:true}));
+const bodyParser = require('body-parser')
+app.use(bodyParser.urlencoded({ extended: true }))
 const flash = require('express-flash')
 
 require('./di-setup')
@@ -36,7 +36,7 @@ configPassport(user, passport)
 
 const indexRouter = require('./routes/index')
 const accountRouter = container.resolve('accountManagerRouters')
-const createGroupRouter = require('./routes/createGroup')
+const searchGroupRouter = require('./routes/SearchGroup')
 const meetingRouter = container.resolve('meetingRouters')
 const dashboardRouter = container.resolve('meetingRouters')
 const covidFormRouter = require('./routes/covidForm')
@@ -131,7 +131,6 @@ io.on('connection', (socket) => {
 })
 
 // app.use() // all end-points under this middleware can only be accessed by signed in user
-app.use('/', authorization, createGroupRouter)
 app.use('/', authorization, voteRouter)
 app.use('/meeting', authorization, meetingRouter)
 app.use('/', authorization, dashboardRouter)
