@@ -3,10 +3,12 @@ const router = express.Router()
 const { body } = require('express-validator')
 const { alreadyLogedin } = require('../middleware/authorization')
 
-function accountManagerRouters ({ userManager, passport }) {
+function accountManagerRouters({ userManager, passport }) {
   router.get('/signup', alreadyLogedin, function (req, res, next) {
     res.render('signup', { title: 'Sign-Up page' })
   })
+
+  router.post('/address', alreadyLogedin, userManager.addUser.bind(userManager))
 
   router.post('/signup', alreadyLogedin,
     body('name', 'Name is required').notEmpty(),

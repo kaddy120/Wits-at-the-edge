@@ -45,6 +45,20 @@ class userRepository {
       console.log(err)
     }
   }
+
+  async addUserAddress (userId, address) {
+    try{
+      const sqlQueries = await utils.loadSqlQueries('users')
+      const pool = await this.pools
+      const insertUser = await pool.request()
+        .input('email', sql.VarChar(50), userId)
+        .input('address', sql.VarChar(150), address)
+        .query(sqlQueries.addUserAddress)
+        console.log("addes")
+    } catch (err) {
+      console.log(err)
+    }
+  }
 }
 
 module.exports = userRepository

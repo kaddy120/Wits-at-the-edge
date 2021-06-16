@@ -4,5 +4,4 @@ on
 [dbo].[Group].groupId = Table1.groupId
 left join (select * from [dbo].[join_request] where email = @userId ) as table3
 	on table3.groupId = [dbo].[Group].groupId
-WHERE [dbo].[Group].groupName LIKE @like_
--- ORDER BY groupId OFFSET @offeset_ ROWS FETCH NEXT @number ROWS ONLY 
+ORDER BY groupId OFFSET @offset_ ROWS FETCH NEXT @getNum ROWS ONLY
