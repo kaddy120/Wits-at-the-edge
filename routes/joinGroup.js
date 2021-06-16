@@ -7,8 +7,8 @@ const model = require('../models/addRequest')
 router.get('/joinRequest', async function (req, res) {
   const user = users.userOne
   const request = model.addARequest(user)
-  res.send(request)
   await joinProcess.addJoinRequest(user).then(result => { return result.recordset })
+  res.send(request)
 })
 
 module.exports = router

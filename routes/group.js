@@ -3,7 +3,7 @@ const express = require('express')
 const { body, validationResult } = require('express-validator')
 const router = express.Router()
 const { container } = require('../di-setup')
-const createGroups = container.resolve('groupRepository')
+const groupRepository = container.resolve('groupRepository')
 const group = require('../db/groups')
 const deletUserGroups = container.resolve('groupRepository')
 const groupCreator = require('../models/groupDetails')
@@ -12,10 +12,37 @@ const multer = require('multer')
 const { memoryStorage } = require('multer')
 const upload = multer({ storage: memoryStorage() })
 const imageSaver = require('../models/saveImagesToCloud')
-const { exists } = require('fs')
+
+const defaultThumbnail = 'https://www.seekpng.com/png/detail/215-2156215_diversity-people-in-group-icon.png'
 
 router.get('/', async (req, res) => {
   res.render('group')
+})
+
+router.get('/all/:pageNo', async (req, res) => {
+  const groupsPerPage = 10
+  const offset = groupsPerPage * (req.params.pageNo - 1)
+  const userId = req.session.passport.user
+  // const userId = 'test@gmail.com'
+  const groups = await groupRepository.firstTop(offset, groupsPerPage, userId)
+  res.render('groups', { title: 'Discover more groups to join', groups })
+})
+
+router.post('/search', async function (req, res) {
+  const userId = req.session.passport.user
+  const groupName = req.body.groupName
+  const results = await groupRepository.searchGroupByName(groupName, userId)
+  if (results.length > 0) {
+    const groups = results.map(group => {
+      if (group.thumbnail == null || group.thumbnail.length < 15) {
+        group.thumbnail = defaultThumbnail
+      }
+      return group
+    })
+    res.render('groups', { title: 'Discover more groups to join', groups })
+    return
+  }
+  res.render('groups', { title: 'Discover more groups to join', groups: [] })
 })
 
 router.get('/createMeeting', async (req, res) => {
@@ -64,19 +91,19 @@ router.post('/createGroup', body('groupName', 'Group name cant be empty').notEmp
     }
     const email = req.body.adminId
     const imageUrl = await imageSaver(req.file)
-    const found = await createGroups.userIsRegistered(email)
+    const found = await groupRepository.userIsRegistered(email)
     if (found) {
-      const groups = await createGroups.getNumberOfGroups(email).then((data) => {
+      const groups = await groupRepository.getNumberOfGroups(email).then((data) => {
         return data.recordset
       })
       if (verify.canCreateGroup(groups)) {
         const creater = new groupCreator(req.body.groupName, req.body.adminId, req.body.school, imageUrl)
-        createGroups.addingGroup(creater)
-        const allgroups = await createGroups.getNumberOfGroups(email).then((data) => {
+        groupRepository.addingGroup(creater)
+        const allgroups = await groupRepository.getNumberOfGroups(email).then((data) => {
           return data.recordset
         })
 
-        createGroups.addFirstMember(allgroups[allgroups.length - 1].groupId, allgroups[allgroups.length - 1].adminId)
+        groupRepository.addFirstMember(allgroups[allgroups.length - 1].groupId, allgroups[allgroups.length - 1].adminId)
         res.redirect('/group')
       } else {
         res.redirect('/group')

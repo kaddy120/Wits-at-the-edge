@@ -20,7 +20,8 @@ const redisClient = redis.createClient(6380, 'wits.redis.cache.windows.net',
     auth_pass: process.env.primaryKey,
     tls: { servername: process.env.redisServername }
   })
-
+let bodyParser=require('body-parser');
+app.use(bodyParser.urlencoded({ extended:true}));
 const flash = require('express-flash')
 
 require('./di-setup')
@@ -35,9 +36,9 @@ configPassport(user, passport)
 const indexRouter = require('./routes/index')
 const accountRouter = container.resolve('accountManagerRouters')
 const createGroupRouter = require('./routes/createGroup')
-const searchGroupRouter = require('./routes/SearchGroup')
 const meetingRouter = container.resolve('meetingRouters')
 const dashboardRouter = container.resolve('meetingRouters')
+const requestRouter = container.resolve('requestRouters')
 const { authorization } = require('./middleware/authorization')
 
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'))
@@ -79,7 +80,6 @@ app.use(passport.session())
 app.use(flash())
 
 app.use('/', indexRouter)
-app.use('/', searchGroupRouter)
 app.use('/', accountRouter)
 
 const wrap = middleware => (socket, next) => middleware(socket.request, {}, next)
@@ -135,6 +135,8 @@ app.use('/meeting', authorization, meetingRouter)
 app.use('/', authorization, dashboardRouter)
 app.use('/group', groupRouter)
 app.use('/', voteRouter)
+
+app.use('/request', authorization, requestRouter)
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404))
