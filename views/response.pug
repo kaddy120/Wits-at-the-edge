@@ -2,14 +2,19 @@ extend layout
 
 block content
 
-    h4= title
+    h4= title 
+   
     .row
         - for (var x = 0; x < userMeetings.length; x++)
-                    .col-sm-6
-                        .meeting-card 
-                            h5(id='meeting-header')=groupNames[x].groupName 
-                            p=`Agenda :${userMeetings[x].agenda}`
-                            p=`MeetingTime: ${userMeetings[x].meetingTime}`
-                        div(class='button')
-                            button(type="submit" class="btn btn-sm btn-primary" id="AVAILABLE") AVAILABLE
-                            button(type='submit' class ="btn btn-sm btn-primary" id ="NOT AVAILABLE") NOT AVAILABLE
+                 
+            .col-sm-6
+                .meeting-card 
+                    h5(id='meeting-header')=groupNames[x].groupName 
+                    p=`Agenda :${userMeetings[x].agenda}`
+                    p=`MeetingTime: ${userMeetings[x].meetingTime}`
+                    p=`MeetingCreator: ${user}`
+                div(class='button',id='user')
+                    a(class = 'btn' href=`/meetings/${notifications[x].notificationId}/Available`)
+                        button(type="submit" class="btn btn-sm btn-primary" id="AVAILABLE" ) AVAILABLE
+                    a(class = 'btn' href=`/meetings/${notifications[x].notificationId}/UnAvailable`)
+                        button(type='submit' class ="btn btn-sm btn-primary" id ="NOT AVAILABLE") NOT AVAILABLE

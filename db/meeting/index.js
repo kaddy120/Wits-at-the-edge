@@ -59,5 +59,18 @@ class meetingRepository {
       console.log(err)
     }
   }
+
+  async updateNotification (notificationId, response) {
+    try {
+      const sqlQueries = await utils.loadSqlQueries('meeting')
+      const pool = await this.dbpool
+      await pool.request()
+        .input('response_', sql.Int, response)
+        .input('notificationId', sql.Int, notificationId)
+        .query(sqlQueries.updateNotification)
+    } catch (err) {
+      console.log(err)
+    }
+  }
 }
 module.exports = meetingRepository

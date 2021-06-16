@@ -63,16 +63,28 @@ function meetingRouters ({ groupRepository, meetingRepository }) {
     const getNotifications = await meetingRepository.getAllUserNotifications(user)
     const meetings = []
     const groupNames = []
+    console.log(getNotifications)
     for (let x = 0; x < getNotifications.length; x++) {
       const meeting = await meetingRepository.getAllUserMeetings(getNotifications[x].meetingId)
       const groupName = await groupRepository.getUserGroupName(getNotifications[x].meetingId)
-      console.log(groupName[0])
-      console.log(meeting[0])
       meetings.push(meeting[0])
       groupNames.push(groupName[0])
     }
 
-    res.render('response', { title: 'Respond To a meeting', userMeetings: meetings, groupNames: groupNames })
+    res.render('response', { title: 'Respond To a meeting', userMeetings: meetings, groupNames: groupNames, user: user, notifications: getNotifications })
+  })
+
+  router.get('/meetings/:notificationId/:response', async (req, res, next) => {
+    const notificationId = req.params.notificationId
+    const response = req.params.response
+    if (response === 'Available') {
+      console.log('available')
+      await meetingRepository.updateNotification(notificationId, 1)
+    } else {
+      await meetingRepository.updateNotification(notificationId, -1)
+    }
+
+    res.redirect('/meeting/response')
   })
 
   return router

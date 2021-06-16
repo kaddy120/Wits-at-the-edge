@@ -1,1 +1,1 @@
-select * from [dbo].[sessionNotifications] where userId = @userId
+select * from [dbo].[sessionNotifications] where userId = @userId and response is null
