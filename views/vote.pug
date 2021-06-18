@@ -1,18 +1,20 @@
 extends groupLayout
 
 block content
-      h1=title
-    
+    div(class="container")
+      h3=title
       if message != '**There are currently no pending join requests.'
           ul(class='list-group')
             - for (var x = 0; x < length; x++)
               li(class="list-group-item")
                 strong=`${message[x][0].firstName} ${message[x][0].surname} wants to be a member`
                 form(action=`/vote/${requestId[x]}/${email[x]}/voteChoice/${1}`, method='post')
-                    input(type='submit' name="accept" value="accept" class='btn btn-primary' id='accept')
+                    input(type='submit' name="accept" value="Confirm" class='btn btn-primary' id='accept')
                     |
                     |
-                    input(type='submit' name="decline" value="decline" class='btn btn-outline-dark' id='accept' formaction=`/vote/${requestId[x]}/${email[x]}/voteChoice/${-1}`)
+                    input(type='submit' name="decline" value="Delete" class='btn btn-outline-dark' id='accept' formaction=`/vote/${requestId[x]}/${email[x]}/voteChoice/${-1}`)
       else 
         h4=message
+
+      script(src='/javascript/voted.js')
          
