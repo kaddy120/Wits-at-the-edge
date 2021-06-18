@@ -17,11 +17,14 @@ class voteManager {
     const name = []
     const email = []
     const requestId = []
+    //const remove = await this.votesRepository.removeFromRequest(voter).then(result => {return result.recordset})
+    //console.log(remove[0].requestId)
     if (requestGroup !== 0) {
       for (let i = 0; i < requestGroup.length; i++) {
-        name[i] = await this.votesRepository.getNameOfRequester(requestGroup[i].email).then(result => { return result.recordset })
-        email[i] = requestGroup[i].email
-        requestId[i] = requestGroup[i].requestId
+      
+         name[i] = await this.votesRepository.getNameOfRequester(requestGroup[i].email).then(result => { return result.recordset })
+         email[i] = requestGroup[i].email
+         requestId[i] = requestGroup[i].requestId
       }
       res.render('vote', { title: 'Pending Join Requests', message: name, length: requestId.length, requestId: requestId, email: email })
     } else res.render('vote', { title: 'Pending Join Requests', message: '**There are currently no pending join requests.' })

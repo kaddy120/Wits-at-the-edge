@@ -98,6 +98,20 @@ class votesRepository {
     }
   }
 
+  async removeFromRequest (user) {
+    try {
+      const sqlQueries = await utils.loadSqlQueries('voting')
+      const pool = await this.dbpool
+      const removeItem = await pool.request()
+          .input('userId', sql.VarChar(50), user.email)
+          .query(sqlQueries.removeRequest)
+          console.log(removeItem)
+          return removeItem
+    } catch (err) {
+       console.log(err)
+    }
+  }
+
   async acceptRequest (email, group) {
     try {
       const sqlQueries = await utils.loadSqlQueries('voting')
