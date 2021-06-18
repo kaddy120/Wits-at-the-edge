@@ -174,6 +174,19 @@ class groupRepository {
     }
   }
 
+  async getUserGroups (userId) {
+    try {
+      const pool = await this.dbpool
+      const sqlQueries = await utils.loadSqlQueries('groups')
+      const groups = await pool.request()
+      .input('user', sql.VarChar(50), userId)
+      .query(sqlQueries.getUserGroups)
+      return groups
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   async getUserGroupName (groupId) {
     try {
       const pool = await this.dbpool

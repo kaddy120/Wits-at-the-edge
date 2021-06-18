@@ -1,4 +1,4 @@
-extends layout
+extends groupLayout
 
 block content
       h1=title
@@ -9,10 +9,11 @@ block content
               li
                 a(href="")=`${message[x][0].firstName} ${message[x][0].surname} wants to be a member`
                 form(action=`/vote/${requestId[x]}/${email[x]}/voteChoice/${1}`, method='post')
-                    input(type='submit' name="accept" value="accept" class='btn btn-success btn-sm')
+                    input(type='submit' name="accept" value="accept" class='btn btn-success btn-sm' id='accept')
                     |
                     |
-                    input(type='submit' name="decline" value="decline" class='btn btn-danger btn-sm' formaction=`/vote/${requestId[x]}/${email[x]}/voteChoice/${-1}`)
+                    input(type='submit' name="decline" value="decline" class='btn btn-danger btn-sm' id='accept' formaction=`/vote/${requestId[x]}/${email[x]}/voteChoice/${-1}`)
+                script(src="/javascript/voted.js")
       else 
         h4=message
          

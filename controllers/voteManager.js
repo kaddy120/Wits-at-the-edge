@@ -10,7 +10,7 @@ class voteManager {
 
   async joinRequests (req, res) {
     const voter = req.user
-    const groupId = 58
+    const groupId = req.params.groupId
     const voterGroups = await this.votesRepository.getVoterGroup(voter).then(result => { return result.recordset })
     const requests = await this.votesRepository.getRequestsToJoin().then(result => { return result.recordset })
     const requestGroup = model.relevantRequest(requests, voterGroups, groupId)
@@ -29,7 +29,7 @@ class voteManager {
 
   async placeVote (req, res) {
     const voter = req.user
-    const groupId = 2
+    const groupId = req.params.groupId
     const requestId = req.params.requestId
 
     await this.votesRepository.addVotes(requestId, voter.email, req.params.choice)
