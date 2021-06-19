@@ -28,6 +28,7 @@ faceToFaceButton.addEventListener('click', (e) => {
   const address = document.createElement('input')
   address.className = 'form-control'
   address.id = 'address'
+  address.name = 'address'
   address.type = 'text'
   if (num === 0) {
     div.appendChild(addressLabel)
