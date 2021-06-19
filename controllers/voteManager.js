@@ -26,7 +26,7 @@ class voteManager {
          email[i] = requestGroup[i].email
          requestId[i] = requestGroup[i].requestId
       }
-      res.render('vote', { title: 'Pending Join Requests', message: name, length: requestId.length, requestId: requestId, email: email })
+      res.render('vote', { title: 'Pending Join Requests', message: name, length: requestId.length, requestId: requestId, groupId: groupId })
     } else res.render('vote', { title: 'Pending Join Requests', message: '**There are currently no pending join requests.' })
   }
 
@@ -34,16 +34,16 @@ class voteManager {
     const voter = req.user
     const groupId = req.params.groupId
     const requestId = req.params.requestId
-
-    await this.votesRepository.addVotes(requestId, voter.email, req.params.choice)
+    console.log(groupId)
+    console.log("VOTED")
+ /* await this.votesRepository.addVotes(requestId, voter.email, req.params.choice)
     const voteCount = await this.votesRepository.countVotes(requestId).then(result => { return result.recordset })
     const getNumOfGroupMembers = await this.votesRepository.getNumOfGroupMembers(groupId)
     const counter = model.countVotes(voteCount, getNumOfGroupMembers)
     if (counter === true) {
       await this.votesRepository.acceptRequest(req.params.userId, groupId)
       await this.votesRepository.removeFromJoinRequests(requestId)
-    }
-    res.send('Your vote successfully recorded.')
+    }*/
   }
 }
 
