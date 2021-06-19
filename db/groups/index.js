@@ -141,6 +141,7 @@ class groupRepository {
         .input('meetingTime', sql.DateTime, meeting.time)
         .input('agenda', sql.VarChar(250), meeting.agenda)
         .input('userId', sql.VarChar(50), meeting.userId)
+        .input('address', sql.VarChar(250), meeting.address)
         .query(sqlQueries.createMeeting)
       return getMeeting.recordset
     } catch (err) {

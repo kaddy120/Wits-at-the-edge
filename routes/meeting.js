@@ -47,7 +47,10 @@ function meetingRouters ({ groupRepository, meetingRepository }) {
         const meeting = { ...req.body }
         meeting.userId = email
         meeting.groupId = groupId
-        console.log(meeting)
+        if (!meeting.address) {
+          meeting.address = null
+        }
+        console.log(meeting.address)
         const userMeeting = await groupRepository.createMeeting(meeting)
         const groupMembers = await meetingRepository.getGroupMembers(groupId)
         for (let i = 0; i < groupMembers.length; i++) {
