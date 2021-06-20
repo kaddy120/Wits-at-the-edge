@@ -140,6 +140,19 @@ class votesRepository {
     }
   }
 
+  async getCurrentDate () {
+    try {
+      const sqlQueries = await utils.loadSqlQueries('voting')
+      const pool = await this.dbpool
+      const getDate = await pool.request()
+           .query(sqlQueries.getCurrentDate)
+           console.log(getDate)
+           return getDate
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   async getExpiryDate(date) {
     try {
       const sqlQueries = await utils.loadSqlQueries('voting')
@@ -147,7 +160,6 @@ class votesRepository {
       const expiryDate = await pool.request()
             .input('date', sql.DateTime, date)
             .query(sqlQueries.getExpiryDate)
-            console.log(date)
             return expiryDate
     } catch (err) {
        console.log(err)

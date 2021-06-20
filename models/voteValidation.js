@@ -1,10 +1,13 @@
 
 function relevantRequest(requests, votes) {
-
-    for (i = 0; i < requests.length; i++) {
-        for (j = 0; j < votes.length; j++) {
+    let size_ = requests.length
+    for (let i = 0; i < size_; i++) {
+        for (let j = 0; j < votes.length; j++) {
             if (votes[j].requestId == requests[i].requestId) {
                 requests.splice(i,1)
+                i--
+                size_--
+                break
             }
         }
     }

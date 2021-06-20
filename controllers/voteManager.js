@@ -11,16 +11,32 @@ class voteManager {
   async joinRequests(req, res) {
     const voter = req.user
     const groupId = req.params.groupId
-    const timeStamp = await this.votesRepository.getRequestTimeStamp(groupId).then(result => { return result.recordset })
-    const votes = await this.votesRepository.getUserVotes(voter).then(result => { return result.recordset })
-    const requests = await this.votesRepository.getRequestsToJoin(groupId).then(result => { return result.recordset })
     let expiryDate = []
+    const currentDate = await this.votesRepository.getCurrentDate().then(result => { return result.recordset })
+    let requests = await this.votesRepository.getRequestsToJoin(groupId).then(result => { return result.recordset })
+    // const filteredRequest = requests.filter(request=>{
+    //   const diff = currentDate-request.time_Stamp;
+    //   if( diff<2000*60){
+    //     return true
+    //   }
+    //   else 
+    //   return false;
+
+    //})
     for(var i = 0;i < requests.length;i++) {
       expiryDate[i] = await this.votesRepository.getExpiryDate(requests[i].time_Stamp).then(result => { return result.recordset })
     }
-    
+    let  size_ = expiryDate.length
+    for( var i = 0;i <size_ ;i++){
+      if(expiryDate[i][0].expirydate <= currentDate[0].currentDate){
+        await this.votesRepository.removeFromJoinRequests(requests[i].email)
+     }
+  
+    }
+    requests = await this.votesRepository.getRequestsToJoin(groupId).then(result => { return result.recordset })
+    const votes = await this.votesRepository.getUserVotes(voter).then(result => { return result.recordset })
+    console.log(expiryDate)
     let requestGroup = []
-    console.log("All expiry dates: ", expiryDate)
     if (votes.length == 0)
       requestGroup = requests
     else requestGroup = model.relevantRequest(requests, votes)
