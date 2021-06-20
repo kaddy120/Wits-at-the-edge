@@ -14,16 +14,14 @@ function relevantRequest(requests, votes) {
 function countVotes(voteCount, numOfGroupMembers) {
     let counter = 0
     for (i = 0; i < voteCount.length; i++) {
-        counter = counter + voteCount[i].voteCount
+        if (voteCount[i].voteCount == 1)
+         counter++
     }
      if(counter >= 0.5*numOfGroupMembers)
       return true
     else return false
 }
 
-function getVoterGroup (userId) {
-    
-}
 
 module.exports = {
     relevantRequest,

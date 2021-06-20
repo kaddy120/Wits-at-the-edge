@@ -6,14 +6,28 @@ class votesRepository {
     this.dbpool = dbpool
   }
 
-  async getVoterGroup (voter) {
+  async getRequesteeGroups (voter) {
     try {
       const sqlQueries = await utils.loadSqlQueries('voting')
       const pool = await this.dbpool
       const getGroup = await pool.request()
-        .input('voter', sql.VarChar(50), voter.email)
-        .query(sqlQueries.getVoterGroup)
+        .input('voter', sql.VarChar(50), voter)
+        .query(sqlQueries.getRequesteeGroups)
       return getGroup
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  async getRequesteeEmail (requestId) {
+    try {
+      const sqlQueries = await utils.loadSqlQueries('voting')
+      const pool = await this.dbpool
+      const email = await pool.request()
+          .input('requestId', sql.Int, requestId)
+          .query(sqlQueries.getRequesteeEmail)
+          console.log(email)
+          return email
     } catch (err) {
       console.log(err)
     }
@@ -26,7 +40,6 @@ class votesRepository {
       const votes = await pool.request()
           .input('userId', sql.VarChar(50), userId.email)
           .query(sqlQueries.getUserVotes)
-          console.log(votes)
           return votes
     } catch (err) {
        console.log(err)

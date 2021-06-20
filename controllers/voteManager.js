@@ -14,14 +14,14 @@ class voteManager {
     const votes = await this.votesRepository.getUserVotes(voter).then(result => { return result.recordset })
     const requests = await this.votesRepository.getRequestsToJoin(groupId).then(result => { return result.recordset })
     let requestGroup = []
-    console.log(votes.length)
+
     if (votes.length == 0)
       requestGroup = requests
     else requestGroup = model.relevantRequest(requests, votes)
     const name = []
     const email = []
     const requestId = []
-    console.log("requestGroup: ", requestGroup.length)
+
     if (requestGroup.length !== 0) {
       for (let i = 0; i < requestGroup.length; i++) {
 
@@ -40,13 +40,18 @@ class voteManager {
     console.log(groupId)
     console.log("VOTED")
     await this.votesRepository.addVotes(requestId, voter.email, req.params.choice)
-    /*   const voteCount = await this.votesRepository.countVotes(requestId).then(result => { return result.recordset })
-       const getNumOfGroupMembers = await this.votesRepository.getNumOfGroupMembers(groupId)
-       const counter = model.countVotes(voteCount, getNumOfGroupMembers)
-       if (counter === true) {
-         await this.votesRepository.acceptRequest(req.params.userId, groupId)
+    const voteCount = await this.votesRepository.countVotes(requestId).then(result => { return result.recordset })
+    const getNumOfGroupMembers = await this.votesRepository.getNumOfGroupMembers(groupId)
+    const counter = model.countVotes(voteCount, getNumOfGroupMembers)
+    const email = await this.votesRepository.getRequesteeEmail(requestId).then( result => {return result.recordset})
+    console.log(email)
+    const requesteeGroups = await this.votesRepository.getRequesteeGroups(email[0].email).then(result => {return result.recordset})
+    console.log(requesteeGroups)
+    console.log(requesteeGroups.length)
+    if (counter === true && requesteeGroups.length < 10) {
+         await this.votesRepository.acceptRequest(email, groupId)
          await this.votesRepository.removeFromJoinRequests(requestId)
-       }*/
+       }
   }
 }
 
