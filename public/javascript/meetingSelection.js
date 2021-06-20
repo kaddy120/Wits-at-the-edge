@@ -3,7 +3,7 @@ let num = 0
 const onlineButton = document.getElementById('online')
 const faceToFaceButton = document.getElementById('face-to-face')
 onlineButton.addEventListener('click', (e) => {
-  onlineButton.style.background = 'red'
+  onlineButton.style.background = '#e60000'
   faceToFaceButton.style.background = 'DodgerBlue'
 
   if (num !== 0) {
@@ -18,7 +18,8 @@ onlineButton.addEventListener('click', (e) => {
   document.getElementById('submit').disabled = false
 })
 faceToFaceButton.addEventListener('click', (e) => {
-  faceToFaceButton.style.background = 'red'
+  document.getElementById('submit').disabled = true
+  faceToFaceButton.style.background = '#e60000'
   onlineButton.style.background = 'DodgerBlue'
   const div = document.getElementById('address-div')
   const addressLabel = document.createElement('label')
@@ -35,6 +36,13 @@ faceToFaceButton.addEventListener('click', (e) => {
     div.appendChild(address)
     num++
   }
+  const addresslister = document.getElementById('address')
 
-  document.getElementById('submit').disabled = false
+  addresslister.addEventListener('input', (e) => {
+    if (addresslister.value !== '') {
+      document.getElementById('submit').disabled = false
+    } else {
+      document.getElementById('submit').disabled = true
+    }
+  })
 })
