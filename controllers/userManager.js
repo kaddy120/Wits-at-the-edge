@@ -20,13 +20,11 @@ class userManager {
       return res.status(400).json({ errors: 'the email already exists' })
     }
     console.log(user)
-    res.render('address', {title: 'Fill in Address', user})
-    //res.redirect(`/address/name/${user.name}/surname/${user.surname}/email/${user.email}/school/${user.school}/YOS/${user.yearOfStudy}/Password/${user.password}`)
-
+    res.render('address', { title: 'Fill in Address', user })
+    // res.redirect(`/address/name/${user.name}/surname/${user.surname}/email/${user.email}/school/${user.school}/YOS/${user.yearOfStudy}/Password/${user.password}`)
   }
 
   async addUser (req, res, next) {
-    
     const user = { ...req.body }
     const address = `${req.body.streetAddress}, ${req.body.suburb}, ${req.body.city}, ${req.body.postalCode}`
     console.log(user)
@@ -38,23 +36,22 @@ class userManager {
       }
       bcrypt.hash(user.password, salt, function (err, hash) {
         user.password = hash
-        
+
         repo.addUser(user).then(addUser => {
           repo.addUserAddress(user.email, address)
-           
         }).catch(err => {
           console.log(err)
         })
-        
+
         if (err) {
           console.log(err)
         }
-     })
-     user.password = req.body.password;
-     req.login(user, function(err) {
-      if (err) { return next(err); }
-      return res.redirect('/');
-    });
+      })
+      user.password = req.body.password
+     req.login(user, function (err) {
+        if (err) { return next(err) }
+        return res.redirect('/')
+    })
    })
   }
 }
