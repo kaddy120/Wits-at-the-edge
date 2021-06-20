@@ -35,12 +35,15 @@ function meetingRouters ({ groupRepository, meetingRepository }) {
         const meeting = { ...req.body }
         meeting.userId = email
         meeting.groupId = groupId
+        if (!meeting.address) {
+          meeting.address = null
+        }
         const userMeeting = await groupRepository.createMeeting(meeting)
         const groupMembers = await meetingRepository.getGroupMembers(groupId)
         for (let i = 0; i < groupMembers.length; i++) {
           await meetingRepository.addMeetings(groupMembers[i], userMeeting[0].meetingId)
         }
-        res.redirect('/group')
+        res.redirect('/')
       } else {
         res.status(404).json({ message: 'you are not a group member, you cannot create a meeting' })
       }

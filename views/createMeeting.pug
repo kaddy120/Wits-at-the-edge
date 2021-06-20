@@ -4,10 +4,17 @@ block content
     div.
     h4= title
     form(action="/meeting/create" method="POST")
+        .mb-3 
+            label(for="button" class='form-label') Meeting Type 
+            button(type='button' class='btn btn-primary' id='online') Online
+            button(type='button' class='btn btn-primary' id='face-to-face') face-to-face
         div.mb-3 
             label(for="meetingDate" class="form-label") Meeeting Date
             input(type="datetime-local"  name="time" class="form-control" id="date")
         div.mb-3 
             label(for="surname" class="form-label") Meeting agenda
             textarea(type="text" name="agenda" class="form-control" id="exampleInputEmail1")
-        button(type="submit" class="btn btn-primary") Arrange meeting
+        div(class='mb-3' id='address-div') 
+         
+        button(type="submit" disabled=true class="btn btn-primary" id='submit') Arrange meeting
+    script(src="/javascript/meetingSelection.js")

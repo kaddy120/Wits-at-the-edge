@@ -2,7 +2,7 @@ extend layout
 
 block content
     div.
-    h4= title
+    h4 Create a new account
     form(action="/signup" method="POST")
         div.mb-3 
             label(for="name" class="form-label") First name
@@ -14,11 +14,15 @@ block content
             label(for="email" class="form-label") Email address
             input(type="text" placeholder="e.g kaddy120@gmail.com" name="email" class="form-control" id="exampleInputEmail1")
         div.mb-3 
-            label(for="exampleInputEmail1" class="form-label") School
-            input(type="text" placeholder="e.g 1416262" name="school" class="form-control" id="exampleInputEmail1")
+            select( name="school" class="form-select")
+                <option selected>Select your field of study</option>
+                each school in schools
+                    option(value=`${school}`)= school
         div.mb-3 
-            label(for="yearOfStudy" class="form-label") Year of study
-            input(type="text" placeholder="e.g first year" name="yearOfStudy" class="form-control" id="exampleInputEmail1")
+            select( name="yearOfStudy" class="form-select")
+                <option selected>Select your year of study</option>
+                each year in YOS
+                    option(value=`${year}`)= year
         div.mb-3
             label(for="password" class="form-label") Password
             input(type="text" placeholder="password" name="password" id="password" class="form-control")
