@@ -51,3 +51,9 @@ CREATE TABLE dbo.[sessionNotifications](
     [userId] VARCHAR(250) NOT NULL,
     [response] [int]  NULL
 )
+CREATE TABLE dbo.[userTracking](
+    [trackingId] int IDENTITY(1,1) PRIMARY KEY CLUSTERED NOT NULL,
+    activityTime datetime NOT NULL,
+    [userId] VARCHAR(250) NOT NULL,    
+    activity VARCHAR(300) NOT NULL
+)

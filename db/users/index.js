@@ -39,7 +39,7 @@ class userRepository {
         .input('thumbnail', sql.VarChar(MAX), user.thumbnail)
         .input('passwordHash', sql.VarChar(MAX), user.password)
         .input('yearOfStudy', sql.Char(10), user.yearOfStudy)
-        .query(sqlQueries.addUser) 
+        .query(sqlQueries.addUser)
       return insertUser.recordset
     } catch (err) {
       console.log(err)
@@ -47,14 +47,27 @@ class userRepository {
   }
 
   async addUserAddress (userId, address) {
-    try{
+    try {
       const sqlQueries = await utils.loadSqlQueries('users')
       const pool = await this.pools
       const insertUser = await pool.request()
         .input('email', sql.VarChar(50), userId)
         .input('address', sql.VarChar(150), address)
         .query(sqlQueries.addUserAddress)
-        console.log("addes")
+      console.log('addes')
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  async addTracking (userId, response) {
+    try {
+      const sqlQueries = await utils.loadSqlQueries('users')
+      const pool = await this.dbpool
+      await pool.request()
+        .input('userID', sql.Int, userId)
+        .input('response', sql.Int, response)
+        .query(sqlQueries.addTracking)
     } catch (err) {
       console.log(err)
     }
