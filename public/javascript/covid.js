@@ -116,5 +116,3 @@ button.addEventListener('click', function () {
   if (risky === false) window.alert('Access allowed, please follow necessary precautions')
   console.log(risky)
 }, false)
-
-console.log(response)
