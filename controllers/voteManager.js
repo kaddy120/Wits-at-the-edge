@@ -27,12 +27,13 @@ class voteManager {
       expiryDate[i] = await this.votesRepository.getExpiryDate(requests[i].time_Stamp).then(result => { return result.recordset })
     }
     let  size_ = expiryDate.length
+    
     for( var i = 0;i <size_ ;i++){
       if(expiryDate[i][0].expirydate <= currentDate[0].currentDate){
         await this.votesRepository.removeFromJoinRequests(requests[i].email)
-     }
-  
+     } 
     }
+
     requests = await this.votesRepository.getRequestsToJoin(groupId).then(result => { return result.recordset })
     const votes = await this.votesRepository.getUserVotes(voter).then(result => { return result.recordset })
     console.log(expiryDate)
