@@ -11,24 +11,7 @@ class voteManager {
   async joinRequests(req, res) {
     const voter = req.user
     const groupId = req.params.groupId
-    // const filteredRequest = requests.filter(request=>{
-    //   const diff = currentDate-request.time_Stamp;
-    //   if( diff<2000*60){
-    //     return true
-    //   }
-    //   else 
-    //   return false;
-
-    //})
-    /*let  size_ = expiryDate.length
-    
-    for( var i = 0;i <size_ ;i++){
-      if(expiryDate[i][0].expirydate <= currentDate[0].currentDate){
-        await this.votesRepository.removeFromJoinRequests(requests[i].email)
-     } 
-    }*/
-
-    requests = await this.votesRepository.getRequestsToJoin(groupId).then(result => { return result.recordset })
+    const requests = await this.votesRepository.getRequestsToJoin(groupId).then(result => { return result.recordset })
     const votes = await this.votesRepository.getUserVotes(voter).then(result => { return result.recordset })
   
     let requestGroup = []

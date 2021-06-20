@@ -126,6 +126,19 @@ class votesRepository {
     }
   }
 
+  async getNumOfPeopleVoted (requestId) {
+    try {
+      const sqlQueries = await utils.loadSqlQueries('voting')
+      const pool = await this.dbpool
+      const people = await pool.request()
+           .input('request_id', sql.Int, requestId)
+           .query(sqlQueries.getNumOfPeopleVoted)
+           return people
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   async getAllJoinRequests () {
     try {
       const sqlQueries = await utils.loadSqlQueries('voting')
