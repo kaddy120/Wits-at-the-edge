@@ -19,11 +19,26 @@ class votesRepository {
     }
   }
 
-  async getRequestsToJoin () {
+  async getUserVotes (userId) {
+    try {
+      const sqlQueries = await utils.loadSqlQueries('voting')
+      const pool = await this.dbpool
+      const votes = await pool.request()
+          .input('userId', sql.VarChar(50), userId.email)
+          .query(sqlQueries.getUserVotes)
+          console.log(votes)
+          return votes
+    } catch (err) {
+       console.log(err)
+    }
+  }
+
+  async getRequestsToJoin (groupId) {
     try {
       const sqlQueries = await utils.loadSqlQueries('voting')
       const pool = await this.dbpool
       const getRequests = await pool.request()
+        .input('groupId', sql.VarChar(50), groupId)
         .query(sqlQueries.getRequestsToJoin)
       return getRequests
     } catch (err) {
