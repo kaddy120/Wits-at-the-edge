@@ -13,6 +13,8 @@ block content
                     p=`Agenda :${userMeetings[x].agenda}`
                     p=`MeetingTime: ${userMeetings[x].meetingTime}`
                     p=`MeetingCreator: ${user}`
+                -if(userMeetings[x].address !== null)
+                    p=`Meeting Address: ${userMeetings[x].address}`
                 -if(notifications[x].response === null)
                     div(class='button',id='user')
                         a(class = 'btn' href=`/meetings/${notifications[x].notificationId}/Available`)
