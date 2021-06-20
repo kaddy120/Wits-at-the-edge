@@ -2,10 +2,11 @@ const express = require('express')
 const router = express.Router()
 const { body } = require('express-validator')
 const { alreadyLogedin } = require('../middleware/authorization')
+const constants = require('../constants')
 
-function accountManagerRouters({ userManager, passport }) {
+function accountManagerRouters ({ userManager, passport }) {
   router.get('/signup', alreadyLogedin, function (req, res, next) {
-    res.render('signup', { title: 'Sign-Up page' })
+    res.render('signup', constants)
   })
 
   router.post('/address', alreadyLogedin, userManager.addUser.bind(userManager))
@@ -14,6 +15,18 @@ function accountManagerRouters({ userManager, passport }) {
     body('name', 'Name is required').notEmpty(),
     body('surname', 'Surname is required').notEmpty(),
     body('email', 'Enter a valid email address').isEmail(),
+    body('yearOfStudy').custom((value, { req }) => {
+      if (!constants.YOS.includes(value)) {
+        throw new Error('invalid year of study')
+      }
+      return true
+    }),
+    body('school').custom((value, { req }) => {
+      if (!constants.schools.includes(value)) {
+        throw new Error('invalid study field')
+      }
+      return true
+    }),
     body('password', 'password cannot be empty').notEmpty(),
     body('password1').custom((value, { req }) => {
       if (value !== req.body.password) {
