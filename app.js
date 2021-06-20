@@ -33,6 +33,8 @@ const groupRouter = require('./routes/group')
 const passport = container.resolve('passport')
 const configPassport = require('./config/passportConfig')
 configPassport(user, passport)
+const joinExpiryDate = require('./services/groupJoinRequests')
+setInterval(joinExpiryDate.joinRequestExpiryDate, 5000);
 
 const indexRouter = require('./routes/index')
 const accountRouter = container.resolve('accountManagerRouters')
