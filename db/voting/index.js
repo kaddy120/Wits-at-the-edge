@@ -146,7 +146,7 @@ class votesRepository {
       const pool = await this.dbpool
       const insertNewMember = await pool.request()
         .input('email', sql.VarChar(50), email)
-        .input('group', sql.Int, group)
+        .input('groupId', sql.Int, group)
         .query(sqlQueries.addToGroup)
     } catch (err) {
       console.log(err)

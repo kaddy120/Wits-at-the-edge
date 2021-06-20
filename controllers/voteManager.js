@@ -43,15 +43,15 @@ class voteManager {
     const voteCount = await this.votesRepository.countVotes(requestId).then(result => { return result.recordset })
     const getNumOfGroupMembers = await this.votesRepository.getNumOfGroupMembers(groupId)
     const counter = model.countVotes(voteCount, getNumOfGroupMembers)
-    const email = await this.votesRepository.getRequesteeEmail(requestId).then( result => {return result.recordset})
+    const email = await this.votesRepository.getRequesteeEmail(requestId).then(result => { return result.recordset })
     console.log(email)
-    const requesteeGroups = await this.votesRepository.getRequesteeGroups(email[0].email).then(result => {return result.recordset})
+    const requesteeGroups = await this.votesRepository.getRequesteeGroups(email[0].email).then(result => { return result.recordset })
     console.log(requesteeGroups)
     console.log(requesteeGroups.length)
     if (counter === true && requesteeGroups.length < 10) {
-         await this.votesRepository.acceptRequest(email, groupId)
-         await this.votesRepository.removeFromJoinRequests(requestId)
-       }
+      await this.votesRepository.acceptRequest(email[0].email, groupId)
+      await this.votesRepository.removeFromJoinRequests(requestId)
+    }
   }
 }
 
