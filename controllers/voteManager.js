@@ -11,10 +11,16 @@ class voteManager {
   async joinRequests(req, res) {
     const voter = req.user
     const groupId = req.params.groupId
+    const timeStamp = await this.votesRepository.getRequestTimeStamp(groupId).then(result => { return result.recordset })
     const votes = await this.votesRepository.getUserVotes(voter).then(result => { return result.recordset })
     const requests = await this.votesRepository.getRequestsToJoin(groupId).then(result => { return result.recordset })
+    let expiryDate = []
+    for(var i = 0;i < requests.length;i++) {
+      expiryDate[i] = await this.votesRepository.getExpiryDate(requests[i].time_Stamp).then(result => { return result.recordset })
+    }
+    
     let requestGroup = []
-
+    console.log("All expiry dates: ", expiryDate)
     if (votes.length == 0)
       requestGroup = requests
     else requestGroup = model.relevantRequest(requests, votes)

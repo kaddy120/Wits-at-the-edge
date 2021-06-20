@@ -140,6 +140,35 @@ class votesRepository {
     }
   }
 
+  async getExpiryDate(date) {
+    try {
+      const sqlQueries = await utils.loadSqlQueries('voting')
+      const pool = await this.dbpool
+      const expiryDate = await pool.request()
+            .input('date', sql.DateTime, date)
+            .query(sqlQueries.getExpiryDate)
+            console.log(date)
+            return expiryDate
+    } catch (err) {
+       console.log(err)
+    }
+  }
+  
+  async getRequestTimeStamp (groupId) {
+     try {
+      const sqlQueries = await utils.loadSqlQueries('voting')
+      const pool = await this.dbpool
+      const timeStamp = await pool.request()
+           .input('group_Id', sql.Int, groupId)
+           .query(sqlQueries.getRequestTimeStamp)
+           console.log(groupId)
+           console.log(timeStamp)
+           return timeStamp
+     } catch (err) {
+       console.log(err)
+     }
+  }
+
   async acceptRequest (email, group) {
     try {
       const sqlQueries = await utils.loadSqlQueries('voting')
