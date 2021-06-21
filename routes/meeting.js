@@ -81,8 +81,9 @@ function meetingRouters ({ groupRepository, meetingRepository }) {
     const notificationId = req.params.notificationId
     const response = req.params.response
     if (response === 'Available') {
-      console.log('available')
       await meetingRepository.updateNotification(notificationId, 1)
+    } else if (response === 'risky') {
+      await meetingRepository.updateNotification(notificationId, 2)
     } else {
       await meetingRepository.updateNotification(notificationId, -1)
     }

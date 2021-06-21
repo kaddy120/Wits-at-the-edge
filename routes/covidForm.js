@@ -7,8 +7,7 @@ router.get('/covidForm/:notificatonId', function (req, res, next) {
 router.post('/covidForm/:notificatonId', (req, res, next) => {
   const response = userResponse.covidResponse(req.body)
   if (response === 'true') {
-    alert('You are not attending the meeting due to the high risk of covid as per answers on the  covid form!!!!')
-    res.redirect(`/meetings/${req.params.notificatonId}/unAvailable`)
+    res.redirect(`/meetings/${req.params.notificatonId}/risky`)
   } else if (response === 'false') {
     res.redirect(`/meetings/${req.params.notificatonId}/Available`)
   } else {

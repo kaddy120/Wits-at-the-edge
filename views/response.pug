@@ -15,6 +15,8 @@ block content
                     p=`MeetingCreator: ${user}`
                 -if(userMeetings[x].address !== null)
                     p=`Meeting Address: ${userMeetings[x].address}`
+                -if(notifications[x].response === 2)
+                    p='Meeting Response: Not Available due to high risk of covid'
                 -if(notifications[x].response === null)
                     div(class='button',id='user')
                         -if(userMeetings[x].address !== null)
