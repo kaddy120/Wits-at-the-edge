@@ -18,6 +18,7 @@ class voteManager {
     if (votes.length == 0)
       requestGroup = requests
     else requestGroup = model.relevantRequest(requests, votes)
+    console.log(requestGroup)
     const name = []
     const email = []
     const requestId = []
