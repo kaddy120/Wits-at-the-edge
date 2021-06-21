@@ -8,7 +8,7 @@ block content
         - for (var x = 0; x < userMeetings.length; x++)
                  
             .col-sm-6
-                .meeting-card 
+                .meeting 
                     h5(id='meeting-header')=groupNames[x].groupName 
                     p=`Agenda :${userMeetings[x].agenda}`
                     p=`MeetingTime: ${userMeetings[x].meetingTime}`
@@ -17,7 +17,12 @@ block content
                     p=`Meeting Address: ${userMeetings[x].address}`
                 -if(notifications[x].response === null)
                     div(class='button',id='user')
-                        a(class = 'btn' href=`/meetings/${notifications[x].notificationId}/Available`)
-                            button(type="submit" class="btn btn-sm btn-primary" id="AVAILABLE" ) AVAILABLE
+                        -if(userMeetings[x].address !== null)
+                            a(class = 'btn' href=`/covidForm/${notifications[x].notificationId}`)
+                                button(type="submit" class="btn btn-sm btn-primary" id="AVAILABLE" ) AVAILABLE
+                        -if(userMeetings[x].address === null)
+                            a(class = 'btn' href=`/meetings/${notifications[x].notificationId}/Available`)
+                                button(type="submit" class="btn btn-sm btn-primary" id="AVAILABLE" ) AVAILABLE
+
                         a(class = 'btn' href=`/meetings/${notifications[x].notificationId}/UnAvailable`)
                             button(type='submit' class ="btn btn-sm btn-primary" id ="NOT AVAILABLE") NOT AVAILABLE

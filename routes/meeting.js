@@ -40,8 +40,8 @@ function meetingRouters ({ groupRepository, meetingRepository }) {
         res.redirect(400, '/meeting/create')
       }
 
-      const email = 'kaddy120@gmail.com'
-      const groupId = 2
+      const email = 'finalTest@gmail.com'
+      const groupId = 58
 
       if (await groupRepository.userIsMember(email, groupId)) {
         const meeting = { ...req.body }
@@ -62,14 +62,14 @@ function meetingRouters ({ groupRepository, meetingRepository }) {
     })
 
   router.get('/response', async (req, res, next) => {
-    const user = 'kaddy120@gmail.com'
+    const user = 'finalTest@gmail.com'
     const getNotifications = await meetingRepository.getAllUserNotifications(user)
     const meetings = []
     const groupNames = []
     console.log(getNotifications)
     for (let x = 0; x < getNotifications.length; x++) {
       const meeting = await meetingRepository.getAllUserMeetings(getNotifications[x].meetingId)
-      const groupName = await groupRepository.getUserGroupName(getNotifications[x].meetingId)
+      const groupName = await groupRepository.getUserGroupName(meeting[0].groupId)
       meetings.push(meeting[0])
       groupNames.push(groupName[0])
     }
