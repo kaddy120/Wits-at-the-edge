@@ -1,3 +1,3 @@
 INSERT INTO [dbo].[userTracking] (activityTime
       ,userId
-      ,activity) VALUES (getdate(),@userId,@response)
+      ,activity,groupId) VALUES (getdate(),@userId,@response,@groupId)

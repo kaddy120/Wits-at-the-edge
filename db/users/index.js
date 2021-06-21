@@ -60,13 +60,14 @@ class userRepository {
     }
   }
 
-  async addTracking (userId, response) {
+  async addTracking (userId, response, groupId) {
     try {
       const sqlQueries = await utils.loadSqlQueries('users')
       const pool = await this.dbpool
       await pool.request()
         .input('userID', sql.Int, userId)
         .input('response', sql.Int, response)
+        .input('groupId', sql.Int, groupId)
         .query(sqlQueries.addTracking)
     } catch (err) {
       console.log(err)
