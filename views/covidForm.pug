@@ -7,9 +7,9 @@ head
   script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js')
   script(src='https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js')
   script(src='https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js')
-  script(defer='' src='/javascript/covid.js')
   // JavaScript File that will dynamically change the webpage
-h5
+form(action=`/covidForm/${notificationId}`, method="post") 
+  h5
   | Department of Health Covid19 24-Hour Hotline Number: 0800 029 999 and WhatsApp number: 0600 12 3456
   h5
     | Please complete this daily self-screening questionnaire before leaving home and before coming onto Campus. 
@@ -43,72 +43,72 @@ h5
                             | 1. Are you suffering from fever / high temperature or have temperature fluctuations?
                           td
                             | Yes
-                            input#feverYes(type='radio' name='fever')
+                            input#feverYes(type='radio' name='feverYes')
                             |   No
-                            input#feverNo(type='radio' name='fever')
+                            input#feverNo(type='radio' name='feverNo')
                         tr
                           td 2.Do you have a dry cough?
                           td
                             | Yes
-                            input#coughYes(type='radio' name='cough')
+                            input#coughYes(type='radio' name='coughYes')
                             |  No
-                            input#coughNo(type='radio' name='cough')
+                            input#coughNo(type='radio' name='coughNo')
                         tr
                           td 3.Do you have a sore throat?
                           td
                             | Yes
-                            input#throatYes(type='radio' name='throat')
+                            input#throatYes(type='radio' name='throatYes')
                             |  No
-                            input#throatNo(type='radio' name='throat')
+                            input#throatNo(type='radio' name='throatNo')
                         tr
                           td 4.Do you have redness of eyes?
                           td
                             | Yes
-                            input#eyesYes(type='radio' name='eyes')
+                            input#eyesYes(type='radio' name='eyesYes')
                             |  No
-                            input#eyesNo(type='radio' name='eyes')
+                            input#eyesNo(type='radio' name='eyesNo')
                         tr
                           td 5.Do you experience shortness of breath/difficulty in breathing?
                           td
                             | Yes
-                            input#breathYes(type='radio' name='breath')
+                            input#breathYes(type='radio' name='breathYes')
                             |  No
-                            input#breathNo(type='radio' name='breath')
+                            input#breathNo(type='radio' name='breathNo')
                         tr
                           td 6.Have you got unusual body aches/muscle pain?
                           td
                             | Yes
-                            input#painYes(type='radio' name='muscle')
+                            input#painYes(type='radio' name='painYes')
                             |  No
-                            input#painNo(type='radio' name='muscle')
+                            input#painNo(type='radio' name='painNo')
                         tr
                           td 7. Do you experience a loss of smell / taste?
                           td
                             | Yes
-                            input#smellYes(type='radio' name='smell')
+                            input#smellYes(type='radio' name='smellYes')
                             |  No
-                            input#smellNo(type='radio' name='smell')
+                            input#smellNo(type='radio' name='smellNo')
                         tr
                           td 8.Are you nausea and/or do you experience unusual vomiting?
                           td
                             | Yes
-                            input#vomitYes(type='radio' name='nausea')
+                            input#vomitYes(type='radio' name='vomitYes')
                             |  No
-                            input#vomitNo(type='radio' name='nausea')
+                            input#vomitNo(type='radio' name='vomitNo')
                         tr
                           td 9.Have you got diarrhea? 
                           td
                             | Yes
-                            input#diarrheaYes(type='radio' name='diarrhea')
+                            input#diarrheaYes(type='radio' name='diarrheaYes')
                             |  No
-                            input#diarrheaNo(type='radio' name='diarrhea')
+                            input#diarrheaNo(type='radio' name='diarrheaNo')
                         tr
                           td 10.Do you suffer from fatigue/ physical weakness/ tiredness? 
                           td
                             | Yes
-                            input#fatigueYes(type='radio' name='fatigue')
+                            input#fatigueYes(type='radio' name='fatigueYes')
                             |  No
-                            input#fatigueNo(type='radio' name='fatigue')
+                            input#fatigueNo(type='radio' name='fatigueNo')
                     // Section B of the form starts Here
                 .container
                   h3
@@ -123,9 +123,9 @@ h5
                           td 1.In the past 10 days have you tested positive for COVID-19?
                           td
                             | Yes
-                            input#daysYes(type='radio' name='test')
+                            input#daysYes(type='radio' name='daysYes')
                             |  No
-                            input#daysNo(type='radio' name='test')
+                            input#daysNo(type='radio' name='daysNo')
                         tr
                           td
                             | 2.In the past 10 days were you exposed* to someone who is positively diagnosed
@@ -134,9 +134,9 @@ h5
                             | infected person&rsquo;s company AND being less than 1.5m apart.
                           td
                             | Yes 
-                            input#exposureYes(type='radio' name='exposure')
+                            input#exposureYes(type='radio' name='exposureYes')
                             |  No
-                            input#exposureNo(type='radio' name='exposure')
+                            input#exposureNo(type='radio' name='exposureNo')
                     // Section C of the form
                     .container
                       h3
@@ -154,16 +154,16 @@ h5
                                 | disease, or any other chronic illness that could compromise one&rsquo;s immune system?
                               td
                                 | Yes
-                                input#chronicYes(type='radio' name='chronic')
+                                input#chronicYes(type='radio' name='chronicYes')
                                 |  No
-                                input#chronicNo(type='radio' name='chronic')
+                                input#chronicNo(type='radio' name='chronicNo')
                             tr
                               td Are you 60 years of age or older?
                               td
                                 | Yes
-                                input#ageYes(type='radio' name='age')
+                                input#ageYes(type='radio' name='ageYes')
                                 |  No
-                                input#ageNo(type='radio' name='age')
+                                input#ageNo(type='radio' name='ageNo')
                         p
                           | If you answered &ldquo;YES&rdquo; to any of the questions mentioned in questions A1 to A10 and B1 &amp; B2 then:
                           | i). Don&rsquo;t attempt to enter Campus. ii). Consult your Healthcare Worker to seek advice. iii). Urgently notify your
@@ -180,4 +180,4 @@ h5
                           | whether your responses require any further intervention).
                         p
                           | Notify Campus Health &amp; Wellness Centre ASAP if your status in Sections A, B or C changes at any time.
-                        button#submit(type='button') Submit
+                        button#submit(type='submit') Submit
