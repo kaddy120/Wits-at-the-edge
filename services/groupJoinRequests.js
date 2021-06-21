@@ -11,9 +11,9 @@ async function joinRequestExpiryDate() {
     let requesteeGroups
     let requests = await votesRepository.getAllJoinRequests().then(result => { return result.recordset })
     const filteredRequest = requests.filter(request => {
-        return moment().diff(request.time_Stamp, 'hours') < 48
+        return -moment().diff(request.time_Stamp, 'hours') > 48
     })
-  
+    console.log(filteredRequest)
     for (var i = 0; i < filteredRequest.length; i++) {
         votes = await votesRepository.getNumOfPeopleVoted(filteredRequest[i].requestId).then(result => { return result.recordset })
         getNumOfGroupMembers = await votesRepository.getNumOfGroupMembers(filteredRequest[i].groupId)
@@ -30,8 +30,6 @@ async function joinRequestExpiryDate() {
           await votesRepository.removeFromJoinRequests(filteredRequest[i].requestId)
        }
     }
-
-    //console.log(filteredRequest)
 }
 
 module.exports = { joinRequestExpiryDate }
