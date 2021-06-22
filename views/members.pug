@@ -1,17 +1,31 @@
 extends groupLayout
 
 block content
-   link(rel='stylesheet', href='/stylesheets/groupMembers.css')
-   div(class="container")
-      h3=title
+   meta(charset="utf-8")
+   meta(name="viewport" content="width=device-width, initial-scale=1")
+   link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css")
+   script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js")
+   script(src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js")
+   
+   h3=title
           ul(class='list-group' id="list-parent")
             - for (var x = 0; x < members.length; x++)
               li(class="list-group-item" style="font-size:15px" id="list")
-                 img(src=image width="50" height="50")
-                 |
-                 |
-                 a(href='#')=`${members[x].firstName} ${members[x].surname}`
-                
+                div(class="container")
+                  p=`${members[x].firstName} ${members[x].surname}`
+                  button(type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal")  Terminate Member
+                  div(id="myModal" class="modal fade" role="dialog")
+                      div(class="modal-dialog")
+                          div(class="modal-content")
+                             div(class="modal-header")
+                                button(type="button" class="close" data-dismiss="modal") &times;
+                        
+                           
+                             div(class="modal-body")
+                                textarea(name="", cols="30", rows="10", placeholder="Provide reason for termination")
+                             div(class="modal-footer")
+                                button(type="button" class="btn btn-primary" data-dismiss="modal") Submit
+                           
       
 
    script(src='/javascript/members.js')

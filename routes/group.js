@@ -24,9 +24,12 @@ router.get('/members/:groupId', async (req, res) => {
   const members = await groupRepository.getGroupMembers(req.params.groupId).then(result => {return result.recordset})
   console.log(members)
   const profile = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtNWVnKZZfy-1CLo75eO5vLhTWFZyeyc7QaI6GgdSalXDIJOCA6t0DSdDDMabrTOdjdYs&usqp=CAU"
-  res.render('members', {title: 'Group Mmbers', members: members, image: profile})
+  res.render('members', {title: 'Group Members', members: members, image: profile, groupId: req.params.groupId})
 })
 
+router.get('/members/:groupId/:user', async (req, res) => {
+   res.render('groupMember', {title: req.params.user, groupId: req.params.groupId})
+})
 
 router.get('/all/:pageNo', async (req, res) => {
   const groupsPerPage = 10
