@@ -19,6 +19,13 @@ router.get('/:groupId', async (req, res) => {
   res.render('groupHomePage', { title: 'Group Home Page', groupName: groupName[0].groupName, groupId: req.params.groupId })
 })
 
+
+router.get('/members/:groupId', async (req, res) => {
+  const members = await groupRepository.getGroupMembers(req.params.groupId).then(result => {return result.recordset})
+  console.log(members)
+  res.render('members', {title: 'Group Mmbers', members: members})
+})
+
 router.get('/all/:pageNo', async (req, res) => {
   const groupsPerPage = 10
   const offset = groupsPerPage * (req.params.pageNo - 1)
