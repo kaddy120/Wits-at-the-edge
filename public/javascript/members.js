@@ -1,17 +1,12 @@
-const items = document.getElementsByClassName('list-group-item')
-console.log(items[0].lastChild)
+const inputText = document.getElementById('terminateReason')
+const submit = document.getElementById('submit')
+console.log(inputText)
 
-for (i of items) {
-    i.lastChild.addEventListener("click", async function (e) {
-        e.preventDefault()
-        this.parentNode.appendChild(form);
-        try {
-            const response = await fetch(`#`, {
-                method: 'get',
-            });
-            console.log('Completed!', response);
-        } catch (err) {
-            console.error(`Error: ${err}`);
-        }
-    })
-}
+inputText.addEventListener('input', function (e) {
+      e.preventDefault()
+      if(inputText.value.length != 0){
+        submit.disabled = false
+      } 
+      else submit.disabled = true
+})
+
