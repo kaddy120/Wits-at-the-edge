@@ -1,4 +1,17 @@
 extends groupLayout
 
 block content
-   h3=title
+   link(rel='stylesheet', href='/stylesheets/groupMembers.css')
+   div(class="container")
+      h3=title
+          ul(class='list-group' id="list-parent")
+            - for (var x = 0; x < members.length; x++)
+              li(class="list-group-item" style="font-size:15px" id="list")
+                 img(src=image width="50" height="50")
+                 |
+                 |
+                 a(href='#')=`${members[x].firstName} ${members[x].surname}`
+                
+      
+
+   script(src='/javascript/members.js')
