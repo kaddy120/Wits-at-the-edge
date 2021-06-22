@@ -201,6 +201,20 @@ class groupRepository {
     }
   }
 
+  async terminateRequest (reason, email) {
+     try {
+      const pool = await this.dbpool
+      const sqlQueries = await utils.loadSqlQueries('groups')
+      const insertRecord = await pool.request()
+          .input('email', sql.VarChar(50), email)
+          .input('reason', sql.VarChar(500), reason)
+          .query(sqlQueries.terminateRequest)
+
+     } catch (err) {
+
+     }
+  }
+
   async getGroupMembers (groupId) {
     try {
       const pool = await this.dbpool

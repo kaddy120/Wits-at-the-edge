@@ -2,7 +2,7 @@ const inputText = document.getElementById('terminateReason')
 const submit = document.getElementById('submit')
 const items = document.getElementsByClassName('list-group-item')
 console.log(items[0].firstChild.children[1].nextSibling)
-// lastChild.firstChild.firstChild.children[2].firstChild
+
 inputText.addEventListener('input', function (e) {
       e.preventDefault()
       if(inputText.value.length != 0){

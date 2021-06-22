@@ -28,8 +28,9 @@ router.get('/members/:groupId', async (req, res) => {
 })
 
 router.post('/terminate/:user/:reason', async (req, res) => {
-      console.log("use: ", req.params.user)
-      console.log("reason: ", req.params.reason)
+      const terminatee = req.params.user
+      const terminateReason = req.params.reason
+      await groupRepository.terminateRequest (terminateReason, terminatee)
 })
 
 router.get('/all/:pageNo', async (req, res) => {
