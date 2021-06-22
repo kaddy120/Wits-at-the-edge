@@ -27,8 +27,9 @@ router.get('/members/:groupId', async (req, res) => {
   res.render('members', {title: 'Group Members', members: members, image: profile, groupId: req.params.groupId})
 })
 
-router.get('/members/:groupId/:user', async (req, res) => {
-   res.render('groupMember', {title: req.params.user, groupId: req.params.groupId})
+router.post('/terminate/:user/:reason', async (req, res) => {
+      console.log("use: ", req.params.user)
+      console.log("reason: ", req.params.reason)
 })
 
 router.get('/all/:pageNo', async (req, res) => {

@@ -12,7 +12,7 @@ block content
             - for (var x = 0; x < members.length; x++)
               li(class="list-group-item" style="font-size:15px" id="list")
                 div(class="container")
-                  p=`${members[x].firstName} ${members[x].surname}`
+                  p(id=`${members[x].email}`)=`${members[x].firstName} ${members[x].surname}`
                   button(type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal")  Terminate Member
                   div(id="myModal" class="modal fade" role="dialog")
                       div(class="modal-dialog")
@@ -24,9 +24,9 @@ block content
                                 button(type="button" class="close" data-dismiss="modal") &times;
                            
                              div(class="modal-body")
-                                textarea(name="", cols="63", rows="10", id="terminateReason")
+                                textarea(name="", cols="63", rows="10", placeholder="Provide your reason here" id="terminateReason")
                              div(class="modal-footer")
-                                button(type="button" class="btn btn-primary" data-dismiss="modal" disabled id='submit') Submit
+                                button(type="button" class="btn btn-success" data-dismiss="modal" disabled id='submit') Submit
                            
       
 
