@@ -1,0 +1,1 @@
+SELECT DATEADD(day,+2,@date) as expirydate

@@ -33,11 +33,12 @@ const groupRouter = require('./routes/group')
 const passport = container.resolve('passport')
 const configPassport = require('./config/passportConfig')
 configPassport(user, passport)
+const joinExpiryDate = require('./services/groupJoinRequests')
+setInterval(joinExpiryDate.joinRequestExpiryDate, 10*60*1000);
 
 const indexRouter = require('./routes/index')
 const accountRouter = container.resolve('accountManagerRouters')
 const meetingRouter = container.resolve('meetingRouters')
-const dashboardRouter = container.resolve('meetingRouters')
 const covidFormRouter = require('./routes/covidForm')
 const requestRouter = container.resolve('requestRouters')
 const { authorization } = require('./middleware/authorization')
@@ -132,7 +133,6 @@ io.on('connection', (socket) => {
 // app.use() // all end-points under this middleware can only be accessed by signed in user
 app.use('/', authorization, voteRouter)
 app.use('/meeting', authorization, meetingRouter)
-app.use('/', authorization, dashboardRouter)
 app.use('/', authorization, covidFormRouter)
 
 app.use('/group', groupRouter)

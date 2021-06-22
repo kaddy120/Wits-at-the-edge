@@ -1,0 +1,1 @@
+SELECT DATEADD(hour,+2,GETDATE()) as currentDate
