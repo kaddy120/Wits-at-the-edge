@@ -10,3 +10,6 @@ inputText.addEventListener('input', function (e) {
       else submit.disabled = true
 })
 
+submit.addEventListener('click', function (e) {
+    
+})
