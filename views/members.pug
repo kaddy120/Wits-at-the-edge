@@ -11,7 +11,7 @@ block content
           ul(class='list-group' id="list-parent")
             - for (var x = 0; x < members.length; x++)
               li(class="list-group-item" style="font-size:15px" id="list")
-                div(class="container")
+                div(class="container" id=`${terminator.email}`)
                   p(id=`${members[x].email}`)=`${members[x].firstName} ${members[x].surname}`
                   button(type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal")  Terminate Member
                   div(id="myModal" class="modal fade" role="dialog")

@@ -21,16 +21,19 @@ router.get('/:groupId', async (req, res) => {
 
 
 router.get('/members/:groupId', async (req, res) => {
+  const terminatingUser = req.user
   const members = await groupRepository.getGroupMembers(req.params.groupId).then(result => {return result.recordset})
   console.log(members)
   const profile = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtNWVnKZZfy-1CLo75eO5vLhTWFZyeyc7QaI6GgdSalXDIJOCA6t0DSdDDMabrTOdjdYs&usqp=CAU"
-  res.render('members', {title: 'Group Members', members: members, image: profile, groupId: req.params.groupId})
+  res.render('members', {title: 'Group Members', members: members, image: profile, groupId: req.params.groupId, terminator: terminatingUser})
 })
 
-router.post('/terminate/:user/:reason', async (req, res) => {
+router.post('/terminate/:user/:terminator/:reason', async (req, res) => {
       const terminatee = req.params.user
       const terminateReason = req.params.reason
-      await groupRepository.terminateRequest (terminateReason, terminatee)
+      const terminatingPerson = req.params.terminator
+      console.log(terminatingPerson)
+      await groupRepository.terminateRequest(terminateReason, terminatee, terminatingPerson)
 })
 
 router.get('/all/:pageNo', async (req, res) => {

@@ -11,16 +11,20 @@ inputText.addEventListener('input', function (e) {
       else submit.disabled = true
 })
 
-
+console.log("haa")
 for (i of items) {
     i.firstChild.children[1].addEventListener('click', function (e) {
         e.preventDefault()
         const email = this.previousSibling
+        const terminator = this.parentNode.id
+        console.log(terminator)
+        //console.log(this.nextSibling.firstChild.firstChild.children[2].firstChild)
         this.nextSibling.firstChild.firstChild.children[2].firstChild.addEventListener('click', async function (e) {
             e.preventDefault()
             const reason = this.parentNode.previousSibling.firstChild.value
+            console.log(terminator)
             try {
-                const response = await fetch(`/group/terminate/${email.id}/${reason}`, {
+                const response = await fetch(`/group/terminate/${email.id}/${terminator}/${reason}`, {
                     method: 'post',
                 });
                 console.log('Completed!', response);
