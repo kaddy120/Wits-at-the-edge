@@ -1,0 +1,1 @@
+SELECT count (*) FROM [dbo].[userTracking] where userId = @userId and activity = @response
