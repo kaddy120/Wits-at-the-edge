@@ -4,6 +4,8 @@ const { body, validationResult } = require('express-validator')
 const router = express.Router()
 const { container } = require('../di-setup')
 const groupRepository = container.resolve('groupRepository')
+const votesRepository = container.resolve('votesRepository')
+const model = require('../models/voteValidation')
 const group = require('../db/groups')
 const deletUserGroups = container.resolve('groupRepository')
 const groupCreator = require('../models/groupDetails')
@@ -29,11 +31,38 @@ router.get('/members/:groupId', async (req, res) => {
 })
 
 router.post('/terminate/:user/:terminator/:reason', async (req, res) => {
-      const terminatee = req.params.user
-      const terminateReason = req.params.reason
-      const terminatingPerson = req.params.terminator
-      console.log(terminatingPerson)
-      await groupRepository.terminateRequest(terminateReason, terminatee, terminatingPerson)
+      let terminatee = req.params.user
+      let terminateReason = req.params.reason
+      let terminator = req.params.terminator
+      console.log(terminateReason)
+})
+
+router.get('/notifications/:groupId', async (req, res) => {
+  const info = await groupRepository.terminateNotification ().then(result => {return result.recordset})
+  console.log(info[0].memberToBeTerminated)
+   console.log(req.user.email)
+    res.render('notifications', {title: 'notifications', user: info, logged: req.user.email, groupId: req.params.groupId})
+  
+  /*else {
+    res.render('notifications', {title: 'no terminations'})
+  }*/
+})
+
+router.post('/vote/:groupId/:requestId/:email/:voteChoice', async (req, res) => {
+    const requestId = req.params.requestId
+    const voter = req.params.email
+    const choice = req.params.voteChoice
+   // await votesRepository.terminationVote(requestId, voter, choice)
+    const getNumOfGroupMembers = await votesRepository.getNumOfGroupMembers(req.params.groupId)
+    const voteCount = await votesRepository.CountVotes(requestId).then(result => { return result.recordset })
+    console.log(voteCount)
+    const counter = model.countVotes(voteCount, getNumOfGroupMembers)
+    console.log(counter)
+    const member = await votesRepository.getMemberToBeTerminated(requestId).then(result => { return result.recordset })
+    console.log(member[0].memberToBeTerminated)
+    if (counter === true)
+    await votesRepository.deleteMember (member[0].memberToBeTerminated, groupId)
+    res.send("OK")
 })
 
 router.get('/all/:pageNo', async (req, res) => {

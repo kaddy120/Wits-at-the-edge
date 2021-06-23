@@ -6,14 +6,13 @@ block content
    link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css")
    script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js")
    script(src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js")
-   
-   h3=title
-          ul(class='list-group' id="list-parent")
+   div(class="container")
+      h3=title
+          ul(class='list-group' )
             - for (var x = 0; x < members.length; x++)
-              li(class="list-group-item" style="font-size:15px" id="list")
-                div(class="container" id=`${terminator.email}`)
-                  p(id=`${members[x].email}`)=`${members[x].firstName} ${members[x].surname}`
-                  button(type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal")  Terminate Member
+              li(class="list-group-item" style="font-size:15px" )
+                  p(id="this" name=`${members}`)=`${members[x].firstName} ${members[x].surname}`
+                  button(type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal" id=`${x}`)  Terminate Member
                   div(id="myModal" class="modal fade" role="dialog")
                       div(class="modal-dialog")
                           div(class="modal-content")
@@ -23,10 +22,10 @@ block content
                                 |
                                 button(type="button" class="close" data-dismiss="modal") &times;
                            
-                             div(class="modal-body")
+                             div(class="modal-body" id=`${terminator.email}`)
                                 textarea(name="", cols="63", rows="10", placeholder="Provide your reason here" id="terminateReason")
-                             div(class="modal-footer")
-                                button(type="button" class="btn btn-success" data-dismiss="modal" disabled id='submit') Submit
+                             div(class="modal-footer" id=`${members[x].email}`)
+                                button(type="button" class="btn btn-success" name=`${members[x].firstName} ${members[x].surname}` data-dismiss="modal" id=`submit`) Submit
                            
       
 

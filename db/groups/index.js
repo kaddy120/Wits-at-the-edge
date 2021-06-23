@@ -216,6 +216,19 @@ class groupRepository {
      }
   }
 
+  async terminateNotification () {
+    try {
+      const pool = await this.dbpool
+      const sqlQueries = await utils.loadSqlQueries('groups')
+      const info = await pool.request()
+          .query(sqlQueries.terminateNotification)
+          console.log("DT", info)
+          return info
+    } catch (err) {
+       console.log(err)
+    }
+  } 
+
   async getGroupMembers (groupId) {
     try {
       const pool = await this.dbpool
