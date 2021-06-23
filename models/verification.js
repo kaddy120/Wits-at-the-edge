@@ -73,6 +73,8 @@ function searchFilterOptions (firstName, surname, yearOfStudy, school) {
       return position
     } else if (results[0] === 1 && results[1] === 1 && results[3] === 1) {
       position = 124 // Textbox 1 2 and 4
+      console.log('In here')
+      console.log(position)
       return position
     } else if (results[0] === 1 && results[2] === 2 && results[3] === 1) {
       position = 134 // Textbox 1 3 and 4

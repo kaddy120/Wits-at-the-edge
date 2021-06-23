@@ -153,7 +153,7 @@ class userRepository {
       const getUser = await pool.request()
         .input('firstName', sql.VarChar(50), firstName)
         .input('surname', sql.VarChar(50), surname)
-        .input(' school', sql.VarChar(50), school)
+        .input('school', sql.VarChar(50), school)
         .query(sqlQueries.getUserByfNameSurnameSchool)
       return getUser.recordset
     } catch (err) {
@@ -167,8 +167,8 @@ class userRepository {
       const pool = await this.pools
       const getUser = await pool.request()
         .input('firstName', sql.VarChar(50), firstName)
-        .input(' yearOfStudy', sql.VarChar(50), yearOfStudy)
-        .input(' school', sql.VarChar(50), school)
+        .input('yearOfStudy', sql.VarChar(50), yearOfStudy)
+        .input('school', sql.VarChar(50), school)
         .query(sqlQueries.getUserByfNameYosSchool)
       return getUser.recordset
     } catch (err) {
@@ -282,6 +282,19 @@ class userRepository {
       const getUser = await pool.request()
         .input('school', sql.VarChar(50), school)
         .query(sqlQueries.getUserBySchool)
+      return getUser.recordset
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  async getRequest (email) {
+    try {
+      const sqlQueries = await utils.loadSqlQueries('users')
+      const pool = await this.pools
+      const getUser = await pool.request()
+        .input('email', sql.VarChar(50), email)
+        .query(sqlQueries.getRequest)
       return getUser.recordset
     } catch (err) {
       console.log(err)
