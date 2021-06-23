@@ -1,0 +1,1 @@
+SELECT *FROM [dbo].[User] WHERE firstName = @firstName AND yearOfStudy= @yearOfStudy AND school=@school

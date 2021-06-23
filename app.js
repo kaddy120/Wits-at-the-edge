@@ -40,6 +40,8 @@ const indexRouter = require('./routes/index')
 const accountRouter = container.resolve('accountManagerRouters')
 const meetingRouter = container.resolve('meetingRouters')
 const covidFormRouter = require('./routes/covidForm')
+const inviteUserRouter = require('./routes/inviteUser')
+const acceptRequestRouter = require('./routes/acceptToGroup')
 const requestRouter = container.resolve('requestRouters')
 const { authorization } = require('./middleware/authorization')
 
@@ -134,6 +136,8 @@ io.on('connection', (socket) => {
 app.use('/', authorization, voteRouter)
 app.use('/meeting', authorization, meetingRouter)
 app.use('/', authorization, covidFormRouter)
+app.use('/', authorization, inviteUserRouter)
+app.use('/', authorization, acceptRequestRouter)
 
 app.use('/group', groupRouter)
 app.use('/', voteRouter)
