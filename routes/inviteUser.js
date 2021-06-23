@@ -104,7 +104,8 @@ router.post('/inviteUser', async function (req, res, next) {
 router.post('/inviteUser/:userId/:groupId', async function (req, res, next) {
   const userId = req.params.userId
   const groupId = req.params.groupId
-  await userRepo.addJoinRequest(userId, groupId)
+  const response = null
+  await userRepo.addGroupJoinRequest(groupId, userId, response)
   console.log('Request sent')
   return res.sendStatus(200)
 })
