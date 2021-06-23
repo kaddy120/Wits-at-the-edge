@@ -5,6 +5,19 @@ block content
         div.mb-3 
             input(type="text" placeholder="Search group by name" name="groupName" class="form-control" id="exampleInputEmail1")
         button(type="submit" class="btn btn-primary") Search 
+    div(style="background-color: rgb(57, 176, 212); padding: 0px 50px; margin: 12px 0px")
+        h3 Groups you might like
+        .row
+            each group in recommendations
+                .col(style='margin:15px 0;')
+                    .card
+                        img.card-img-top(src="https://www.seekpng.com/png/detail/215-2156215_diversity-people-in-group-icon.png")
+                        .card-body
+                            h5.card-title= group.groupName
+                            div(id=`${group.groupId}`)
+                                a(href=`/request/join/${group.groupId}`)
+                                    button.btn.btn-info#req(data-groupId=`${group.groupId}`) join
+                            p.card-text Group description
     if groups.length == 0 
         h4 Group is not found 
     else
@@ -36,12 +49,3 @@ block content
             a.page-link( href="#") Next
     </li>
     script(src="/javascript/groups-page.js")
-
-    //- .row.row-cols-1.row-cols-md-4.g-4
-    //-     each group in groups 
-    //-         .col(style='margin:15px 0;  height: 220px')
-    //-             .card(style="height: 100%")
-    //-                 img.card-img-top(src="https://www.seekpng.com/png/detail/215-2156215_diversity-people-in-group-icon.png" style="height: 55%")
-    //-                 .card-body
-    //-                     h5.card-title=group.groupName
-    //-                     p.card-text Group description

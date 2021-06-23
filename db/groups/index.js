@@ -106,7 +106,6 @@ class groupRepository {
     }
   }
 
-  // better name is needed here
   async getNumberOfGroups (emails) {
     try {
       const sqlQueries = await utils.loadSqlQueries('groups')
@@ -188,6 +187,19 @@ class groupRepository {
     }
   }
 
+  async getUserGroups (userId) {
+    try {
+      const pool = await this.dbpool
+      const sqlQueries = await utils.loadSqlQueries('groups')
+      const groups = await pool.request()
+        .input('user', sql.VarChar(50), userId)
+        .query(sqlQueries.getUserGroups)
+      return groups.recordset
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   async getUserGroupName (groupId) {
     try {
       const pool = await this.dbpool
@@ -200,7 +212,6 @@ class groupRepository {
       console.log(err)
     }
   }
-
   async terminateRequest (reason, email, terminator) {
      try {
       const pool = await this.dbpool
@@ -239,6 +250,20 @@ class groupRepository {
           return members
     } catch (err) {
        console.log(err)
+    }
+  }
+  async filterByYOSSchoolUser (YSO, school, userId) {
+    try {
+      const pool = await this.dbpool
+      const sqlQueries = await utils.loadSqlQueries('groups')
+      const groupName = await pool.request()
+        .input('YSO', sql.VarChar(20), YSO)
+        .input('school', sql.VarChar(60), school)
+        .input('userId', sql.VarChar(60), userId)
+        .query(sqlQueries.filterbyYOSandSchool)
+      return groupName.recordset
+    } catch (err) {
+      console.log(err)
     }
   }
 }
