@@ -6,6 +6,8 @@ const { container } = require('../di-setup')
 const groupRepository = container.resolve('groupRepository')
 const group = require('../db/groups')
 const deletUserGroups = container.resolve('groupRepository')
+const engine = container.resolve('recommendationEngine')
+const users = container.resolve('userRepository')
 const groupCreator = require('../models/groupDetails')
 const verify = require('../models/verification')
 const multer = require('multer')
@@ -14,8 +16,22 @@ const upload = multer({ storage: memoryStorage() })
 const imageSaver = require('../models/saveImagesToCloud')
 const defaultThumbnail = 'https://www.seekpng.com/png/detail/215-2156215_diversity-people-in-group-icon.png'
 
+router.get('/dashboard', async (req, res) => {
+  const user = req.user
+  const groups = await groupRepository.getUserGroups(user.email).then(result => { return result.recordset })
+  const groupThumbnail = await groupRepository.getGroupThumbnail(user.email).then(result => { return result.recordset })
+  console.log(groups)
+  const thumbnail = []
+  for (let index = 0; index < groupThumbnail.length; index++) {
+    if (groupThumbnail[index].thumbnail == null) { thumbnail[index] = 'https://www.seekpng.com/png/detail/215-2156215_diversity-people-in-group-icon.png' } else thumbnail[index] = groupThumbnail[index].thumbnail
+  }
+
+  res.render('dashboard', { title: 'Dashboard', userGroups: groups, groupIcon: thumbnail })
+})
+
 router.get('/:groupId', async (req, res) => {
   const groupName = await groupRepository.getUserGroupName(req.params.groupId)
+  console.log(groupName)
   res.render('groupHomePage', { title: 'Group Home Page', groupName: groupName[0].groupName, groupId: req.params.groupId })
 })
 
@@ -23,9 +39,13 @@ router.get('/all/:pageNo', async (req, res) => {
   const groupsPerPage = 10
   const offset = groupsPerPage * (req.params.pageNo - 1)
   const userId = req.session.passport.user
+  let recommendations = []
+  if (req.user) {
+    recommendations = await engine.recommendGroups(req.user)
+  }
   // const userId = 'test@gmail.com'
   const groups = await groupRepository.firstTop(offset, groupsPerPage, userId)
-  res.render('groups', { title: 'Discover more groups to join', groups })
+  res.render('groups', { title: 'Discover more groups to join', groups, recommendations })
 })
 
 router.post('/search', async function (req, res) {
@@ -71,6 +91,7 @@ router.post('/createMeeting',
       meeting.userId = email
       meeting.groupId = groupId
       await group.createMeeting(meeting)
+      users.addTracking(meeting.userId, 'createMeating', meeting.groupId)
       res.redirect('/group')
     } else {
       res.status(404).json({ message: 'you are not a group member, you cannot create a meeting' })
@@ -120,6 +141,7 @@ router.get('/deleteUser', (req, res) => {
   const userDetails = { ...req.body }
   userDetails.userId = email
   userDetails.groupId = groupId
+  users.addTracking(userDetails.userId, 'exitGroup', userDetails.groupId)
   deletUserGroups.exitUserGroup(userDetails)
   res.redirect('/dashboard')
 })

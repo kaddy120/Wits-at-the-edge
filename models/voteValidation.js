@@ -1,33 +1,30 @@
 
-function relevantRequest(requests, voterGroups, currentGroup) {
-    var Requests = []
-    let count = 0
-    for (i = 0; i < requests.length; i++) {
-        for (j = 0; j < voterGroups.length; j++) {
-            if (voterGroups[j].groupId == requests[i].groupId && requests[i].groupId == currentGroup) {
-                Requests[count] = requests[i]
-                count++
+function relevantRequest(requests, votes) {
+    let size_ = requests.length
+    for (let i = 0; i < size_; i++) {
+        for (let j = 0; j < votes.length; j++) {
+            if (votes[j].requestId == requests[i].requestId) {
+                requests.splice(i,1)
+                i--
+                size_--
+                break
             }
         }
     }
-    if (Requests.length >= 1)
-        return Requests
-    else return 0
+    return requests
 }
 
 function countVotes(voteCount, numOfGroupMembers) {
     let counter = 0
     for (i = 0; i < voteCount.length; i++) {
-        counter = counter + voteCount[i].voteCount
+        if (voteCount[i].voteCount == 1)
+         counter++
     }
      if(counter >= 0.5*numOfGroupMembers)
       return true
     else return false
 }
 
-function getVoterGroup (userId) {
-    
-}
 
 module.exports = {
     relevantRequest,
