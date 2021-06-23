@@ -1,17 +1,6 @@
 const { sql, pools } = require('../../db.js')
 const utils = require('../utils')
 
-async function getUserEmails (email) {
-  try {
-    const sqlQueries = await utils.loadSqlQueries('createGroup')
-    const pool = await pools
-    const getUser = pool.request()
-      .query(sqlQueries.getAllEmailColumn)
-    return getUser
-  } catch (error) {
-    console.log(error)
-  }
-}
 async function getNumberOfGroups (emails) {
   try {
     const sqlQueries = await utils.loadSqlQueries('CreateGroup')
@@ -49,7 +38,6 @@ async function addFirstMember (groupId, userId) {
   }
 }
 module.exports = {
-  getUserEmails,
   getNumberOfGroups,
   addingGroup,
   addFirstMember

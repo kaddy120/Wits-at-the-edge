@@ -1,0 +1,10 @@
+extend groupLayout 
+
+block content
+    p=`${groupId}`
+    ul(class="list-group")
+        - for (var x = 0; x < users.length; x++)
+              li(class="list-group-item")
+                a(href="")= users[x].email
+                form(action=`/inviteUser/${users[x].email}/${groupId}`, method='post')
+                    input(type='submit' name="join" value="add user" class='btn btn-success btn-sm')
