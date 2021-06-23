@@ -7,6 +7,7 @@ const groupRepository = container.resolve('groupRepository')
 const group = require('../db/groups')
 const deletUserGroups = container.resolve('groupRepository')
 const engine = container.resolve('recommendationEngine')
+const users = container.resolve('userRepository')
 const groupCreator = require('../models/groupDetails')
 const verify = require('../models/verification')
 const multer = require('multer')
@@ -90,6 +91,7 @@ router.post('/createMeeting',
       meeting.userId = email
       meeting.groupId = groupId
       await group.createMeeting(meeting)
+      users.addTracking(meeting.userId, 'createMeating', meeting.groupId)
       res.redirect('/group')
     } else {
       res.status(404).json({ message: 'you are not a group member, you cannot create a meeting' })
@@ -139,6 +141,7 @@ router.get('/deleteUser', (req, res) => {
   const userDetails = { ...req.body }
   userDetails.userId = email
   userDetails.groupId = groupId
+  users.addTracking(userDetails.userId, 'exitGroup', userDetails.groupId)
   deletUserGroups.exitUserGroup(userDetails)
   res.redirect('/dashboard')
 })
