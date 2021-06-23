@@ -23,12 +23,12 @@ async function joinRequestExpiryDate () {
       counter = model.countVotes(voteCount, votes[0].numOfPeopleVoted)
       requesteeGroups = await votesRepository.getRequesteeGroups(filteredRequest[i].email).then(result => { return result.recordset })
       if (counter === true && requesteeGroups.length < 10) {
-        await votesRepository.acceptRequest(filteredRequest[i].email, filteredRequest[i].groupId)
         userRepository.createMutualFriends(filteredRequest[i].groupId, filteredRequest[i].email)
+        votesRepository.acceptRequest(filteredRequest[i].email, filteredRequest[i].groupId)
       }
-      await votesRepository.removeFromJoinRequests(filteredRequest[i].requestId)
+      votesRepository.removeFromJoinRequests(filteredRequest[i].requestId)
     } else {
-      await votesRepository.removeFromJoinRequests(filteredRequest[i].requestId)
+      votesRepository.removeFromJoinRequests(filteredRequest[i].requestId)
     }
   }
 }

@@ -44,10 +44,10 @@ class voteManager {
 
     // user can only join 10 groups at most;
     if (counter === true && requesteeGroups.length <= 10) {
-      await this.votesRepository.acceptRequest(email[0].email, groupId)
+      this.userRepository.createMutualFriends(groupId, email[0].email)
+      this.votesRepository.acceptRequest(email[0].email, groupId)
       // if a user joins a group, add his mutual friends from the group
-      await this.userRepository.createMutualFriends(groupId, email[0].email)
-      await this.votesRepository.removeFromJoinRequests(requestId)
+      this.votesRepository.removeFromJoinRequests(requestId)
     }
   }
 }
