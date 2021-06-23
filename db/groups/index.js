@@ -141,6 +141,7 @@ class groupRepository {
         .input('meetingTime', sql.DateTime, meeting.time)
         .input('agenda', sql.VarChar(250), meeting.agenda)
         .input('userId', sql.VarChar(50), meeting.userId)
+        .input('address', sql.VarChar(250), meeting.address)
         .query(sqlQueries.createMeeting)
       return getMeeting.recordset
     } catch (err) {
@@ -169,6 +170,19 @@ class groupRepository {
         .input('groupId', sql.Int, userDetails.groupId)
         .input('userId', sql.VarChar(50), userDetails.userId)
         .query(sqlQueries.exitUserGroup)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  async getUserGroups (userId) {
+    try {
+      const pool = await this.dbpool
+      const sqlQueries = await utils.loadSqlQueries('groups')
+      const groups = await pool.request()
+      .input('user', sql.VarChar(50), userId)
+      .query(sqlQueries.getUserGroups)
+      return groups
     } catch (err) {
       console.log(err)
     }
