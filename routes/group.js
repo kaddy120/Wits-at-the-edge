@@ -34,6 +34,7 @@ router.post('/terminate/:user/:terminator/:reason', async (req, res) => {
       let terminatee = req.params.user
       let terminateReason = req.params.reason
       let terminator = req.params.terminator
+      await groupRepository.terminateRequest (terminateReason, terminatee, terminator)
       console.log(terminateReason)
 })
 
