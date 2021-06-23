@@ -6,6 +6,7 @@ const { container } = require('../di-setup')
 const groupRepository = container.resolve('groupRepository')
 const group = require('../db/groups')
 const deletUserGroups = container.resolve('groupRepository')
+const engine = container.resolve('recommendationEngine')
 const users = container.resolve('userRepository')
 const groupCreator = require('../models/groupDetails')
 const verify = require('../models/verification')
@@ -28,7 +29,6 @@ router.get('/dashboard', async (req, res) => {
   res.render('dashboard', { title: 'Dashboard', userGroups: groups, groupIcon: thumbnail })
 })
 
-
 router.get('/:groupId', async (req, res) => {
   const groupName = await groupRepository.getUserGroupName(req.params.groupId)
   console.log(groupName)
@@ -39,9 +39,13 @@ router.get('/all/:pageNo', async (req, res) => {
   const groupsPerPage = 10
   const offset = groupsPerPage * (req.params.pageNo - 1)
   const userId = req.session.passport.user
+  let recommendations = []
+  if (req.user) {
+    recommendations = await engine.recommendGroups(req.user)
+  }
   // const userId = 'test@gmail.com'
   const groups = await groupRepository.firstTop(offset, groupsPerPage, userId)
-  res.render('groups', { title: 'Discover more groups to join', groups })
+  res.render('groups', { title: 'Discover more groups to join', groups, recommendations })
 })
 
 router.post('/search', async function (req, res) {
