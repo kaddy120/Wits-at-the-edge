@@ -37,9 +37,22 @@ class userRepository {
       const sqlQueries = await utils.loadSqlQueries('users')
       const pool = await this.pools
       const insertUser = await pool.request()
-        .input('groupId', sql.VarChar(50), userId)
-        .input('userId', sql.int, groupId)
+        .input('groupId', sql.VarChar(50), groupId)
+        .input('userId', sql.int, userId)
         .query(sqlQueries.createMutualFriends)
+      return insertUser.recordset
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  async userMutualFriends (userId) {
+    try {
+      const sqlQueries = await utils.loadSqlQueries('users')
+      const pool = await this.pools
+      const insertUser = await pool.request()
+        .input('userId', sql.VarChar(50), userId)
+        .query(sqlQueries.getMutualFriends)
       return insertUser.recordset
     } catch (err) {
       console.log(err)
