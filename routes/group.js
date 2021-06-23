@@ -4,6 +4,8 @@ const { body, validationResult } = require('express-validator')
 const router = express.Router()
 const { container } = require('../di-setup')
 const groupRepository = container.resolve('groupRepository')
+const votesRepository = container.resolve('votesRepository')
+const model = require('../models/voteValidation')
 const group = require('../db/groups')
 const deletUserGroups = container.resolve('groupRepository')
 const engine = container.resolve('recommendationEngine')
@@ -33,6 +35,51 @@ router.get('/:groupId', async (req, res) => {
   const groupName = await groupRepository.getUserGroupName(req.params.groupId)
   console.log(groupName)
   res.render('groupHomePage', { title: 'Group Home Page', groupName: groupName[0].groupName, groupId: req.params.groupId })
+})
+
+
+router.get('/members/:groupId', async (req, res) => {
+  const terminatingUser = req.user
+  const members = await groupRepository.getGroupMembers(req.params.groupId).then(result => {return result.recordset})
+  console.log(members)
+  const profile = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtNWVnKZZfy-1CLo75eO5vLhTWFZyeyc7QaI6GgdSalXDIJOCA6t0DSdDDMabrTOdjdYs&usqp=CAU"
+  res.render('members', {title: 'Group Members', members: members, image: profile, groupId: req.params.groupId, terminator: terminatingUser})
+})
+
+router.post('/terminate/:user/:terminator/:reason', async (req, res) => {
+      let terminatee = req.params.user
+      let terminateReason = req.params.reason
+      let terminator = req.params.terminator
+      await groupRepository.terminateRequest (terminateReason, terminatee, terminator)
+      console.log(terminateReason)
+})
+
+router.get('/notifications/:groupId', async (req, res) => {
+  const info = await groupRepository.terminateNotification ().then(result => {return result.recordset})
+  console.log(info[0].memberToBeTerminated)
+   console.log(req.user.email)
+    res.render('notifications', {title: 'notifications', user: info, logged: req.user.email, groupId: req.params.groupId})
+  
+  /*else {
+    res.render('notifications', {title: 'no terminations'})
+  }*/
+})
+
+router.post('/vote/:groupId/:requestId/:email/:voteChoice', async (req, res) => {
+    const requestId = req.params.requestId
+    const voter = req.params.email
+    const choice = req.params.voteChoice
+   // await votesRepository.terminationVote(requestId, voter, choice)
+    const getNumOfGroupMembers = await votesRepository.getNumOfGroupMembers(req.params.groupId)
+    const voteCount = await votesRepository.CountVotes(requestId).then(result => { return result.recordset })
+    console.log(voteCount)
+    const counter = model.countVotes(voteCount, getNumOfGroupMembers)
+    console.log(counter)
+    const member = await votesRepository.getMemberToBeTerminated(requestId).then(result => { return result.recordset })
+    console.log(member[0].memberToBeTerminated)
+    if (counter === true)
+    await votesRepository.deleteMember (member[0].memberToBeTerminated, groupId)
+    res.send("OK")
 })
 
 router.get('/all/:pageNo', async (req, res) => {
