@@ -3,45 +3,15 @@ const express = require('express')
 const { body, validationResult } = require('express-validator')
 const router = express.Router()
 const stats = require('../models/statistics')
-const axios = require('axios')
 
-function meetingRouters ({ groupRepository, meetingRepository, userRepository }) {
+
+function meetingRouters ({ groupRepository, meetingRepository, userRepository, geoManager }) {
   router.get('/', async (req, res) => {
     res.render('group')
   })
 
   router.get('/place', async (req, res) => {
-      const groupId = 17
-      let restaurants = []
-      let lat = []
-      let long = []
-      const coordinates = await meetingRepository.getUserCoordinates().then(result => {return result.recordset})
-      for(var i = 0;i < coordinates.length;i++) {
-         lat[i] = coordinates[i].lat
-         long[i] = coordinates[i].long
-      }
-
-      const longitudteMedian = stats.sort(long)
-      const latitudeMedian = stats.sort(lat)
       
-     const x = await axios.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json',  {
-        params: {
-            location: `${latitudeMedian}, ${longitudteMedian}`,
-            radius: 5000,
-            type: 'restaurant',
-            key: 'AIzaSyBQpS8Gb2C1coUXAIMFk-sTGmcclvup-GE'
-        }
-    }).then(response => {
-      for(var i = 0;i < response.data.results.length;i++) {
-          restaurants[i] = response.data.results[i].name
-          //console.log(response.data.results[i].name)
-      }
-       return restaurants
-    }).catch(err => {
-            console.log(err)
-    })
-    console.log("restaurants: ", x)
-      res.render('locations', {title: 'Location suggestions'})
   })
 
   router.get('/groupName/:groupId', async (req, res) => {
