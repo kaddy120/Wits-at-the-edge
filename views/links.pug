@@ -1,5 +1,23 @@
 extends layout
 block content
+    
+    // Button trigger modal
+    button.btn.btn-primary(type='button', data-toggle='modal', data-target='#exampleModal')
+        | Launch demo modal
+    // Modal
+    #exampleModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true' style="width: 400px;position: relative; margin: auto;")
+        .modal-dialog(role='document')
+        .modal-content
+            .modal-header
+                h5#exampleModalLabel.modal-title Modal title
+                button.close(type='button', data-dismiss='modal', aria-label='Close')
+                    span(aria-hidden='true') &times;
+            .modal-body
+                p bfhrhf    
+            .modal-footer
+                button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+                button.btn.btn-primary(type='button') Save changes
+
     p welcome to links page
     ul.list-group
         li(class="list-group-item d-flex justify-content-between align-items-center")

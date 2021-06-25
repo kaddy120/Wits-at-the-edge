@@ -47,6 +47,7 @@ const requestRouter = container.resolve('requestRouters')
 const { authorization } = require('./middleware/authorization')
 
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'))
+app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js'))
 
 passport.serializeUser(function (user, cb) {
   cb(null, user.email)
