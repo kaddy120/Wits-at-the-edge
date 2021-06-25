@@ -2,17 +2,13 @@
 const express = require('express')
 const { body, validationResult } = require('express-validator')
 const router = express.Router()
-const stats = require('../models/statistics')
-
 
 function meetingRouters ({ groupRepository, meetingRepository, userRepository, geoManager }) {
   router.get('/', async (req, res) => {
     res.render('group')
   })
 
-  router.get('/place', async (req, res) => {
-      
-  })
+  router.get('/place', geoManager.suggestions.bind(geoManager))
 
   router.get('/groupName/:groupId', async (req, res) => {
     const groupName = req.params.groupId

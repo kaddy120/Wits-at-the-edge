@@ -1,16 +1,18 @@
 const geoRequests = require('../services/geoRequests')
+const stats = require('../models/statistics')
 
 class geoManager{
     constructor ({meetingRepository, groupRepository}) {
         this.meetingRepository = meetingRepository
         this.groupRepository = groupRepository
-    }
+        this.suggestions = this.suggestions.bind(this)
+      }
 
     async suggestions (req, res) {
       const groupId = 17
       let lat = []
       let long = []
-      const coordinates = await meetingRepository.getUserCoordinates().then(result => {return result.recordset})
+      const coordinates = await this.meetingRepository.getUserCoordinates().then(result => {return result.recordset})
       for(var i = 0;i < coordinates.length;i++) {
          lat[i] = coordinates[i].lat
          long[i] = coordinates[i].long
@@ -18,9 +20,12 @@ class geoManager{
 
       const longitudteMedian = stats.sort(long)
       const latitudeMedian = stats.sort(lat)
-      const restaurant = geoRequests(longitudteMedian, latitudeMedian)
+      const restaurant = await geoRequests.getRestaurants(longitudteMedian, latitudeMedian)
      //here
-    console.log("restaurants: ", restaurant)
+      console.log("restaurants: ", restaurant)
       res.render('locations', {title: 'Location suggestions'})
     }
 }
+
+
+module.exports = geoManager

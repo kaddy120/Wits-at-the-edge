@@ -1,7 +1,7 @@
 const axios = require('axios')
 
 function getRestaurants (longitude, latitude) {
-    const places = await axios.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json',  {
+    const places = axios.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json',  {
         params: {
             location: `${latitude}, ${longitude}`,
             radius: 5000,
@@ -9,6 +9,7 @@ function getRestaurants (longitude, latitude) {
             key: 'AIzaSyBQpS8Gb2C1coUXAIMFk-sTGmcclvup-GE'
         }
     }).then(response => {
+      let restaurants = []
       for(var i = 0;i < response.data.results.length;i++) {
           restaurants[i] = response.data.results[i].name
       }

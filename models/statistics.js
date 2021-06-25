@@ -2,10 +2,7 @@
 
 function sort (numArray) {
 numArray.sort(function(a, b) {return a-b;});
-//log the contents of the array
-console.log(numArray);
-//log the array length
-console.log("array length is: " + numArray.length);
+
 //Split the array in half
 var middle = Math.floor(numArray.length / 2);
 //function to find the median
