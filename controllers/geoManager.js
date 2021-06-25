@@ -1,8 +1,9 @@
 const geoRequests = require('../services/geoRequests')
 
-class locationRepository  {
-    constructor ({meetingRepository}) {
+class geoManager{
+    constructor ({meetingRepository, groupRepository}) {
         this.meetingRepository = meetingRepository
+        this.groupRepository = groupRepository
     }
 
     async suggestions (req, res) {
