@@ -1,11 +1,11 @@
 const axios = require('axios')
 
-function getRestaurants (longitude, latitude) {
+function getRestaurants (longitude, latitude, place) {
     const places = axios.get('https://maps.googleapis.com/maps/api/place/nearbysearch/json',  {
         params: {
             location: `${latitude}, ${longitude}`,
-            radius: 5000,
-            type: 'restaurant',
+            radius: 10000,
+            type: `${place}`,
             key: 'AIzaSyBQpS8Gb2C1coUXAIMFk-sTGmcclvup-GE'
         }
     }).then(response => {

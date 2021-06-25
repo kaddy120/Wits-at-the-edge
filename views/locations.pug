@@ -2,6 +2,26 @@ extends groupLayout
 
 block content
      h2=title
+     h4(style="color:#7F8BDA ")='Suggested geographical region'
+     div(class="container")
+     ul(class='list-group')
+        li(class="list-group-item" style="font-size:15px, background-color:#A2E59A" )
+            select( name="school" class="form-select")
+                   <option selected>Meet at a Restaurant</option>
+                    each value in restaurant
+                            option(value=`${value}`)= value
+     ul(class='list-group')
+        li(class="list-group-item" style="font-size:15px, background-color:#A2E59A" )
+                     select( name="school" class="form-select")
+                        <option selected>Meet at a Library</option>
+                        each value in library
+                            option(value=`${value}`)= value
+     ul(class='list-group')
+        li(class="list-group-item" style="font-size:15px, background-color:#A2E59A" )
+                     select( name="school" class="form-select")
+                        <option selected>Meet at a Park</option>
+                        each value in park
+                            option(value=`${value}`)= value
 
 
      script(src="/javascript/meetingLocationSuggestions.js")
