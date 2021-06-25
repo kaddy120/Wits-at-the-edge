@@ -27,7 +27,8 @@ class userManager {
   async addUser (req, res, next) {
     const user = { ...req.body }
     const address = `${req.body.streetAddress}, ${req.body.suburb}, ${req.body.city}, ${req.body.postalCode}`
-    console.log(user)
+    console.log(req.body.lat, req.body.long)
+    console.log("User: ", user)
     const repo = this.userRepository
     console.log(address)
     bcrypt.genSalt(saltRounds, function (err, salt) {
@@ -38,7 +39,7 @@ class userManager {
         user.password = hash
 
         repo.addUser(user).then(addUser => {
-          repo.addUserAddress(user.email, address)
+          repo.addUserAddress(user.email, address, req.body.lat, req.body.long)
         }).catch(err => {
           console.log(err)
         })
