@@ -26,8 +26,12 @@ class geoManager{
       const library = await geoRequests.getRestaurants(longitudteMedian, latitudeMedian, place)
       place = 'park'
       const park = await geoRequests.getRestaurants(longitudteMedian, latitudeMedian, place)
-      console.log("restaurants: ", park)
-      res.render('locations', {title: 'Location suggestions', restaurant, library, park})
+      place = 'cafe'
+      const cafe = await geoRequests.getRestaurants(longitudteMedian, latitudeMedian, place)
+      place = 'sublocality'
+      const region = await geoRequests.getRestaurants(longitudteMedian, latitudeMedian, place)
+      console.log("restaurants: ", region)
+      res.render('locations', {title: 'Location suggestions', restaurant, library, park, cafe, region})
     }
 }
 
