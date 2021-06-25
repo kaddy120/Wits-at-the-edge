@@ -8,6 +8,10 @@ function meetingRouters ({ groupRepository, meetingRepository, userRepository })
     res.render('group')
   })
 
+  router.get('/place', async (req, res) => {
+      const groupId = 58
+      res.render('locations', {title: 'Location suggestions'})
+  })
 
   router.get('/groupName/:groupId', async (req, res) => {
     const groupName = req.params.groupId

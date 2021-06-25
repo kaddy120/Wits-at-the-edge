@@ -8,7 +8,7 @@ function geocode (location) {
   axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
     params: {
       address: location,
-      key: 'AIzaSyBQpS8Gb2C1coUXAIMFk-sTGmcclvup-GE'
+      key: 'AIzaSyBQpS8Gb2C1coUXAIMFk-sTGmcclvup-GE' 
     }
   }).then(response => {
     const address = response.data.results[0].formatted_address
@@ -16,7 +16,8 @@ function geocode (location) {
     const updateStrtName = response.data.results[0].address_components[1].short_name
     const updateSuburb = response.data.results[0].address_components[2].long_name
     const updatePostalCode = response.data.results[0].address_components[7].short_name
-    console.log(updateSuburb)
+    const lat = response.data.geometry.location
+    console.log("LAT: ", lat)
     suburb.value = updateSuburb
     street.value = `${updateStrtNumber} ${updateStrtName}`
     postalCode.value = updatePostalCode
@@ -31,5 +32,6 @@ function geocode (location) {
 
 city.addEventListener('input', function (e) {
   const location = `${street.value}, ${suburb.value}, ${city.value}, ${postalCode.value}`
+  console.log(street.value)
   geocode(location)
 })
