@@ -48,11 +48,11 @@ class userManager {
         }
       })
       user.password = req.body.password
-     req.login(user, function (err) {
+      req.login(user, function (err) {
         if (err) { return next(err) }
         return res.redirect('/')
+      })
     })
-   })
   }
 }
 

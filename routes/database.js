@@ -14,7 +14,6 @@ router.get('/', function (req, res) {
   // Send back the result
     .then(result => {
       res.send(result)
-      console.log(result)
     })
   // If there's an error, return that with some description
     .catch(err => {

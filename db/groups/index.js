@@ -48,19 +48,6 @@ class groupRepository {
     }
   }
 
-  async getUserGroups (userId) {
-    try {
-      const pool = await this.dbpool
-      const sqlQueries = await utils.loadSqlQueries('groups')
-      const groups = await pool.request()
-      .input('user', sql.VarChar(50), userId)
-      .query(sqlQueries.getUserGroups)
-      return groups
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
   async searchGroupByName (groupName, userId) {
     const like = `%${groupName}%`
     try {
@@ -212,19 +199,19 @@ class groupRepository {
       console.log(err)
     }
   }
+
   async terminateRequest (reason, email, terminator) {
-     try {
+    try {
       const pool = await this.dbpool
       const sqlQueries = await utils.loadSqlQueries('groups')
       const insertRecord = await pool.request()
-          .input('email', sql.VarChar(50), email)
-          .input('reason', sql.VarChar(500), reason)
-          .input('userId', sql.VarChar(50), terminator)
-          .query(sqlQueries.terminateRequest)
+        .input('email', sql.VarChar(50), email)
+        .input('reason', sql.VarChar(500), reason)
+        .input('userId', sql.VarChar(50), terminator)
+        .query(sqlQueries.terminateRequest)
+    } catch (err) {
 
-     } catch (err) {
-
-     }
+    }
   }
 
   async terminateNotification () {
@@ -232,26 +219,27 @@ class groupRepository {
       const pool = await this.dbpool
       const sqlQueries = await utils.loadSqlQueries('groups')
       const info = await pool.request()
-          .query(sqlQueries.terminateNotification)
-          console.log("DT", info)
-          return info
+        .query(sqlQueries.terminateNotification)
+      console.log('DT', info)
+      return info
     } catch (err) {
-       console.log(err)
+      console.log(err)
     }
-  } 
+  }
 
   async getGroupMembers (groupId) {
     try {
       const pool = await this.dbpool
       const sqlQueries = await utils.loadSqlQueries('groups')
       const members = await pool.request()
-          .input('groupId', sql.Int, groupId)
-          .query(sqlQueries.getGroupMembers)
-          return members
+        .input('groupId', sql.Int, groupId)
+        .query(sqlQueries.getGroupMembers)
+      return members
     } catch (err) {
-       console.log(err)
+      console.log(err)
     }
   }
+
   async filterByYOSSchoolUser (YSO, school, userId) {
     try {
       const pool = await this.dbpool

@@ -6,7 +6,6 @@ const { container } = require('../di-setup')
 const groupRepository = container.resolve('groupRepository')
 const votesRepository = container.resolve('votesRepository')
 const model = require('../models/voteValidation')
-const group = require('../db/groups')
 const deletUserGroups = container.resolve('groupRepository')
 const engine = container.resolve('recommendationEngine')
 const users = container.resolve('userRepository')
@@ -20,9 +19,8 @@ const defaultThumbnail = 'https://www.seekpng.com/png/detail/215-2156215_diversi
 
 router.get('/dashboard', async (req, res) => {
   const user = req.user
-  const groups = await groupRepository.getUserGroups(user.email).then(result => { return result.recordset })
+  const groups = await groupRepository.getUserGroups(user.email)
   const groupThumbnail = await groupRepository.getGroupThumbnail(user.email).then(result => { return result.recordset })
-  console.log(groups)
   const thumbnail = []
   for (let index = 0; index < groupThumbnail.length; index++) {
     if (groupThumbnail[index].thumbnail == null) { thumbnail[index] = 'https://www.seekpng.com/png/detail/215-2156215_diversity-people-in-group-icon.png' } else thumbnail[index] = groupThumbnail[index].thumbnail
@@ -33,53 +31,43 @@ router.get('/dashboard', async (req, res) => {
 
 router.get('/:groupId', async (req, res) => {
   const groupName = await groupRepository.getUserGroupName(req.params.groupId)
-  console.log(groupName)
   res.render('groupHomePage', { title: 'Group Home Page', groupName: groupName[0].groupName, groupId: req.params.groupId })
 })
 
-
 router.get('/members/:groupId', async (req, res) => {
   const terminatingUser = req.user
-  const members = await groupRepository.getGroupMembers(req.params.groupId).then(result => {return result.recordset})
-  console.log(members)
-  const profile = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtNWVnKZZfy-1CLo75eO5vLhTWFZyeyc7QaI6GgdSalXDIJOCA6t0DSdDDMabrTOdjdYs&usqp=CAU"
-  res.render('members', {title: 'Group Members', members: members, image: profile, groupId: req.params.groupId, terminator: terminatingUser})
+  const members = await groupRepository.getGroupMembers(req.params.groupId).then(result => { return result.recordset })
+  const profile = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtNWVnKZZfy-1CLo75eO5vLhTWFZyeyc7QaI6GgdSalXDIJOCA6t0DSdDDMabrTOdjdYs&usqp=CAU'
+  res.render('members', { title: 'Group Members', members: members, image: profile, groupId: req.params.groupId, terminator: terminatingUser })
 })
 
 router.post('/terminate/:user/:terminator/:reason', async (req, res) => {
-      let terminatee = req.params.user
-      let terminateReason = req.params.reason
-      let terminator = req.params.terminator
-      await groupRepository.terminateRequest (terminateReason, terminatee, terminator)
-      console.log(terminateReason)
+  const terminatee = req.params.user
+  const terminateReason = req.params.reason
+  const terminator = req.params.terminator
+  await groupRepository.terminateRequest(terminateReason, terminatee, terminator)
 })
 
 router.get('/notifications/:groupId', async (req, res) => {
-  const info = await groupRepository.terminateNotification ().then(result => {return result.recordset})
-  console.log(info[0].memberToBeTerminated)
-   console.log(req.user.email)
-    res.render('notifications', {title: 'notifications', user: info, logged: req.user.email, groupId: req.params.groupId})
-  
-  /*else {
+  const info = await groupRepository.terminateNotification().then(result => { return result.recordset })
+  res.render('notifications', { title: 'notifications', user: info, logged: req.user.email, groupId: req.params.groupId })
+
+  /* else {
     res.render('notifications', {title: 'no terminations'})
-  }*/
+  } */
 })
 
 router.post('/vote/:groupId/:requestId/:email/:voteChoice', async (req, res) => {
-    const requestId = req.params.requestId
-    const voter = req.params.email
-    const choice = req.params.voteChoice
-   // await votesRepository.terminationVote(requestId, voter, choice)
-    const getNumOfGroupMembers = await votesRepository.getNumOfGroupMembers(req.params.groupId)
-    const voteCount = await votesRepository.CountVotes(requestId).then(result => { return result.recordset })
-    console.log(voteCount)
-    const counter = model.countVotes(voteCount, getNumOfGroupMembers)
-    console.log(counter)
-    const member = await votesRepository.getMemberToBeTerminated(requestId).then(result => { return result.recordset })
-    console.log(member[0].memberToBeTerminated)
-    if (counter === true)
-    await votesRepository.deleteMember (member[0].memberToBeTerminated, groupId)
-    res.send("OK")
+  const requestId = req.params.requestId
+  const voter = req.params.email
+  const choice = req.params.voteChoice
+  // await votesRepository.terminationVote(requestId, voter, choice)
+  const getNumOfGroupMembers = await votesRepository.getNumOfGroupMembers(req.params.groupId)
+  const voteCount = await votesRepository.CountVotes(requestId).then(result => { return result.recordset })
+  const counter = model.countVotes(voteCount, getNumOfGroupMembers)
+  const member = await votesRepository.getMemberToBeTerminated(requestId).then(result => { return result.recordset })
+  if (counter === true) { await votesRepository.deleteMember(member[0].memberToBeTerminated, groupId) }
+  res.send('OK')
 })
 
 router.get('/all/:pageNo', async (req, res) => {
@@ -119,31 +107,6 @@ router.get('/createMeeting', async (req, res) => {
 router.get('/chat/:groupId', (req, res) => {
   res.render('chat', { roomname: req.params.groupId })
 })
-
-router.post('/createMeeting',
-  body('aganda', 'Agenda cannot be empy').notEmpty(),
-  body('time', 'time can not be null').notEmpty(),
-  async (req, res) => {
-    // for now just give it any id
-    const error = validationResult(req)
-    if (error.array().length > 0) {
-      res.redirect(400, '/group/createMeeting')
-    }
-
-    const email = 'kaddy120@gmail.com'
-    const groupId = 2
-
-    if (await group.userIsMember(email, groupId)) {
-      const meeting = { ...req.body }
-      meeting.userId = email
-      meeting.groupId = groupId
-      await group.createMeeting(meeting)
-      users.addTracking(meeting.userId, 'createMeating', meeting.groupId)
-      res.redirect('/group')
-    } else {
-      res.status(404).json({ message: 'you are not a group member, you cannot create a meeting' })
-    }
-  })
 
 router.get('/createGroup', function (req, res, next) {
   res.render('createGroup', { title: 'Create Group Page' })
