@@ -20,18 +20,13 @@ class geoManager{
 
       const longitudteMedian = stats.sort(long)
       const latitudeMedian = stats.sort(lat)
-      var place = "restaurant"
-      const restaurant = await geoRequests.getRestaurants(longitudteMedian, latitudeMedian, place)
-      place = 'library'
-      const library = await geoRequests.getRestaurants(longitudteMedian, latitudeMedian, place)
-      place = 'park'
-      const park = await geoRequests.getRestaurants(longitudteMedian, latitudeMedian, place)
-      place = 'cafe'
-      const cafe = await geoRequests.getRestaurants(longitudteMedian, latitudeMedian, place)
-      place = 'sublocality'
-      const region = await geoRequests.getRestaurants(longitudteMedian, latitudeMedian, place)
-      console.log("restaurants: ", region)
-      res.render('locations', {title: 'Location suggestions', restaurant, library, park, cafe, region})
+      let placeHolder = ['restaurant', 'library', 'park', 'cafe', 'sublocality']
+      let place = []
+      for(var index = 0; index < 5;index++) {
+          place[i] = await geoRequests.getRestaurants(longitudteMedian, latitudeMedian, placeHolder[i])
+      }
+      
+      res.render('locations', {title: 'Location suggestions', place})
     }
 }
 
