@@ -2,12 +2,14 @@
 const express = require('express')
 const { body, validationResult } = require('express-validator')
 const router = express.Router()
-
+router.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*')
+  next()
+})
 function meetingRouters ({ groupRepository, meetingRepository, userRepository }) {
   router.get('/', async (req, res) => {
     res.render('group')
   })
-
 
   router.get('/groupName/:groupId', async (req, res) => {
     const groupName = req.params.groupId
@@ -80,7 +82,9 @@ function meetingRouters ({ groupRepository, meetingRepository, userRepository })
 
     res.redirect('/meeting/response')
   })
-
+  router.get('/trackUser', async (req, res, next) => {
+    res.render('trackLocation')
+  })
   return router
 }
 module.exports = { meetingRouters }
