@@ -4,42 +4,48 @@ block content
      form(action="/meeting/create" method="GET")
         .mb-3 
             input(type='submit' class='btn btn-primary' value='Online')
-     div.mb-3 
-            label(for="meetingDate" class="form-label") Meeeting Date
-            input(type="datetime-local"  name="time" class="form-control" id="date")
-     div.mb-3 
-            label(for="surname" class="form-label") Meeting agenda
-            textarea(type="text" name="agenda" class="form-control" id="exampleInputEmail1")
-     h3=title
-     h4='Nearby Region: '
-        strong(style="color:#7F8BDA")=`${place[4]}`
-     div(class="container")
-     ul(class='list-group')
-        li(class="list-group-item" style="font-size:15px, background:#A2E59A")
-            select( name="school" class="form-select")
-                   <option selected>Meet at a Restaurant</option>
-                    each value in place[0]
-                            option(value=`${value}`)= value
-     ul(class='list-group')
-        li(class="list-group-item" style="font-size:15px, background-color:#A2E59A" )
-                     select( name="school" class="form-select")
-                        <option selected>Meet at a Library</option>
-                        each value in place[1]
-                            option(value=`${value}`)= value
-     ul(class='list-group')
-        li(class="list-group-item" style="font-size:15px, background-color:#A2E59A" )
-                     select( name="school" class="form-select")
-                        <option selected>Meet at a Park</option>
-                        each value in place[2]
-                            option(value=`${value}`)= value
-     ul(class='list-group')
-        li(class="list-group-item" style="font-size:15px, background-color:#A2E59A" )
-                     select( name="school" class="form-select")
-                        <option selected>Meet at a Cafe</option>
-                        each value in place[3]
-                            option(value=`${value}`)= value
+     form(action="/meeting/create" method="POST") 
+               div.mb-3 
+                        label(for="meetingDate" class="form-label") Meeeting Date
+                        input(type="datetime-local"  name="time" class="form-control" id="date")
+               div.mb-3 
+                        label(for="surname" class="form-label") Meeting agenda
+                        textarea(type="text" name="agenda" class="form-control" id="exampleInputEmail1")
+               h3=title
+               h4='Nearby Region: '
+                  strong(style="color:#7F8BDA")=`${place[4]}`
+               div(class="container")
+               ul(class='list-group')
+                  li(class="list-group-item" style="font-size:15px, background:#A2E59A")
+                                 select( name="school" class="form-select" id='restaurant')
+                                    <option selected>Meet at a Restaurant</option>
+                                    each value in place[0]
+                                       option(value=`${value}`)= value
+               ul(class='list-group')
+                  li(class="list-group-item" style="font-size:15px, background-color:#A2E59A" )
+                                 select( name="school" class="form-select" id='library')
+                                    <option selected>Meet at a Library</option>
+                                    each value in place[1]
+                                       option(value=`${value}`)= value
+               ul(class='list-group')
+                  li(class="list-group-item" style="font-size:15px, background-color:#A2E59A" )
+                                 select( name="school" class="form-select" id='park')
+                                    <option selected>Meet at a Park</option>
+                                    each value in place[2]
+                                       option(value=`${value}`)= value
+               ul(class='list-group')
+                  li(class="list-group-item" style="font-size:15px, background-color:#A2E59A" )
+                                 select( name="school" class="form-select" id='cafe')
+                                    <option selected>Meet at a Cafe</option>
+                                    each value in place[3]
+                                       option(value=`${value}` id='here')= value
+               div.mb-3 
+               div(class="form-group")
+               strong='Enter meeting address'
+               input(type="text", placeholder="eg 56 Jorrisen str, Braamfontein", name="address", class="form-control", id="address")
 
-
-     script(src="/javascript/meetingLocationSuggestions.js")
+               button(type="submit" class="btn btn-primary" id='submit') Arrange meeting
+        
+     script(src="/javascript/meetingSelection.js")
      script(src="https://unpkg.com/axios/dist/axios.min.js")
 

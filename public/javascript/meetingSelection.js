@@ -1,9 +1,15 @@
 'use strict'
 let num = 0
-//const onlineButton = document.getElementById('online')
+const onlineButton = document.getElementById('cafe')
 //const faceToFaceButton = document.getElementById('face-to-face')
 
-
+console.log(onlineButton)
+onlineButton.addEventListener('click', (e) => {
+  document.getElementById('address').value = onlineButton.value
+  console.log("new address", document.getElementById('address').value)
+ // console.log(onlineButton.value)
+})
+console.log(onlineButton.value)
 /*
 faceToFaceButton.addEventListener('click', async function (res, render) {
   console.log("HERE")
