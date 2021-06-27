@@ -7,12 +7,28 @@ const restaurant = document.getElementById('restaurant')
 const submit = document.getElementById('submit')
 const address = document.getElementById('address')
 
-/*
-while (address.value.length == 0 || address.value.length != 'Meet at a Library' ||
-address.value.length != 'Meet at a Restaurent' || address.value.length != 'Meet at a Park'
-|| address.value.length != 'Meet at a Park') {
-  submit.disabled = false
-}*/
+function geocode(location) {
+  axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
+      params: {
+          address: location,
+          key: 'AIzaSyBQpS8Gb2C1coUXAIMFk-sTGmcclvup-GE'
+      }
+  }).then(async response => {
+            address.value = `${response.data.results[0].address_components[0].short_name} ${response.data.results[0].address_components[1].short_name}, ${response.data.results[0].address_components[2].long_name}, ${response.data.results[0].address_components[7].short_name}`
+          }).catch(err => {
+          console.log("Enter a valid address")
+      })
+}
+
+address.addEventListener('input', (e) => {
+  if(address.value.length == 0)
+  submit.disabled = true
+  else{
+    submit.disabled = false
+    geocode(address.value)
+  }
+})
+
 function isAddressValid() {
 
   if(address.value.length == 0 || address.value == 'Meet at a Library' ||
