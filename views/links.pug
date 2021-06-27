@@ -1,31 +1,36 @@
 extends layout
 block content
-    
+    p welcome to links page
     // Button trigger modal
     button.btn.btn-primary(type='button', data-toggle='modal', data-target='#exampleModal')
-        | Launch demo modal
+        | Add topic
     // Modal
     #exampleModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true' style="width: 400px;position: relative; margin: auto;")
         .modal-dialog(role='document')
         .modal-content
             .modal-header
-                h5#exampleModalLabel.modal-title Modal title
+                h5#exampleModalLabel.modal-title Add a topic
                 button.close(type='button', data-dismiss='modal', aria-label='Close')
                     span(aria-hidden='true') &times;
             .modal-body
-                p bfhrhf    
+                input#topic(style="outline: none; border-width:0px;", placeholder = "Topic") 
             .modal-footer
                 button.btn.btn-secondary(type='button', data-dismiss='modal') Close
-                button.btn.btn-primary(type='button') Save changes
-
-    p welcome to links page
-    ul.list-group
-        li(class="list-group-item d-flex justify-content-between align-items-center")
-            p A list item
-        li(class="list-group-item d-flex justify-content-between align-items-center")
-           iframe( src="https://blog.crisp.se/2016/01/25/henrikkniberg/making-sense-of-mvp" title="W3Schools Free Online Web Tutorials") 
-        li(class="list-group-item d-flex justify-content-between align-items-center")
-            p list item
-        li(class="list-group-item d-flex justify-content-between align-items-center")
-            p list item
-    
+                button#add-topic.btn.btn-primary(type='button') Add
+    if links!==null
+        ul.list-group 
+            each link in links
+                li(class="list-group-item" style="margin-bottom: 0px;")
+                    .link
+                        a(href=`${link.linkURL}`)= link.title
+                        //- if (link.userId == userId)
+                        button edit 
+                        button delete
+    else 
+        ul.list-group
+                li(class="list-group-item" style="margin-bottom: 0px;")
+                    p There are not topics and links added in this group.
+                li(class="list-group-item" style="margin-bottom: 0px;")
+                    p There are not topics and links added in this group.
+    script(src="/javascript/links-frontend.js")
+            

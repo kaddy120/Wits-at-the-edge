@@ -20,8 +20,7 @@ const redisClient = redis.createClient(6380, 'wits.redis.cache.windows.net',
     auth_pass: process.env.primaryKey,
     tls: { servername: process.env.redisServername }
   })
-const bodyParser = require('body-parser')
-app.use(bodyParser.urlencoded({ extended: true }))
+
 const flash = require('express-flash')
 
 require('./di-setup')
@@ -65,6 +64,7 @@ app.set('view engine', 'pug')
 app.use(logger('dev'))
 app.use(require('morgan')('combined'))
 app.use(require('body-parser').urlencoded({ extended: true }))
+app.use(express.json())
 app.use(express.static(path.join(__dirname, 'public')))
 
 app.set('trust proxy', 1)
