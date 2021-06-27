@@ -87,5 +87,15 @@ function searchFilterOptions (firstName, surname, yearOfStudy, school) {
     return 4 // Search and filter by all options
   }
 }
+function getGroupName (myRequest, groupNames) {
+  const getNames = []
 
-module.exports = { userFound, canCreateGroup, searchFilterOptions }
+  for (let x = 0; x < myRequest.length; x++) {
+    for (let i = 0; i < groupNames.length; i++) {
+      if (myRequest[x].groupId === groupNames[i].groupId) getNames.push(groupNames[i].groupName)
+    }
+  }
+
+  return getNames
+}
+module.exports = { userFound, canCreateGroup, searchFilterOptions, getGroupName }

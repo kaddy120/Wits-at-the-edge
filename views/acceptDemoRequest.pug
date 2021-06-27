@@ -1,16 +1,15 @@
 extend groupLayout 
 
 block content
-    p=`${groupId}`
     ul(class="list-group")
         - for (var x = 0; x < notification.length; x++)
               li(class="list-group-item")
-                a(href="")= notification[x].email
-                form(action=`/joinRequest/${notification[x].email}/${groupId}`, method='POST')
+                a(href="")= names[x]
+                form(action=`/joinRequest/${notification[x].userId}/${notification[x].groupId}`, method='POST')
                     input(type='submit' name="accept" value="accept" class='btn btn-success btn-sm')
                     |
                     |
-                    input(type='submit' name="decline" value="decline" class='btn btn-success btn-sm')                    
+                    input(type='submit' name="decline" value="decline" class='btn btn-success btn-sm' formaction=`/declineRequest/${notification[x].userId}/${notification[x].joinRequestId}`)                    
 
 
 

@@ -2,28 +2,40 @@ const express = require('express')
 const router = express.Router()
 const { container } = require('../di-setup')
 const userRepo = container.resolve('userRepository')
-// const verify = require('../models/verification')
+const verify = require('../models/verification')
 
-router.get('/joinRequest', function (req, res, next) {
-  res.render('acceptDemo')
-})
-
-router.post('/joinRequest', async function (req, res, next) {
-  const email = req.user.email // Get the user who logged in
-
-  // Getting my requests
+// Route to see all user requests
+router.get('/joinRequest', async function (req, res, next) {
+  const email = req.user.email
   const myRequest = await userRepo.getRequests(email)
-  console.log(myRequest)
-  console.log(myRequest.length)
-  if (myRequest.length > 0) res.render('acceptDemoRequest', { notification: myRequest, groupId: 58 })
-  else res.redirect('/')
+  if (myRequest.length > 0) {
+    const getGroups = await userRepo.getGroups()
+    const groupNames = verify.getGroupName(myRequest, getGroups)
+    res.render('acceptDemoRequest', { notification: myRequest, names: groupNames })
+  } else res.redirect('/')
 })
 
+// Route to accept a group invite request
 router.post('/joinRequest/:userId/:groupId', async function (req, res, next) {
-  // console.log('I do pass here')
-  // // If accepted is pressed, check number of groups
-  // const email = req.user
-  // const groupsIn=
+  console.log('I am inside accept')
+  // Get userId and check number of groups user is in
+  const email = req.params.userId
+  const groupId = req.params.groupId
+  const numberOfGroups = await userRepo.getNumberOfGroups(email)
+  console.log(numberOfGroups.length)
+  if (numberOfGroups < 10) {
+    await userRepo.addJoinRequest(email, groupId)
+    // Let user know that they have been successfully added
+    // Remove them from request list
+    const requestId = req.params.joinRequestId
+    await userRepo.deleteGroupRequest(requestId)
+  } // else warn the user
 })
-
+router.post('/declineRequest/:userId/:joinRequestId', async function (req, res, next) {
+  // Get the join request Id to delete that user
+  const requestId = req.params.joinRequestId
+  await userRepo.deleteGroupRequest(requestId)
+  // Update the list of users
+  return res.sendStatus(200)
+})
 module.exports = router

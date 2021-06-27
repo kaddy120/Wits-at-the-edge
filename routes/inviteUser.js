@@ -21,7 +21,7 @@ router.post('/inviteUser', async function (req, res, next) {
   if (evaluate === 0) {
     // Filter by name only
     const usersToInvite = await userRepo.getUserByfName(firstName)
-    if (usersToInvite.length > 0) res.render('inviteUserRequest', { users: usersToInvite, groupId: 58 })
+    if (usersToInvite.length > 0) res.render('inviteUserRequest', { users: usersToInvite, groupId: 4 })
     else res.redirect('/inviteUsers')
     console.log(usersToInvite)
   } else if (evaluate === 1) {
@@ -105,6 +105,7 @@ router.post('/inviteUser/:userId/:groupId', async function (req, res, next) {
   const userId = req.params.userId
   const groupId = req.params.groupId
   const response = null
+  // Fix invite user
   await userRepo.addGroupJoinRequest(groupId, userId, response)
   console.log('Request sent')
   return res.sendStatus(200)
