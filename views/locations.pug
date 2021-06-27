@@ -1,12 +1,21 @@
 extends groupLayout
 
 block content
-     h2=title
+     form(action="/meeting/create" method="GET")
+        .mb-3 
+            input(type='submit' class='btn btn-primary' value='Online')
+     div.mb-3 
+            label(for="meetingDate" class="form-label") Meeeting Date
+            input(type="datetime-local"  name="time" class="form-control" id="date")
+     div.mb-3 
+            label(for="surname" class="form-label") Meeting agenda
+            textarea(type="text" name="agenda" class="form-control" id="exampleInputEmail1")
+     h3=title
      h4='Nearby Region: '
         strong(style="color:#7F8BDA")=`${place[4]}`
      div(class="container")
      ul(class='list-group')
-        li(class="list-group-item" style="font-size:15px, background-color:#A2E59A" )
+        li(class="list-group-item" style="font-size:15px, background:#A2E59A")
             select( name="school" class="form-select")
                    <option selected>Meet at a Restaurant</option>
                     each value in place[0]

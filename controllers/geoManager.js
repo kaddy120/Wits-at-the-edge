@@ -17,15 +17,20 @@ class geoManager{
          lat[i] = coordinates[i].lat
          long[i] = coordinates[i].long
       }
+    coordinates.forEach(function(coordinate, index) {
+        lat[index] = coordinate.lat
+        long[index] = coordinate.long
+    });
 
       const longitudteMedian = stats.sort(long)
       const latitudeMedian = stats.sort(lat)
       let placeHolder = ['restaurant', 'library', 'park', 'cafe', 'sublocality']
       let place = []
       for(var index = 0; index < 5;index++) {
-          place[i] = await geoRequests.getRestaurants(longitudteMedian, latitudeMedian, placeHolder[i])
+          place[index] = await geoRequests.getRestaurants(longitudteMedian, latitudeMedian, placeHolder[index])
       }
       
+      console.log(place[0])
       res.render('locations', {title: 'Location suggestions', place})
     }
 }

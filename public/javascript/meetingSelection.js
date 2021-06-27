@@ -1,22 +1,15 @@
 'use strict'
 let num = 0
-const onlineButton = document.getElementById('online')
-const faceToFaceButton = document.getElementById('face-to-face')
-onlineButton.addEventListener('click', (e) => {
-  onlineButton.style.background = '#e60000'
-  faceToFaceButton.style.background = 'DodgerBlue'
+//const onlineButton = document.getElementById('online')
+//const faceToFaceButton = document.getElementById('face-to-face')
 
-  if (num !== 0) {
-    const div = document.getElementById('address-div')
-    const child = document.getElementById('address-label')
-    const child2 = document.getElementById('address')
-    div.removeChild(child)
-    div.removeChild(child2)
-    num = 0
-  }
 
-  document.getElementById('submit').disabled = false
+/*
+faceToFaceButton.addEventListener('click', async function (res, render) {
+  console.log("HERE")
+  res.render('locations')
 })
+/*
 faceToFaceButton.addEventListener('click', (e) => {
   document.getElementById('submit').disabled = true
   faceToFaceButton.style.background = '#e60000'
@@ -45,4 +38,4 @@ faceToFaceButton.addEventListener('click', (e) => {
       document.getElementById('submit').disabled = true
     }
   })
-})
+})*/
