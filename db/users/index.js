@@ -64,10 +64,11 @@ class userRepository {
     try {
       const sqlQueries = await utils.loadSqlQueries('users')
       const pool = await this.dbpool
-      await pool.request()
+      const getCount = await pool.request()
         .input('userId', sql.Int, userId)
         .input('response', sql.Int, response)
         .query(sqlQueries.getActivityCount)
+      return getCount.recordset
     } catch (err) {
       console.log(err)
     }
