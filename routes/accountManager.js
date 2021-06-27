@@ -47,7 +47,9 @@ function accountManagerRouters ({ userManager, passport }) {
       failureFlash: true
     }),
     function (req, res) {
-      res.redirect('/')
+      const redirectTo = req.session.redirectTo
+      req.session.redirectTo = null
+      res.redirect(redirectTo || '/')
     })
 
   router.get('/logout', (req, res) => {
