@@ -43,8 +43,9 @@ block content
                div(class="form-group")
                strong='Enter meeting address'
                input(type="text", placeholder="eg 56 Jorrisen str, Braamfontein", name="address", class="form-control", id="address")
+               div(class='mb-3') 
 
-               button(type="submit" class="btn btn-primary" id='submit') Arrange meeting
+               button(type="submit" class="btn btn-primary" disabled=true  id='submit') Arrange meeting
         
      script(src="/javascript/meetingSelection.js")
      script(src="https://unpkg.com/axios/dist/axios.min.js")

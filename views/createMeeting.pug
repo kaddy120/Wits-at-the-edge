@@ -3,9 +3,7 @@ extend layout
 block content
     div.
     h4= title
-    form(action="/meeting/place" method="GET")
-        .mb-3 
-            input(type='submit' class='btn btn-primary' value='face-to-face' id='face-to-face') 
+    
     form(action="/meeting/create" method="POST") 
       div.mb-3 
             label(for="meetingDate" class="form-label") Meeeting Date
