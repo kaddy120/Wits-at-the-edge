@@ -2,6 +2,7 @@ function authorization (req, res, next) {
   if (req.user) {
     next()
   } else {
+    req.session.redirectTo = req.path
     res.redirect('/login')
   }
 }
