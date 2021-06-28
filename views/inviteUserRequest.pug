@@ -7,4 +7,5 @@ block content
               li(class="list-group-item")
                 a(href="")= users[x].email
                 form(action=`/inviteUser/${users[x].email}/${groupId}`, method='post')
-                    input(type='submit' name="join" value="add user" class='btn btn-success btn-sm')
+                    input#addUser(type='submit' name="join" value="add user" class='btn btn-success btn-sm')
+    script(src='/javascript/inviteUser.js')

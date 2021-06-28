@@ -6,7 +6,6 @@ const constants = require('../constants')
 const verify = require('../models/verification')
 
 router.get('/inviteUser', function (req, res, next) {
-  // res.render('inviteUser', { title: 'Invite Users To A Group' })
   res.render('inviteUser', constants)
 })
 
@@ -99,7 +98,6 @@ router.post('/inviteUser', async function (req, res, next) {
   } else {
     res.redirect('/')
   }
-  // res.send('Hello World')
 })
 router.post('/inviteUser/:userId/:groupId', async function (req, res, next) {
   const userId = req.params.userId
@@ -108,7 +106,6 @@ router.post('/inviteUser/:userId/:groupId', async function (req, res, next) {
   // Fix invite user
   await userRepo.addGroupJoinRequest(groupId, userId, response)
   console.log('Request sent')
-  return res.sendStatus(200)
 })
 
 module.exports = router

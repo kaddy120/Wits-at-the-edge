@@ -24,18 +24,17 @@ router.post('/joinRequest/:userId/:groupId', async function (req, res, next) {
   const numberOfGroups = await userRepo.getNumberOfGroups(email)
   console.log(numberOfGroups.length)
   if (numberOfGroups < 10) {
-    await userRepo.addJoinRequest(email, groupId)
+    userRepo.addJoinRequest(email, groupId)
     // Let user know that they have been successfully added
     // Remove them from request list
     const requestId = req.params.joinRequestId
-    await userRepo.deleteGroupRequest(requestId)
-  } // else warn the user
+    userRepo.deleteGroupRequest(requestId)
+  }
 })
 router.post('/declineRequest/:userId/:joinRequestId', async function (req, res, next) {
   // Get the join request Id to delete that user
   const requestId = req.params.joinRequestId
-  await userRepo.deleteGroupRequest(requestId)
   // Update the list of users
-  return res.sendStatus(200)
+  userRepo.deleteGroupRequest(requestId)
 })
 module.exports = router
