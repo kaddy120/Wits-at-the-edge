@@ -142,7 +142,7 @@ app.use('/', authorization, inviteUserRouter)
 app.use('/', authorization, acceptRequestRouter)
 
 app.use('/group', groupRouter)
-app.use('/group', linkRouter)
+app.use('/group/:groupId', linkRouter)
 app.use('/', voteRouter)
 
 app.use('/request', authorization, requestRouter)

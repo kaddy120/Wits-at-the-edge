@@ -5,7 +5,7 @@ const { body } = require('express-validator')
 const router = express.Router()
 
 function linkRouters ({ linkRepository }) {
-  router.get('/links/:groupId', async (req, res) => {
+  router.get('/links/', async (req, res) => {
     const groupId = req.params.groupId
     const links = await linkRepository.links(groupId)
     res.render('links', { links })

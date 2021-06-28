@@ -17,15 +17,28 @@ block content
             .modal-footer
                 button.btn.btn-secondary(type='button', data-dismiss='modal') Close
                 button#add-topic.btn.btn-primary(type='button') Add
-    if links!==null
-        ul.list-group 
-            each link in links
-                li(class="list-group-item" style="margin-bottom: 0px;")
-                    .link
-                        a(href=`${link.linkURL}`)= link.title
-                        //- if (link.userId == userId)
-                        button edit 
-                        button delete
+    if links!==null    
+        each link, index in links
+            -if(index>0)
+                -if(link.topicId !== links[index-1].topicId )
+                    h4= link.topic 
+                    ul.list-group 
+                -else
+                    li(class="list-group-item" style="margin-bottom: 0px;")
+                        .link
+                            a(href=`${link.linkURL}`)= link.title
+                            //- if (link.userId == userId)
+                            button edit 
+                            button delete
+            -if(index=0)
+                h4= link.topic 
+                ul.list-group 
+                    li(class="list-group-item" style="margin-bottom: 0px;")
+                        .link
+                            a(href=`${link.linkURL}`)= link.title
+                            //- if (link.userId == userId)
+                            button edit 
+                            button delete
     else 
         ul.list-group
                 li(class="list-group-item" style="margin-bottom: 0px;")
