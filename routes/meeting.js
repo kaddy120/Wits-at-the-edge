@@ -8,12 +8,6 @@ function meetingRouters ({ groupRepository, meetingRepository, userRepository })
     res.render('group')
   })
 
-
-  router.get('/groupName/:groupId', async (req, res) => {
-    const groupName = req.params.groupId
-    res.send(`${groupName} group home page`)
-  })
-
   router.get('/create', async (req, res) => {
     res.render('createMeeting')
   })
@@ -67,6 +61,7 @@ function meetingRouters ({ groupRepository, meetingRepository, userRepository })
     res.render('response', { title: 'Respond To a meeting', userMeetings: meetings, groupNames: groupNames, user: user, notifications: getNotifications })
   })
 
+  // this url looks wrong but am leaving it thee way it is
   router.get('/meetings/:notificationId/:response', async (req, res, next) => {
     const notificationId = req.params.notificationId
     const response = req.params.response
