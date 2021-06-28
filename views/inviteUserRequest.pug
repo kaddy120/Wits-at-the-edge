@@ -6,6 +6,9 @@ block content
         - for (var x = 0; x < users.length; x++)
               li(class="list-group-item")
                 a(href="")= users[x].email
-                form(action=`/inviteUser/${users[x].email}/${groupId}`, method='post')
+                form(action=`#`, method='post')
                     input#addUser(type='submit' name="join" value="add user" class='btn btn-success btn-sm')
+                    |
+                    |
+                    input(type='hidden' value=`${users[x].email}` id=`${groupId}`)
     script(src='/javascript/inviteUser.js')
