@@ -5,6 +5,7 @@ const voteManager = require('./controllers/voteManager')
 const { votingRouters } = require('./routes/votes')
 const meetingRepository = require('./db/meeting/index')
 const recommendationEngine = require('./recomendEngine')
+const authorization = require('./middleware/authorization')
 // const passwordConfig = require('./config')
 
 const userRepository = require('./db/users')
@@ -37,7 +38,8 @@ container.register(
     meetingRouters: awilix.asFunction(meetingRouters),
     requestRouters: awilix.asFunction(requestRouters),
     accountManagerRouters: awilix.asFunction(accountManagerRouters),
-    recommendationEngine: awilix.asClass(recommendationEngine, { lifetime: Lifetime.SINGLETON })
+    recommendationEngine: awilix.asClass(recommendationEngine, { lifetime: Lifetime.SINGLETON }),
+    authorization: awilix.asClass(authorization, { lifetime: Lifetime.SCOPED })
   })
 
 module.exports = {
