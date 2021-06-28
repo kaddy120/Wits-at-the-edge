@@ -7,6 +7,11 @@ const restaurant = document.getElementById('restaurant')
 const submit = document.getElementById('submit')
 const address = document.getElementById('address')
 
+park.style.display = "none"
+restaurant.style.display = "none"
+cafe.style.display = "none"
+library.style.display = "none"
+
 function geocode(location) {
   axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
       params: {
@@ -74,6 +79,34 @@ restaurant.addEventListener('click', (e) => {
 else {
   submit.disabled = false
 } 
+})
+
+document.getElementById('res').addEventListener('click', (e) => {
+  park.style.display = "none"
+  restaurant.style.display = "block"
+  cafe.style.display = "none"
+  library.style.display = "none"
+})
+
+document.getElementById('lib').addEventListener('click', (e) => {
+  park.style.display = "none"
+  restaurant.style.display = "none"
+  cafe.style.display = "none"
+  library.style.display = "block"
+})
+
+document.getElementById('pak').addEventListener('click', (e) => {
+  park.style.display = "block"
+  restaurant.style.display = "none"
+  cafe.style.display = "none"
+  library.style.display = "none"
+})
+
+document.getElementById('caf').addEventListener('click', (e) => {
+  park.style.display = "none"
+  restaurant.style.display = "none"
+  cafe.style.display = "block"
+  library.style.display = "none"
 })
 
 
