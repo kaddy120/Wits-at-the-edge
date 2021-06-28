@@ -102,8 +102,6 @@ class userRepository {
         .input('lat', sql.Float, lat)
         .input('long', sql.Float, long)
         .query(sqlQueries.addUserAddress)
-      console.log('addes')
-      console.log(insertUser)
     } catch (err) {
       console.log(err)
     }

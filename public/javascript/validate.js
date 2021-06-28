@@ -18,6 +18,8 @@ function geocode(location) {
         const updateStrtName = response.data.results[0].address_components[1].short_name
         const updateSuburb = response.data.results[0].address_components[2].long_name
         const updatePostalCode = response.data.results[0].address_components[7].short_name
+        lat.value = response.data.results[0].geometry.location.lat
+        long.value = response.data.results[0].geometry.location.lng
         suburb.value = updateSuburb
         street.value = `${updateStrtNumber} ${updateStrtName}`
         postalCode.value = updatePostalCode

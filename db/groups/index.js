@@ -212,7 +212,7 @@ class groupRepository {
       console.log(err)
     }
   }
-  async terminateRequest (reason, email, terminator) {
+  async terminateRequest (reason, email, terminator, groupId) {
      try {
       const pool = await this.dbpool
       const sqlQueries = await utils.loadSqlQueries('groups')
@@ -220,6 +220,7 @@ class groupRepository {
           .input('email', sql.VarChar(50), email)
           .input('reason', sql.VarChar(500), reason)
           .input('userId', sql.VarChar(50), terminator)
+          .input('groupId', sql.Int, groupId)
           .query(sqlQueries.terminateRequest)
 
      } catch (err) {

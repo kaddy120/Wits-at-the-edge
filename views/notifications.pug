@@ -1,7 +1,8 @@
 extend groupLayout
 
 block content
-        h1=title
+      h1=title
+        if message == '1'
            ul(class='list-group' )
             - for(var i = 0;i < user.length;i++)
               li(class="list-group-item" style="font-size:15px" )
@@ -12,3 +13,5 @@ block content
                     |
                     |
                     input(type='submit' name="decline" value="decline" class='btn btn-light btn-sm' formaction=`/group/vote/${user[i].terminationId}/${logged}/${-1}`)
+        else 
+          h4=message

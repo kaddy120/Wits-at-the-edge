@@ -39,6 +39,7 @@ class userManager {
         user.password = hash
 
         repo.addUser(user).then(addUser => {
+
           repo.addUserAddress(user.email, address, req.body.lat, req.body.long)
         }).catch(err => {
           console.log(err)

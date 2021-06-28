@@ -32,7 +32,7 @@ for (i of items) {
         const reason = this.parentNode.previousSibling.firstChild.value
         console.log(reason)
         try {
-            const response = await fetch(`/group/terminate/${email}/${terminator}/${reason}`, {
+            const response = await fetch(`/group/${groupId}/terminate/${email}/${terminator}/${reason}`, {
                 method: 'post',
             });
             console.log('Completed!', response);
