@@ -2,10 +2,7 @@
 const express = require('express')
 const { body, validationResult } = require('express-validator')
 const router = express.Router()
-router.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', '*')
-  next()
-})
+
 function meetingRouters ({ groupRepository, meetingRepository, userRepository }) {
   router.get('/', async (req, res) => {
     res.render('group')
@@ -58,7 +55,6 @@ function meetingRouters ({ groupRepository, meetingRepository, userRepository })
     const getNotifications = await meetingRepository.getAllUserNotifications(user)
     const meetings = []
     const groupNames = []
-    console.log(getNotifications)
     for (let x = 0; x < getNotifications.length; x++) {
       const meeting = await meetingRepository.getAllUserMeetings(getNotifications[x].meetingId)
       const groupName = await groupRepository.getUserGroupName(meeting[0].groupId)
@@ -83,7 +79,9 @@ function meetingRouters ({ groupRepository, meetingRepository, userRepository })
     res.redirect('/meeting/response')
   })
   router.get('/trackUser', async (req, res, next) => {
-    res.render('trackLocation')
+    const user = req.user.email
+    const attendedMeetings = await meetingRepository.getAttendedMeetings(user)
+    res.render('trackLocation', { title: 'Track Users', meetings: attendedMeetings })
   })
   return router
 }

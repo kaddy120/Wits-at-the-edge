@@ -72,5 +72,18 @@ class meetingRepository {
       console.log(err)
     }
   }
+
+  async getAttendedMeetings (userId) {
+    try {
+      const sqlQueries = await utils.loadSqlQueries('meeting')
+      const pool = await this.dbpool
+      const meetings = await pool.request()
+        .input('userId', sql.VarChar(250), userId)
+        .query(sqlQueries.getAttendedMeetings)
+      return meetings.recordset
+    } catch (err) {
+      console.log(err)
+    }
+  }
 }
 module.exports = meetingRepository

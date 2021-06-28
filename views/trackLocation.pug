@@ -1,7 +1,17 @@
 extends groupLayout
 
 block content 
-    .form-group
-        button( class='btn btn-primary btn-lg' id='trackMe') START TRACKING 
+    h4=title
+    ul(class='list-group')
+            - for (let x = 0; x < meetings.length; x++)
+              li(class="list-group-item" )
+                strong=`Meeting Agenda: ${meetings[x].agenda}`
+                br
+                strong=`Meeting Address: ${meetings[x].address}`
+                form(action='#', method='post' class ='form-group')
+                    input(type='submit' value='START TRACKING ' class='btn btn-primary btn-lg' id='track-Me')  
+                    |
+                    |
+                    input(type='hidden' value=`${meetings[x].meetingId[0]}` id=`${meetings[x].notificationId}`)
     script(src="/javascript/trackUser.js") 
     script(type='text/javascript' defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkQxBECh9wAHS7nrfLvpeEbxD8_I7UWD0&libraries=places&language=en" )
