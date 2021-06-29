@@ -11,7 +11,6 @@ const server = http.createServer(app)
 const { Server } = require('socket.io')
 const io = new Server(server)
 
-require('./di-setup')
 const redis = require('redis')
 const session = require('express-session')
 const RedisStore = require('connect-redis')(session)
@@ -23,7 +22,6 @@ const redisClient = redis.createClient(6380, 'wits.redis.cache.windows.net',
 
 const flash = require('express-flash')
 
-require('./di-setup')
 const { container } = require('./di-setup')
 const user = container.resolve('userRepository')
 // const groupRouter = require('./routes/group')
@@ -142,7 +140,7 @@ app.use('/', authorization, inviteUserRouter)
 app.use('/', authorization, acceptRequestRouter)
 
 app.use('/group', groupRouter)
-app.use('/group/:groupId', linkRouter)
+app.use('/group', linkRouter)
 app.use('/', voteRouter)
 
 app.use('/request', authorization, requestRouter)

@@ -5,7 +5,7 @@ block content
     button.btn.btn-primary(type='button', data-toggle='modal', data-target='#exampleModal')
         | Add topic
     // Modal
-    #exampleModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true' style="width: 400px;position: relative; margin: auto;")
+    #exampleModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='exampleModalLabel', aria-hidden='true' style="width: 400px;position: absolute; margin: auto;")
         .modal-dialog(role='document')
         .modal-content
             .modal-header
@@ -13,37 +13,64 @@ block content
                 button.close(type='button', data-dismiss='modal', aria-label='Close')
                     span(aria-hidden='true') &times;
             .modal-body
-                input#topic(style="outline: none; border-width:0px;", placeholder = "Topic") 
+                form(id="topicForm" action="" method="POST")
+                    input#topic.form-control(, placeholder = "Topic") 
             .modal-footer
                 button.btn.btn-secondary(type='button', data-dismiss='modal') Close
                 button#add-topic.btn.btn-primary(type='button') Add
-    if links!==null    
-        each link, index in links
-            -if(index>0)
-                -if(link.topicId !== links[index-1].topicId )
-                    h4= link.topic 
-                    ul.list-group 
-                -else
-                    li(class="list-group-item" style="margin-bottom: 0px;")
-                        .link
-                            a(href=`${link.linkURL}`)= link.title
-                            //- if (link.userId == userId)
-                            button edit 
-                            button delete
-            -if(index=0)
-                h4= link.topic 
-                ul.list-group 
-                    li(class="list-group-item" style="margin-bottom: 0px;")
-                        .link
-                            a(href=`${link.linkURL}`)= link.title
-                            //- if (link.userId == userId)
-                            button edit 
-                            button delete
+    
+    if links!==null  
+        - var topicId = null;  
+        - for (var index = 0; index < links.length; index++)
+            -if(index===0)
+                .d-flex.justify-content-between
+                    h4= links[index].topic
+                    button#add-link.btn-primary(style="margin: 3px 3px;" data-topicId=`${links[index].topicId}` type='button', data-toggle='modal', data-target='#editModal') +link
+                - topicId= links[index].topicId
+                ul.list-group(data-topicId=`${links[index].topicId}`) 
+                    each link in links
+                        if(link.topicId=== topicId)
+                            li(class="list-group-item" style="margin-bottom: 0px;" data-linkId=`${link.linkId}`)
+                                a(href=`group/${groupId}/link/${link.linkId}` data-url=`${link.linkURL}` data-linkId=`${link.linkId}`)= link.title
+                                if (link.userId === userId)
+                                    button#edit(data-linkId=`${link.linkId}`, type='button', data-toggle='modal', data-target='#editModal') edit 
+                                    button#delete(data-linkId=`${link.linkId}`) delete
+            -else if(links[index].topicId !== links[index-1].topicId )
+                .d-flex.justify-content-between
+                    h4= links[index].topic
+                    button#add-link.btn-primary(style="margin: 3px 3px;" data-topicId=`${links[index].topicId}` type='button', data-toggle='modal', data-target='#editModal') +link
+                -var topicId= links[index].topicId
+                ul.list-group(data-topicId=`${links[index].topicId}`)
+                    each link in links
+                        if(link.topicId=== topicId)
+                            if (link.title)
+                                li(class="list-group-item" style="margin-bottom: 0px;" data-linkId=`${link.linkId}`)
+                                    a(href=`group/${groupId}/link/${link.linkId}` data-url=`${link.linkURL}` data-linkId=`${link.linkId}`)= link.title
+                                    button#edit(data-linkId=`${link.linkId}`, type='button', data-toggle='modal', data-target='#editModal') edit 
+                                    button#delete(data-linkId=`${link.linkId}`) delete
+            
     else 
         ul.list-group
                 li(class="list-group-item" style="margin-bottom: 0px;")
                     p There are not topics and links added in this group.
-                li(class="list-group-item" style="margin-bottom: 0px;")
-                    p There are not topics and links added in this group.
+
+    #editModal.modal.fade(tabindex='-1', role='dialog', aria-labelledby='editModalLabel', aria-hidden='true' style="width: 400px;position: absolute; margin: auto;")
+        .modal-dialog(role='document')
+        .modal-content
+            .modal-header
+                h5#editModalLabel.modal-title Edit Link
+                button.close(type='button', data-dismiss='modal', aria-label='Close')
+                    span(aria-hidden='true') &times;
+            .modal-body
+                form(id="linkForm" action="" method="POST")
+                    input(name="topicId" type="hidden")
+                    label Title
+                    input.form-control(id='link-title' name="title" value = "some title") 
+                    label Link url
+                    input.form-control( id= "link-url" name="linkURL" value = "wwww.someurl.com") 
+            .modal-footer
+                button.btn.btn-secondary(type='button', data-dismiss='modal') Close
+                button#save-link-edit.btn.btn-primary(type='button') Save Changes
+    script(type='text/javascript').
+      const groupId = #{groupId}
     script(src="/javascript/links-frontend.js")
-            

@@ -1,6 +1,3 @@
--- select * from dbo.[Links] inner join (select topicId, topic from dbo.[LinkTopic] where groupId = @groupId) as GroupTopic
--- on groupTopic.topicId = dbo.[Links].topicId 
-select * from Links
-ORDER BY topicId , timePosted;
-
--- i just need to order them right
+select GroupTopic.topicId, timePosted, linkId, linkURL, title, topic from dbo.[Links] right join (select topicId, topic from dbo.[LinkTopic] where groupId = 2) as GroupTopic
+on groupTopic.topicId = dbo.[Links].topicId 
+ORDER BY GroupTopic.topicId , timePosted ;
