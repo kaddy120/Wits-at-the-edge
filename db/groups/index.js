@@ -241,12 +241,13 @@ class groupRepository {
     }
   } 
 
-  async getGroupMembers (groupId) {
+  async getGroupMembers (groupId, user) {
     try {
       const pool = await this.dbpool
       const sqlQueries = await utils.loadSqlQueries('groups')
       const members = await pool.request()
           .input('groupId', sql.Int, groupId)
+          .input('email', sql.VarChar(50), user.email)
           .query(sqlQueries.getGroupMembers)
           return members
     } catch (err) {

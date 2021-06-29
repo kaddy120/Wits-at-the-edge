@@ -40,7 +40,7 @@ router.get('/:groupId', async (req, res) => {
 
 router.get('/:groupId/members', async (req, res) => {
   const terminatingUser = req.user
-  const members = await groupRepository.getGroupMembers(req.params.groupId).then(result => {return result.recordset})
+  const members = await groupRepository.getGroupMembers(req.params.groupId, terminatingUser).then(result => {return result.recordset})
   res.render('members', {title: 'Group Members', members: members, groupId: req.params.groupId, terminator: terminatingUser})
 })
 
