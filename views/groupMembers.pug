@@ -1,9 +1,12 @@
 extends groupLayout
 
 block content
+        link(rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.css")
         h3=title
-        div(class="container")
-          ul(class='list-group' )
+        input(type="text" id="filter" placeholder="Search for a group member")
+        ul(class='list-group' id='names')
             each member in members
               li(class="list-group-item" style="font-size:15px" )
                   a(href=`/group/${groupId}/${member.email}/${member.firstName}/${member.surname}`)=`${member.firstName} ${member.surname}`
+
+        script(src="/javascript/memberSearch.js")

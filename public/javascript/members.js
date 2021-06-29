@@ -8,6 +8,7 @@ inputText.addEventListener('input', (e) => {
     } else submitBtn.disabled = false
 })
 submitBtn.addEventListener('click', async (e) => {
+   // document.getElementById('terminate').disabled = true
     console.log(inputText.value)
     try {
             await fetch(`/group/${groupId}/terminate/${memberToLeave}/${terminator}/${inputText.value}`, {
