@@ -1,4 +1,9 @@
 const filterInput = document.getElementById('filter')
+const items = document.getElementsByClassName('list-group-item')
+
+for (var i = 0; i < items.length; i++) {
+    items[i].style.backgroundColor = '#E3F9E1'
+}
 
 filterInput.addEventListener('input', () =>{
     let filterValue = document.getElementById('filter').value.toUpperCase()
