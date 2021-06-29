@@ -2,8 +2,10 @@ extends groupLayout
 
 block content
    head
-        script.
-           var groupId = #{groupId}
+   script.
+         var groupId = #{groupId}
+         var terminator = "#{terminator}"
+         var memberToLeave = "#{email}"
    meta(charset="utf-8")
    meta(name="viewport" content="width=device-width, initial-scale=1")
    link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css")
@@ -27,6 +29,7 @@ block content
                   div(class="modal-body")
                      textarea(name="", cols="63", rows="10", placeholder="Provide your reason here" id="terminateReason")
                   div(class="modal-footer")
-                     button(type="button" class="btn btn-success" data-dismiss="modal" id='submit') Submit
+                     button(type="button" class="btn btn-success" disabled=true data-dismiss="modal" id='submit') Submit
                               
          
+   script(src="/javascript/members.js")

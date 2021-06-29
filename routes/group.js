@@ -47,8 +47,9 @@ router.get('/:groupId/members', async (req, res) => {
 
 router.get('/:groupId/:email/:firstName/:surname', async (req, res) =>{
   let terminator = req.user
+  console.log(terminator)
   let groupId = req.params.groupId
-  res.render('members', {title: `${req.params.firstName} ${req.params.surname}`, email: req.params.email, terminator, groupId})
+  res.render('members', {title: `${req.params.firstName} ${req.params.surname}`, email: req.params.email, terminator: terminator.email, groupId})
 })
 
 router.post('/:groupId/terminate/:user/:terminator/:reason', async (req, res) => {
