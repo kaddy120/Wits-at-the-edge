@@ -16,7 +16,9 @@ const multer = require('multer')
 const { memoryStorage } = require('multer')
 const upload = multer({ storage: memoryStorage() })
 const imageSaver = require('../models/saveImagesToCloud')
+const voteManager = require('../controllers/voteManager')
 const defaultThumbnail = 'https://www.seekpng.com/png/detail/215-2156215_diversity-people-in-group-icon.png'
+
 
 router.get('/dashboard', async (req, res) => {
   const user = req.user
@@ -50,28 +52,11 @@ router.post('/:groupId/terminate/:user/:terminator/:reason', async (req, res) =>
       await groupRepository.terminateRequest (terminateReason, terminatee, terminator, groupId)
 })
 
-router.get('/:groupId/notifications', async (req, res) => {
-  const votes = await votesRepository.getNotifications (req.user.email).then(result => {return result.recordset})
-  const info = await groupRepository.terminateNotification (req.params.groupId).then(result => {return result.recordset})
-  console.log("HERE ", votes)
-  let requests = []
-  if (votes.length == 0) { requests = info } else requests= model.relevantTerminateRequest(info, votes)
-    const name = []
-
-    if (requests.length !== 0) {
-      for (let i = 0; i < requests.length; i++) {
-        name[i] = await votesRepository.getNameOfRequester(requests[i].memberToBeTerminated).then(result => { return result.recordset })
-      }
-      console.log(name)
-    res.render('notifications', {title: 'notifications', message: "1",name: name, user: info, logged: req.user.email, groupId: req.params.groupId})
-  }
-  else res.render('notifications', {title: 'notifications', message: "No termination requests"})
-})
-
 router.post('/:groupId/vote/:requestId/:email/:voteChoice', async (req, res) => {
     const requestId = req.params.requestId
     const voter = req.params.email
     const choice = req.params.voteChoice
+  
     await votesRepository.terminationVote(requestId, voter, choice)
     const getNumOfGroupMembers = await votesRepository.getNumOfGroupMembers(req.params.groupId)
     const voteCount = await votesRepository.CountVotes(requestId).then(result => { return result.recordset })

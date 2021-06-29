@@ -18,7 +18,7 @@ for(var i = 0;i < temp.length;i++){
     names[i] = temp[i].firstChild.innerHTML
 }
 
-console.log(names)
+console.log(groupId)
 
 
 for (i of items) {

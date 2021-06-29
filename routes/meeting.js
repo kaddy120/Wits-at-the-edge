@@ -84,4 +84,5 @@ function meetingRouters ({ groupRepository, meetingRepository, userRepository, g
 
   return router
 }
+
 module.exports = { meetingRouters }

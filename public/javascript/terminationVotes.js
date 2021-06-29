@@ -6,9 +6,9 @@ for (i of items) {
         e.preventDefault()
         this.parentNode.parentNode.style.backgroundColor = '#E8E8E8'
         this.parentNode.parentNode.innerHTML = 'You declined this terminate request!'
-
+        console.log(this.previousSibling.previousSibling.id)
         try {
-            const response = await fetch(`/group/${this.previousSibling.id}/vote/${this.id}/${this.parentNode.id}/${-1}`, {
+            const response = await fetch(`/group/${this.previousSibling.previousSibling.id}/vote/${this.id}/${this.parentNode.id}/${-1}`, {
                 method: 'post',
             });
             console.log('Completed!', response);
@@ -23,9 +23,10 @@ for (i of items) {
 
         this.parentNode.parentNode.style.backgroundColor = '#E8E8E8'
         this.parentNode.parentNode.innerHTML = 'You accepted this terminate request!'
+        console.log(this.nextSibling.nextSibling.id)
                                         
         try {
-            const response = await fetch(`/group/${this.id}/vote/${this.nextSibling.id}/${this.parentNode.id}/${1}`, {
+            const response = await fetch(`/group/${this.id}/vote/${this.nextSibling.nextSibling.id}/${this.parentNode.id}/${1}`, {
                 method: 'post',
             });
             console.log('Completed!', response);

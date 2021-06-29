@@ -5,6 +5,8 @@ function votingRouters ({ voteManager }) {
   router.get('/join_requests/:groupId/', voteManager.joinRequests.bind(voteManager))
 
   router.post('/vote/:requestId/:groupId/voteChoice/:choice', voteManager.placeVote.bind(voteManager))
+
+  router.get('/group/:groupId/notifications', voteManager.terminationRequests.bind(voteManager))
   return router
 }
 
