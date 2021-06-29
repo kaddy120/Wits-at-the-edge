@@ -2,6 +2,7 @@
 const express = require('express')
 const { body, validationResult } = require('express-validator')
 const router = express.Router()
+const moment = require('moment')
 
 function meetingRouters ({ groupRepository, meetingRepository, userRepository }) {
   router.get('/', async (req, res) => {
@@ -27,8 +28,8 @@ function meetingRouters ({ groupRepository, meetingRepository, userRepository })
         res.redirect(400, '/meeting/create')
       }
 
-      const email = 'finalTest@gmail.com'
-      const groupId = 58
+      const email = 'mullertest23@gmail.com'
+      const groupId = 80
 
       if (await groupRepository.userIsMember(email, groupId)) {
         const meeting = { ...req.body }
@@ -51,7 +52,7 @@ function meetingRouters ({ groupRepository, meetingRepository, userRepository })
     })
 
   router.get('/response', async (req, res, next) => {
-    const user = 'finalTest@gmail.com'
+    const user = req.user.email
     const getNotifications = await meetingRepository.getAllUserNotifications(user)
     const meetings = []
     const groupNames = []
@@ -78,10 +79,35 @@ function meetingRouters ({ groupRepository, meetingRepository, userRepository })
 
     res.redirect('/meeting/response')
   })
+
   router.get('/trackUser', async (req, res, next) => {
     const user = req.user.email
     const attendedMeetings = await meetingRepository.getAttendedMeetings(user)
-    res.render('trackLocation', { title: 'Track Users', meetings: attendedMeetings })
+    const filteredMeetings = attendedMeetings.filter((meeting) => {
+      const duration = moment.duration(moment(new Date()).diff(meeting.meetingTime))
+      const minutes = duration.asMinutes()
+      return minutes >= 40
+    })
+    res.render('trackLocation', { title: 'Track Users', meetings: filteredMeetings })
+  })
+  router.get('/meetingFinished/:meetingId/:finishTime', async (req, res, next) => {
+    const meetingId = req.params.meetingId
+    const finishTime = req.params.finishTime
+    const user = req.user.email
+    const users = await meetingRepository.getNotificationMember(user, meetingId)
+    console.log(users)
+    for (let i = 0; i < users.length; i++) {
+      meetingRepository.setFinishTime(users[i].userId[0], meetingId, finishTime, null, null)
+      const agenda = 'Please do not log out of the app for tracking to be effective'
+      meetingRepository.sendEmail(users[i].userId[0], agenda)
+    }
+    res.send({ meetingStatus: 'not done' })
+  })
+
+  router.get('/sendEmail', async (req, res, next) => {
+    const user = 'mullertest23@gmail.com'
+    meetingRepository.sendEmail(user)
+    res.send('message went')
   })
   return router
 }

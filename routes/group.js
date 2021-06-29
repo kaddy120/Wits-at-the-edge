@@ -140,7 +140,7 @@ router.post('/createMeeting',
     }
   })
 
-router.get('/createGroup', function (req, res, next) {
+router.get('/createGroup', async function (req, res, next) {
   res.render('createGroup', { title: 'Create Group Page' })
 })
 

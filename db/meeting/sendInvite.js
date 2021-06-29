@@ -55,16 +55,16 @@ const transporter = nodemailer.createTransport({
   secure: false,
   requireTLS: true,
   auth: {
-    user: 'Your email here', // Will be the email setup for our webpage on next sprint
-    pass: 'Your password' // Will be the password to our email address
+    user: 'witsappportalMain@gmail.com', // Will be the email setup for our webpage on next sprint
+    pass: process.env.APP_EMAIL_PASSWORD // Will be the password to our email address
   }
 })
 
 const mailOptions = {
-  from: 'your email',
-  to: 'Recipient email', // Can put multiple users
+  from: 'witsappportalMain@gmail.com',
+  to: 'mullertest23@gmail.com', // Can put multiple users
   subject: 'Sending Email using Node.js',
-  text: user.agenda
+  text: 'we are just testing the email joe'
 }
 
 transporter.sendMail(mailOptions, function (error, info) {

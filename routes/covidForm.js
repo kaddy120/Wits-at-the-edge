@@ -7,9 +7,9 @@ router.get('/covidForm/:notificatonId', function (req, res, next) {
 router.post('/covidForm/:notificatonId', (req, res, next) => {
   const response = userResponse.covidResponse(req.body)
   if (response === 'true') {
-    res.redirect(`/meetings/${req.params.notificatonId}/risky`)
+    res.redirect(`/meeting/meetings/${req.params.notificatonId}/risky`)
   } else if (response === 'false') {
-    res.redirect(`/meetings/${req.params.notificatonId}/Available`)
+    res.redirect(`/meeting/meetings/${req.params.notificatonId}/Available`)
   } else {
     res.send(404, 'You did not complete the form wena heban')
   }

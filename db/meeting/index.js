@@ -1,6 +1,7 @@
 'use strict'
 const { sql } = require('../../db')
 const utils = require('../utils')
+const nodemailer = require('nodemailer')
 
 class meetingRepository {
   constructor ({ dbpool }) {
@@ -84,6 +85,63 @@ class meetingRepository {
     } catch (err) {
       console.log(err)
     }
+  }
+
+  async getNotificationMember (userId, meetingId) {
+    try {
+      const sqlQueries = await utils.loadSqlQueries('meeting')
+      const pool = await this.dbpool
+      const meetings = await pool.request()
+        .input('userId', sql.VarChar(250), userId)
+        .input('meetingId', sql.int, meetingId)
+        .query(sqlQueries.getNotificationMember)
+      console.log('not good: ', meetings)
+      return meetings.recordset
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  async setFinishTime (userId, meetingId, finishTime, lat, long) {
+    try {
+      const sqlQueries = await utils.loadSqlQueries('meeting')
+      const pool = await this.dbpool
+      await pool.request()
+        .input('userId', sql.VarChar(250), userId)
+        .input('meetingId', sql.int, meetingId)
+        .input('finishTime', sql.DateTime, finishTime)
+        .input('lat', sql.VarChar(250), lat)
+        .input('long', sql.VarChar(250), long)
+        .query(sqlQueries.setFinishTime)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  async sendEmail (userId, agenda) {
+    const transporter = nodemailer.createTransport({
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false,
+      requireTLS: true,
+      auth: {
+        user: 'witsappportalMain@gmail.com', // Will be the email setup for our webpage on next sprint
+        pass: 'qwe123$%^' // Will be the password to our email address
+      }
+    })
+
+    const mailOptions = {
+      from: 'witsappportalMain@gmail.com',
+      to: userId, // Can put multiple users
+      subject: 'Meeting Tracking',
+      text: agenda
+    }
+
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error)
+      }
+    })
   }
 }
 module.exports = meetingRepository

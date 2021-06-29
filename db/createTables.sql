@@ -57,3 +57,12 @@ CREATE TABLE dbo.[userTracking](
     [userId] VARCHAR(250) NOT NULL,    
     activity VARCHAR(300) NOT NULL
 )
+
+CREATE TABLE dbo.[meetingTracking](
+    [trackingId] int IDENTITY(1,1) PRIMARY KEY CLUSTERED NOT NULL,
+    userId VARCHAR(250) NOT NULL,
+    meetingId int not NULL,
+    finishTime datetime NULL,  
+    lat VARCHAR(250) null,
+    long VARCHAR(250) null 
+)
