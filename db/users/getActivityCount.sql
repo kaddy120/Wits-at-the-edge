@@ -1,1 +1,1 @@
-SELECT count (*) FROM [dbo].[userTracking] where userId = @userId and activity = @response
+SELECT count(*) as total FROM [dbo].[userTracking] where userId = @userId and activity = @response

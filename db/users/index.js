@@ -63,12 +63,13 @@ class userRepository {
   async getActivityCount (userId, response) {
     try {
       const sqlQueries = await utils.loadSqlQueries('users')
-      const pool = await this.dbpool
-      const getCount = await pool.request()
-        .input('userId', sql.Int, userId)
-        .input('response', sql.Int, response)
+      const pool = await this.pools
+      const result = await pool.request()
+        .input('userId', sql.VarChar(50), userId)
+        .input('response', sql.VarChar(50), response)
         .query(sqlQueries.getActivityCount)
-      return getCount.recordset
+      // console.log(result.recordset[0].total)
+      return result.recordset[0].total
     } catch (err) {
       console.log(err)
     }
