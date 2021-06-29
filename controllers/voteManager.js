@@ -2,16 +2,17 @@ const voters = require('../db/voting/user.json')
 const model = require('../models/voteValidation')
 
 class voteManager {
-  constructor ({ votesRepository, userRepository, groupRepository }) {
+  constructor({ votesRepository, userRepository, groupRepository }) {
     this.votesRepository = votesRepository
     this.joinRequests = this.joinRequests.bind(this)
     this.placeVote = this.placeVote.bind(this)
     this.userRepository = userRepository
     this.groupRepository = groupRepository
     this.terminationRequests = this.terminationRequests.bind(this)
+    this.placeTerminateVote = this.placeTerminateVote.bind(this)
   }
 
-  async joinRequests (req, res) {
+  async joinRequests(req, res) {
     const voter = req.user
     const groupId = req.params.groupId
     const requests = await this.votesRepository.getRequestsToJoin(groupId).then(result => { return result.recordset })
@@ -33,7 +34,7 @@ class voteManager {
     } else res.render('vote', { title: 'Pending Join Requests', message: '**There are currently no pending join requests.' })
   }
 
-  async placeVote (req, res) {
+  async placeVote(req, res) {
     const voter = req.user
     const groupId = req.params.groupId
     console.log(groupId)
@@ -55,21 +56,45 @@ class voteManager {
   }
 
   async terminationRequests(req, res) {
-    const votes = await this.votesRepository.getNotifications (req.user.email).then(result => {return result.recordset})
-    const info = await this.groupRepository.terminateNotification (req.params.groupId).then(result => {return result.recordset})
-    console.log(votes)
+    let name = []
     let requests = []
-    if (votes.length == 0) { requests = info } else requests= model.relevantTerminateRequest(info, votes)
-      const name = []
-  
-      if (requests.length !== 0) {
-        for (let i = 0; i < requests.length; i++) {
-          name[i] = await this.votesRepository.getNameOfRequester(requests[i].memberToBeTerminated).then(result => { return result.recordset })
-        }
-  
-      res.render('notifications', {title: 'notifications', message: "1",name: name, user: requests, logged: req.user.email, groupId: req.params.groupId})
+    
+    const votes = await this.votesRepository.getNotifications(req.user.email).then(result => { return result.recordset })
+    const info = await this.groupRepository.terminateNotification(req.params.groupId).then(result => { return result.recordset })
+
+    if (votes.length == 0) { requests = info }
+    else { requests = model.relevantTerminateRequest(info, votes) }
+    
+    const filteredRequests = requests.filter(request => {
+      return request.terminatingMember != req.user.email
+    })
+
+    if (filteredRequests.length !== 0) {
+     
+      for (let index = 0; index < filteredRequests.length; index++) {
+        name[index] = await this.votesRepository.getNameOfRequester(filteredRequests[index].memberToBeTerminated).then(result => { return result.recordset })
+      }
+
+      res.render('notifications', { title: 'notifications', message: "1", name: name, user: filteredRequests, logged: req.user.email, groupId: req.params.groupId })
     }
-    else res.render('notifications', {title: 'notifications', message: "No termination requests"})
+
+    else res.render('notifications', { title: 'notifications', message: "**No termination requests" })
+  }
+
+  async placeTerminateVote(req, res) {
+    const requestId = req.params.requestId
+    const voter = req.params.email
+    const choice = req.params.voteChoice
+
+    await this.votesRepository.terminationVote(requestId, voter, choice)
+    const getNumOfGroupMembers = await this.votesRepository.getNumOfGroupMembers(req.params.groupId)
+    const member = await this.votesRepository.getMemberToBeTerminated(requestId).then(result => { return result.recordset })
+    const voteCount = await this.votesRepository.CountVotes(requestId).then(result => { return result.recordset })
+
+    const counter = model.countVotes(voteCount, getNumOfGroupMembers)
+
+    if (counter === true)
+      await this.votesRepository.deleteMember(member[0].memberToBeTerminated, req.params.groupId, requestId)
   }
 }
 

@@ -6,7 +6,8 @@ block content
            ul(class='list-group')
             - for(var i = 0;i < user.length;i++)
               li(class="list-group-item" style="font-size:15px" )
-                  a(href="#")=`Someone wants to terminate ${name[i][0].firstName} ${name[i][0].surname} group membership`
+                  p
+                    strong(style="color:#7F8BDA")=`Someone wants to terminate ${name[i][0].firstName} ${name[i][0].surname} group membership`
                   p=`Reason for termination: ${user[i].terminationReason}`
                   form(action='#' id=`${logged}`, method='post')
                     input(type='submit' name="accept" id=`${groupId}` value="accept" class='btn btn-primary btn-sm')

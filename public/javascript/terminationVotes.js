@@ -1,5 +1,8 @@
 const items = document.getElementsByClassName('list-group-item')
 
+for (var i = 0; i < items.length; i++) {
+    items[i].style.backgroundColor = '#E3F9E1'
+}
 
 for (i of items) {
     i.children[2].lastChild.addEventListener("click", async function (e) {

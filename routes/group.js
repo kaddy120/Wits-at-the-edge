@@ -45,26 +45,7 @@ router.get('/:groupId/members', async (req, res) => {
 })
 
 router.post('/:groupId/terminate/:user/:terminator/:reason', async (req, res) => {
-      let terminatee = req.params.user
-      let terminateReason = req.params.reason
-      let terminator = req.params.terminator
-      let groupId = req.params.groupId
-      await groupRepository.terminateRequest (terminateReason, terminatee, terminator, groupId)
-})
-
-router.post('/:groupId/vote/:requestId/:email/:voteChoice', async (req, res) => {
-    const requestId = req.params.requestId
-    const voter = req.params.email
-    const choice = req.params.voteChoice
-  
-    await votesRepository.terminationVote(requestId, voter, choice)
-    const getNumOfGroupMembers = await votesRepository.getNumOfGroupMembers(req.params.groupId)
-    const voteCount = await votesRepository.CountVotes(requestId).then(result => { return result.recordset })
-    const counter = model.countVotes(voteCount, getNumOfGroupMembers)
-    const member = await votesRepository.getMemberToBeTerminated(requestId).then(result => { return result.recordset })
-    if (counter === true)
-    await votesRepository.deleteMember (member[0].memberToBeTerminated, req.params.groupId, requestId)
-    res.send("OK")
+  await groupRepository.terminateRequest (req.params.reason, req.params.user, req.params.terminator, req.params.groupId)
 })
 
 router.get('/all/:pageNo', async (req, res) => {
