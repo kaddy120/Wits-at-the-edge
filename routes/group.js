@@ -41,7 +41,14 @@ router.get('/:groupId', async (req, res) => {
 router.get('/:groupId/members', async (req, res) => {
   const terminatingUser = req.user
   const members = await groupRepository.getGroupMembers(req.params.groupId, terminatingUser).then(result => {return result.recordset})
-  res.render('members', {title: 'Group Members', members: members, groupId: req.params.groupId, terminator: terminatingUser})
+  console.log(members)
+  res.render('groupMembers', {title: 'Group Members', members: members, groupId: req.params.groupId, terminator: terminatingUser})
+})
+
+router.get('/:groupId/:email/:firstName/:surname', async (req, res) =>{
+  let terminator = req.user
+  let groupId = req.params.groupId
+  res.render('members', {title: `${req.params.firstName} ${req.params.surname}`, email: req.params.email, terminator, groupId})
 })
 
 router.post('/:groupId/terminate/:user/:terminator/:reason', async (req, res) => {

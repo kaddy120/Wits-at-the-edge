@@ -1,8 +1,22 @@
 const inputText = document.getElementById('terminateReason')
-const items = document.querySelectorAll('#submit')
-const temp = document.getElementsByClassName('list-group-item')
-//const items = document.getElementsByClassName('list-group-item')
-console.log(temp[0].firstChild.innerHTML )
+//const items = document.querySelectorAll('#submit')
+const Items = document.getElementsByClassName('list-group-item')
+console.log(Items[1].lastChild.firstChild.firstChild.lastChild.firstChild)
+let things = []
+
+for(var i = 0;i < Items.length;i++){
+    things[i] = Items[i].lastChild.firstChild.firstChild.lastChild.firstChild
+}
+
+console.log(things.length)
+
+
+for (i of things)  {
+    console.log(i)
+    i.addEventListener('click', (e) =>{
+        console.log(this)
+    })
+}
 
 /*
 inputText.addEventListener('input', function (e) {
@@ -13,11 +27,7 @@ inputText.addEventListener('input', function (e) {
         submit.disabled = true
       } 
 })*/
-let names = []
-for(var i = 0;i < temp.length;i++){
-    names[i] = temp[i].firstChild.innerHTML
-}
-
+/*
 console.log(groupId)
 
 
@@ -43,3 +53,4 @@ for (i of items) {
     })
 }
 
+*/

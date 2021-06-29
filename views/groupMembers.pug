@@ -1,0 +1,9 @@
+extends groupLayout
+
+block content
+        h3=title
+        div(class="container")
+          ul(class='list-group' )
+            each member in members
+              li(class="list-group-item" style="font-size:15px" )
+                  a(href=`/group/${groupId}/${member.email}/${member.firstName}/${member.surname}`)=`${member.firstName} ${member.surname}`

@@ -21,7 +21,7 @@ class userManager {
     }
     console.log(user)
     res.render('address', { title: 'Fill in Address', user })
-    // res.redirect(`/address/name/${user.name}/surname/${user.surname}/email/${user.email}/school/${user.school}/YOS/${user.yearOfStudy}/Password/${user.password}`)
+    
   }
 
   async addUser (req, res, next) {
