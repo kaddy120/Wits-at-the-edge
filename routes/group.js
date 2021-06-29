@@ -22,7 +22,6 @@ router.get('/dashboard', async (req, res) => {
   const user = req.user
   const groups = await groupRepository.getUserGroups(user.email).then(result => { return result.recordset })
   const groupThumbnail = await groupRepository.getGroupThumbnail(user.email).then(result => { return result.recordset })
-  console.log(groups)
   const thumbnail = []
   for (let index = 0; index < groupThumbnail.length; index++) {
     if (groupThumbnail[index].thumbnail == null) { thumbnail[index] = 'https://www.seekpng.com/png/detail/215-2156215_diversity-people-in-group-icon.png' } else thumbnail[index] = groupThumbnail[index].thumbnail
@@ -33,7 +32,6 @@ router.get('/dashboard', async (req, res) => {
 
 router.get('/:groupId', async (req, res) => {
   const groupName = await groupRepository.getUserGroupName(req.params.groupId)
-  console.log(groupName)
   res.render('groupHomePage', { title: 'Group Home Page', groupName: groupName[0].groupName, groupId: req.params.groupId })
 })
 
@@ -53,31 +51,34 @@ router.post('/:groupId/terminate/:user/:terminator/:reason', async (req, res) =>
 })
 
 router.get('/:groupId/notifications', async (req, res) => {
-  const info = await groupRepository.terminateNotification ().then(result => {return result.recordset})
-  const rowsAffected = await groupRepository.terminateNotification ().then(result => {return result})
-  console.log(rowsAffected.rowsAffected[0])
-  if(rowsAffected.rowsAffected[0] != 0) {
-    res.render('notifications', {title: 'notifications', message: "1", user: info, logged: req.user.email, groupId: req.params.groupId})
+  const votes = await votesRepository.getNotifications (req.user.email).then(result => {return result.recordset})
+  const info = await groupRepository.terminateNotification (req.params.groupId).then(result => {return result.recordset})
+  console.log("HERE ", votes)
+  let requests = []
+  if (votes.length == 0) { requests = info } else requests= model.relevantTerminateRequest(info, votes)
+    const name = []
+
+    if (requests.length !== 0) {
+      for (let i = 0; i < requests.length; i++) {
+        name[i] = await votesRepository.getNameOfRequester(requests[i].memberToBeTerminated).then(result => { return result.recordset })
+      }
+      console.log(name)
+    res.render('notifications', {title: 'notifications', message: "1",name: name, user: info, logged: req.user.email, groupId: req.params.groupId})
   }
-  else{
-    res.render('notifications', {title: 'notifications', message: "No termination requests"})
-  }
+  else res.render('notifications', {title: 'notifications', message: "No termination requests"})
 })
 
-router.post('/vote/:groupId/:requestId/:email/:voteChoice', async (req, res) => {
+router.post('/:groupId/vote/:requestId/:email/:voteChoice', async (req, res) => {
     const requestId = req.params.requestId
     const voter = req.params.email
     const choice = req.params.voteChoice
-   await votesRepository.terminationVote(requestId, voter, choice)
+    await votesRepository.terminationVote(requestId, voter, choice)
     const getNumOfGroupMembers = await votesRepository.getNumOfGroupMembers(req.params.groupId)
     const voteCount = await votesRepository.CountVotes(requestId).then(result => { return result.recordset })
-    console.log(voteCount)
     const counter = model.countVotes(voteCount, getNumOfGroupMembers)
-    console.log(counter)
     const member = await votesRepository.getMemberToBeTerminated(requestId).then(result => { return result.recordset })
-    console.log(member[0].memberToBeTerminated)
     if (counter === true)
-    await votesRepository.deleteMember (member[0].memberToBeTerminated, req.params.groupId)
+    await votesRepository.deleteMember (member[0].memberToBeTerminated, req.params.groupId, requestId)
     res.send("OK")
 })
 
@@ -89,7 +90,7 @@ router.get('/all/:pageNo', async (req, res) => {
   if (req.user) {
     recommendations = await engine.recommendGroups(req.user)
   }
-  // const userId = 'test@gmail.com'
+
   const groups = await groupRepository.firstTop(offset, groupsPerPage, userId)
   res.render('groups', { title: 'Discover more groups to join', groups, recommendations })
 })

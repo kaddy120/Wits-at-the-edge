@@ -228,13 +228,13 @@ class groupRepository {
      }
   }
 
-  async terminateNotification () {
+  async terminateNotification (groupId) {
     try {
       const pool = await this.dbpool
       const sqlQueries = await utils.loadSqlQueries('groups')
       const info = await pool.request()
+          .input('groupId', sql.Int, groupId)
           .query(sqlQueries.terminateNotification)
-          console.log("DT", info)
           return info
     } catch (err) {
        console.log(err)
