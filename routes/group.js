@@ -13,6 +13,7 @@ const { memoryStorage } = require('multer')
 const upload = multer({ storage: memoryStorage() })
 const imageSaver = require('../models/saveImagesToCloud')
 const defaultThumbnail = 'https://www.seekpng.com/png/detail/215-2156215_diversity-people-in-group-icon.png'
+const score = require('../models/score')
 
 router.get('/dashboard', async (req, res) => {
   const user = req.user
@@ -23,10 +24,9 @@ router.get('/dashboard', async (req, res) => {
   for (let index = 0; index < groupThumbnail.length; index++) {
     if (groupThumbnail[index].thumbnail == null) { thumbnail[index] = 'https://www.seekpng.com/png/detail/215-2156215_diversity-people-in-group-icon.png' } else thumbnail[index] = groupThumbnail[index].thumbnail
   }
-
-  res.render('dashboard', { title: 'Dashboard', userGroups: groups, groupIcon: thumbnail })
+  const userScore = await score.getScore(user.email)
+  res.render('dashboard', { title: 'Dashboard', userGroups: groups, groupIcon: thumbnail, userScore: userScore })
 })
-
 
 router.get('/:groupId', async (req, res) => {
   const groupName = await groupRepository.getUserGroupName(req.params.groupId)
