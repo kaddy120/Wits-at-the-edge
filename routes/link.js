@@ -1,6 +1,7 @@
 'use strict'
 const express = require('express')
 const { body } = require('express-validator')
+const { NotExtended } = require('http-errors')
 // const { body, validationResult } = require('express-validator')
 const router = express.Router()
 
@@ -10,10 +11,13 @@ function linkRouters ({ linkRepository }) {
     const links = await linkRepository.links(groupId)
     res.render('links', { links, groupId, userId: req.params.email })
   })
-  router.get('/:groupId/links/:linkId', async (req, res) => {
-    const title = ''
-    const linkURL = ''
-    res.render('externalLink', { title, linkURL })
+  router.get('/:groupId/link/:linkId', async (req, res, next) => {
+    const link = await linkRepository.link(req.params.linkId)
+    if (link) {
+      res.render('externalLink', link)
+    } else {
+      next()
+    }
   })
 
   router.post('/:groupId/link', async (req, res) => {

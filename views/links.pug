@@ -31,7 +31,7 @@ block content
                     each link in links
                         if(link.topicId=== topicId)
                             li(class="list-group-item" style="margin-bottom: 0px;" data-linkId=`${link.linkId}`)
-                                a(href=`group/${groupId}/link/${link.linkId}` data-url=`${link.linkURL}` data-linkId=`${link.linkId}`)= link.title
+                                a(href=`/group/${groupId}/link/${link.linkId}` data-url=`${link.linkURL}` data-linkId=`${link.linkId}`)= link.title
                                 if (link.userId === userId)
                                     button#edit(data-linkId=`${link.linkId}`, type='button', data-toggle='modal', data-target='#editModal') edit 
                                     button#delete(data-linkId=`${link.linkId}`) delete
@@ -45,7 +45,7 @@ block content
                         if(link.topicId=== topicId)
                             if (link.title)
                                 li(class="list-group-item" style="margin-bottom: 0px;" data-linkId=`${link.linkId}`)
-                                    a(href=`group/${groupId}/link/${link.linkId}` data-url=`${link.linkURL}` data-linkId=`${link.linkId}`)= link.title
+                                    a(href=`/group/${groupId}/link/${link.linkId}` data-url=`${link.linkURL}` data-linkId=`${link.linkId}`)= link.title
                                     button#edit(data-linkId=`${link.linkId}`, type='button', data-toggle='modal', data-target='#editModal') edit 
                                     button#delete(data-linkId=`${link.linkId}`) delete
             
