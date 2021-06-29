@@ -1,10 +1,13 @@
 extends groupLayout
 
 block content
-  ul(id="messages")
-  form(id="form" action="")
-    input(id="input" autocomplete="off")
-    button Send
+  .chat-container
+    .chat-body
+      ul(id="messages")
+    footer.chat-footer
+      form(id="form" action="")
+        input(id="input" autocomplete="off")
+        button Send
   script(type='text/javascript').
       const groupId = #{roomname}
   script(src="/javascript/chat-frontend.js")

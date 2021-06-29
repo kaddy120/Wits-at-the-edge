@@ -8,13 +8,13 @@ html
   script(src="/socket.io/socket.io.js")
   body
     div.main
-      h3
-      ul.nav
-          li.nav-item
-            a.nav-link.aria-current( href="/") Home
-          li.nav-item
-            a.nav-link.aria-current( href="/logout") Logout
-      p=groupName 
+      header
+        ul.nav
+            li.nav-item
+              a.nav-link.aria-current( href="/") Home
+            li.nav-item
+              a.nav-link.aria-current( href="/logout") Logout
+        .h4 Group Name  
       .sidenav-group
         a(href="/group/:groupId")=groupName
         a( href="#") Chat 
@@ -26,7 +26,4 @@ html
         a( href=`/join_requests/${groupId}`) JoinRequest List
         a( href="#") Group Members
         a( href="#") Exit Group
-       
-
-      div
-         block content
+      block content
