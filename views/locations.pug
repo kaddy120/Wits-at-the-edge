@@ -1,20 +1,21 @@
 extends groupLayout
 
-block content       
+block content   
 
             form(action="/meeting/create" method="GET")
                .mb-3 
-                     input(type='submit' class='btn btn-primary' value='Online')
+                  p='Switch to '
+                     input(type='submit' class='btn btn-primary' value='Online Meeting')
             form(action="/meeting/create" method="POST") 
                         div.mb-3 
-                                 label(for="meetingDate" class="form-label") Meeeting Date
+                                 label(for="meetingDate" class="form-label") Meeting Date
                                  input(type="datetime-local"  name="time" class="form-control" id="date")
                         div.mb-3 
                                  label(for="surname" class="form-label") Meeting agenda
                                  textarea(type="text" name="agenda" class="form-control" id="exampleInputEmail1")
                         h3=title
                         h4='Nearby Region: '
-                           strong(style="color:#7F8BDA")=`${place[4]}`
+                           strong(style="color:#7F8BDA" id='region')=`${place[4]}`
                         ul(class='list-group')
                           li(class="list-group-item" style="font-size:15px, background:#A2E59A")
                               div(class="row")

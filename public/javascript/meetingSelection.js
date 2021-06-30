@@ -6,6 +6,12 @@ const library = document.getElementById('library')
 const restaurant = document.getElementById('restaurant')
 const submit = document.getElementById('submit')
 const address = document.getElementById('address')
+const items = document.getElementsByClassName('list-group-item')
+const region = document.getElementById('region')
+
+for (var i = 0; i < items.length; i++) {
+  items[i].style.backgroundColor = '#E3F9E1'
+}
 
 park.style.display = "none"
 restaurant.style.display = "none"
@@ -36,9 +42,9 @@ address.addEventListener('input', (e) => {
 
 function isAddressValid() {
 
-  if(address.value.length == 0 || address.value == 'Meet at a Library' ||
-  address.value == 'Meet at a Restaurant' || address.value == 'Meet at a Park'
-  || address.value == 'Meet at a Cafe'){
+  if(address.value.length == 0 || address.value == `${region.innerHTML}, Meet at a Library` ||
+  address.value == `${region.innerHTML}, Meet at a Restaurant` || address.value == `${region.innerHTML}, Meet at a Park`
+  || address.value == `${region.innerHTML}, Meet at a Cafe`){
     
      return false
   }
@@ -46,44 +52,56 @@ function isAddressValid() {
 }
 
 cafe.addEventListener('click', (e) => {
-  document.getElementById('address').value = cafe.value
-  if(isAddressValid() == false)
+  if(cafe.value == 'Meet at a Cafe') {
+    document.getElementById('address').value = ''
     submit.disabled = true
-  else{
+  }
+  else {
+    document.getElementById('address').value = `${region.innerHTML}, ${cafe.value}`
     submit.disabled = false
-  } 
+  }
+  
 })
 
 park.addEventListener('click', (e) => {
-  document.getElementById('address').value = park.value
-  if(isAddressValid() == false)
-  submit.disabled = true
-else {
-  submit.disabled = false
-}
+  if(park.value == 'Meet at a Park') {
+    document.getElementById('address').value = ''
+    submit.disabled = true
+  }
+  else { 
+    document.getElementById('address').value = `${region.innerHTML}, ${park.value}`
+    submit.disabled = false
+   }
+ 
 })
 
 library.addEventListener('click', (e) => {
-  document.getElementById('address').value = library.value
-  if(isAddressValid() == false)
-  submit.disabled = true
-else {
-  submit.disabled = false
-}
+  if(library.value == 'Meet at a Library') {
+    document.getElementById('address').value = ''
+    submit.disabled = true
+  } 
+  else { 
+  document.getElementById('address').value = `${region.innerHTML}, ${library.value}`
+    submit.disabled = false
+  }
+
 })
 
 restaurant.addEventListener('click', (e) => {
-  document.getElementById('address').value = restaurant.value
-  if(isAddressValid() == false)
-  submit.disabled = true
-else {
-  submit.disabled = false
-} 
+  if(restaurant.value == 'Meet at a Restaurant') {
+    document.getElementById('address').value = ''
+    submit.disabled = true
+  } 
+  else { 
+    document.getElementById('address').value = `${region.innerHTML}, ${restaurant.value}`
+    submit.disabled = false
+   }
+ 
 })
 
 document.getElementById('res').addEventListener('click', (e) => {
   park.style.display = "none"
-  restaurant.style.display = "block"
+  restaurant.style.display = ""
   cafe.style.display = "none"
   library.style.display = "none"
 })
@@ -92,11 +110,11 @@ document.getElementById('lib').addEventListener('click', (e) => {
   park.style.display = "none"
   restaurant.style.display = "none"
   cafe.style.display = "none"
-  library.style.display = "block"
+  library.style.display = ""
 })
 
 document.getElementById('pak').addEventListener('click', (e) => {
-  park.style.display = "block"
+  park.style.display = ""
   restaurant.style.display = "none"
   cafe.style.display = "none"
   library.style.display = "none"
@@ -105,7 +123,7 @@ document.getElementById('pak').addEventListener('click', (e) => {
 document.getElementById('caf').addEventListener('click', (e) => {
   park.style.display = "none"
   restaurant.style.display = "none"
-  cafe.style.display = "block"
+  cafe.style.display = ""
   library.style.display = "none"
 })
 
