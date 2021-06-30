@@ -4,22 +4,22 @@ const { body, validationResult } = require('express-validator')
 const router = express.Router()
 
 function meetingRouters ({ groupRepository, meetingRepository, userRepository, geoManager }) {
-  router.get('/', async (req, res) => {
+  router.get('/:groupId', async (req, res) => {
     res.render('group')
   })
 
-  router.get('/:groupId/place', geoManager.suggestions.bind(geoManager))
+  router.get('/:groupId/meeting/place', geoManager.suggestions.bind(geoManager))
 
-  router.get('/groupName/:groupId', async (req, res) => {
+  router.get(':groupId/meeting/groupName/', async (req, res) => {
     const groupName = req.params.groupId
     res.send(`${groupName} group home page`)
   })
 
-  router.get('/create', async (req, res) => {
+  router.get('/:groupId/meeting/create', async (req, res) => {
     res.render('createMeeting')
   })
 
-  router.post('/create',
+  router.post('/:groupId/meeting/create',
     body('agenda', 'Agenda cannot be empy').notEmpty(),
     body('time', 'time can not be null').notEmpty(),
     async (req, res) => {
@@ -52,7 +52,7 @@ function meetingRouters ({ groupRepository, meetingRepository, userRepository, g
       }
     })
 
-  router.get('/response', async (req, res, next) => {
+  router.get('/:groupId/meeting/response', async (req, res, next) => {
     const user = 'finalTest@gmail.com'
     const getNotifications = await meetingRepository.getAllUserNotifications(user)
     const meetings = []
@@ -68,7 +68,7 @@ function meetingRouters ({ groupRepository, meetingRepository, userRepository, g
   })
 
   // this url looks wrong but am leaving it thee way it is
-  router.get('/meetings/:notificationId/:response', async (req, res, next) => {
+  router.get('/:groupId/meeting/:notificationId/:response', async (req, res, next) => {
     const notificationId = req.params.notificationId
     const response = req.params.response
     if (response === 'Available') {

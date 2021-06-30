@@ -14,6 +14,7 @@ class voteManager {
 
   async joinRequests(req, res) {
     const voter = req.user
+    console.log(voter)
     const groupId = req.params.groupId
     const requests = await this.votesRepository.getRequestsToJoin(groupId).then(result => { return result.recordset })
     const votes = await this.votesRepository.getUserVotes(voter).then(result => { return result.recordset })
@@ -37,7 +38,7 @@ class voteManager {
   async placeVote(req, res) {
     const voter = req.user
     const groupId = req.params.groupId
-    console.log(groupId)
+    console.log("ydfugihjlkkkkkkkkbsh d")
     const requestId = req.params.requestId
     await this.votesRepository.addVotes(requestId, voter.email, req.params.choice)
     const voteCount = await this.votesRepository.countVotes(requestId).then(result => { return result.recordset })
