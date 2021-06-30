@@ -10,15 +10,16 @@ html
   script(src="/javascript/trackAllUsers.js")  
   body
     div.main
-      h3
-      ul.nav
-          li.nav-item
-            a.nav-link.aria-current( href="/") Home
-          li.nav-item
-            a.nav-link.aria-current( href="/logout") Logout
-      p=groupName 
+      header
+        ul.nav
+            li.nav-item
+              a.nav-link.aria-current( href="/group/dashboard") Dashboard
+            li.nav-item
+              a.nav-link.aria-current( href="/logout") Logout
+        .h4 Group Name  
       .sidenav-group
         a(href="/group/:groupId")=groupName
+<<<<<<< HEAD
         a( href="#") Chat 
         a(href="#") Links
         a( href="#") Create Meeting
@@ -26,9 +27,16 @@ html
         a( href=`/group/members/${groupId}`) Group Members
         a( href=`/group/notifications/${groupId}`) notifications
         a( href=`/join_requests/${groupId}`) JoinRequest List
+=======
+        a( href=`/group/${groupId}/chat`) Chat 
+        a(href=`/group/${groupId}/links`) Links
+        a( href=`/group/${groupId}/meeting/create`) Create Meeting
+        a( href=`/group/${groupId}/members`) Group Members
+        a( href=`/group/${groupId}/notifications/`) notofications
+        a( href=`group/${groupId}/join_requests/`) JoinRequest List
+>>>>>>> master
         a( href="#") Group Members
         a( href="#") Exit Group
-       
-
-      div
-         block content
+      block content
+      
+    

@@ -13,8 +13,7 @@ router.post('/joinRequest', async function (req, res, next) {
 
   // Getting my requests
   const myRequest = await userRepo.getRequests(email)
-  console.log(myRequest)
-  console.log(myRequest.length)
+
   if (myRequest.length > 0) res.render('acceptDemoRequest', { notification: myRequest, groupId: 58 })
   else res.redirect('/')
 })
