@@ -3,15 +3,18 @@ html
   head
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
+    link(rel='stylesheet', href='/stylesheets/externalLink.css')
     link(rel='stylesheet', href='/stylesheets/chat.css')
     link(rel='stylesheet', href='/css/bootstrap.min.css')
     //- link(rel="stylesheet", href="path/to/font-awesome/css/font-awesome.min.css")
+    link(rel="stylesheet", href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css")
+  script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js")
+  script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js")
   body
     div.main
-      h3
       ul.nav
-          li.nav-item
-            a.nav-link.aria-current( href="/") Home
+          //- li.nav-item
+          //-   a.nav-link.aria-current( href="/") Home
           li.nav-item
             a.nav-link.aria-current( href="/signup") Sign up
           li.nav-item
@@ -27,5 +30,5 @@ html
         a( href="#") Groups
         a( href="#") Calender
         a( href="#") About
-      div
+      .body
          block content

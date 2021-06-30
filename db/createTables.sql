@@ -51,3 +51,34 @@ CREATE TABLE dbo.[sessionNotifications](
     [userId] VARCHAR(250) NOT NULL,
     [response] [int]  NULL
 )
+CREATE TABLE dbo.[userTracking](
+    [trackingId] int IDENTITY(1,1) PRIMARY KEY CLUSTERED NOT NULL,
+    activityTime datetime NOT NULL,
+    [userId] VARCHAR(250) NOT NULL,    
+    activity VARCHAR(300) NOT NULL
+)
+
+-- modify database column
+ALTER TABLE dbo.[Group] ADD YOS VARCHAR(60) NULL;
+
+DROP TABLE IF EXISTS [Links]
+
+CREATE Table dbo.LinkTopic(
+    topicId int IDENTITY(1,1) PRIMARY KEY CLUSTERED NOT NULL,
+    topic VARCHAR(100) NOT NULL,
+    timeCreated datetime NOT NULL,
+    groupId int references dbo.[Group](groupId),
+    userId VARCHAR(50) references dbo.[User](email)
+)
+
+CREATE TABLE dbo.Links
+(
+    linksId int IDENTITY(1,1) PRIMARY KEY CLUSTERED NOT NULL,
+    timePosted datetime NOT NULL, 
+    userId VARCHAR(50) references dbo.[User](email),
+    groupId int references dbo.[Group](groupId),
+    topicId int references dbo.[LinkTopic](topicId),
+    title VARCHAR(100) NOT NULL,
+    linkURL VARCHAR(300) NOT NULL,
+
+);

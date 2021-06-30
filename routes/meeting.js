@@ -3,11 +3,10 @@ const express = require('express')
 const { body, validationResult } = require('express-validator')
 const router = express.Router()
 
-function meetingRouters ({ groupRepository, meetingRepository }) {
+function meetingRouters ({ groupRepository, meetingRepository, userRepository }) {
   router.get('/', async (req, res) => {
     res.render('group')
   })
-
 
   router.get('/groupName/:groupId', async (req, res) => {
     const groupName = req.params.groupId
@@ -39,10 +38,12 @@ function meetingRouters ({ groupRepository, meetingRepository }) {
           meeting.address = null
         }
         const userMeeting = await groupRepository.createMeeting(meeting)
+        userRepository.addTracking(meeting.userId, 'createMeating', meeting.groupId) // added this but not working
         const groupMembers = await meetingRepository.getGroupMembers(groupId)
         for (let i = 0; i < groupMembers.length; i++) {
           await meetingRepository.addMeetings(groupMembers[i], userMeeting[0].meetingId)
         }
+
         res.redirect('/')
       } else {
         res.status(404).json({ message: 'you are not a group member, you cannot create a meeting' })
@@ -54,7 +55,6 @@ function meetingRouters ({ groupRepository, meetingRepository }) {
     const getNotifications = await meetingRepository.getAllUserNotifications(user)
     const meetings = []
     const groupNames = []
-    console.log(getNotifications)
     for (let x = 0; x < getNotifications.length; x++) {
       const meeting = await meetingRepository.getAllUserMeetings(getNotifications[x].meetingId)
       const groupName = await groupRepository.getUserGroupName(meeting[0].groupId)

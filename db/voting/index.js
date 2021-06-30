@@ -24,10 +24,9 @@ class votesRepository {
       const sqlQueries = await utils.loadSqlQueries('voting')
       const pool = await this.dbpool
       const email = await pool.request()
-          .input('requestId', sql.Int, requestId)
-          .query(sqlQueries.getRequesteeEmail)
-          console.log(email)
-          return email
+        .input('requestId', sql.Int, requestId)
+        .query(sqlQueries.getRequesteeEmail)
+      return email
     } catch (err) {
       console.log(err)
     }
@@ -38,11 +37,11 @@ class votesRepository {
       const sqlQueries = await utils.loadSqlQueries('voting')
       const pool = await this.dbpool
       const votes = await pool.request()
-          .input('userId', sql.VarChar(50), userId.email)
-          .query(sqlQueries.getUserVotes)
-          return votes
+        .input('userId', sql.VarChar(50), userId.email)
+        .query(sqlQueries.getUserVotes)
+      return votes
     } catch (err) {
-       console.log(err)
+      console.log(err)
     }
   }
 
@@ -73,6 +72,21 @@ class votesRepository {
     }
   }
 
+  async terminationVote (requestId, email, vote) {
+    try {
+      const sqlQueries = await utils.loadSqlQueries('voting')
+      const pool = await this.dbpool
+      const insertVoter = await pool.request()
+        .input('requestId', sql.Int, requestId)
+        .input('email', sql.VarChar(50), email)
+        .input('voteCount', sql.Int, vote)
+        .query(sqlQueries.terminationVotes)
+      return insertVoter
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   async addVotes (requestId, email, vote) {
     try {
       const sqlQueries = await utils.loadSqlQueries('voting')
@@ -82,6 +96,7 @@ class votesRepository {
         .input('email', sql.VarChar(50), email)
         .input('voteCount', sql.Int, vote)
         .query(sqlQueries.addVotes)
+      console.log('HEREEE')
       return insertVoter
     } catch (err) {
       console.log(err)
@@ -95,6 +110,45 @@ class votesRepository {
       const getVotes = await pool.request()
         .input('requestId', sql.Int, requestId)
         .query(sqlQueries.getVotes)
+      return getVotes
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  async getMemberToBeTerminated (requestId) {
+    try {
+      const sqlQueries = await utils.loadSqlQueries('voting')
+      const pool = await this.dbpool
+      const getMember = await pool.request()
+        .input('requestId', sql.Int, requestId)
+        .query(sqlQueries.getMemberToBeTerminated)
+      return getMember
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  async deleteMember (user, groupId) {
+    try {
+      const sqlQueries = await utils.loadSqlQueries('voting')
+      const pool = await this.dbpool
+      const getMember = await pool.request()
+        .input('groupId', sql.Int, groupId)
+        .input('email', sql.VarChar(50), user)
+        .query(sqlQueries.removeMemberFromGroup)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  async CountVotes (requestId) {
+    try {
+      const sqlQueries = await utils.loadSqlQueries('voting')
+      const pool = await this.dbpool
+      const getVotes = await pool.request()
+        .input('requestId', sql.Int, requestId)
+        .query(sqlQueries.votes)
       return getVotes
     } catch (err) {
       console.log(err)
@@ -131,9 +185,9 @@ class votesRepository {
       const sqlQueries = await utils.loadSqlQueries('voting')
       const pool = await this.dbpool
       const people = await pool.request()
-           .input('request_id', sql.Int, requestId)
-           .query(sqlQueries.getNumOfPeopleVoted)
-           return people
+        .input('request_id', sql.Int, requestId)
+        .query(sqlQueries.getNumOfPeopleVoted)
+      return people
     } catch (err) {
       console.log(err)
     }
@@ -144,9 +198,9 @@ class votesRepository {
       const sqlQueries = await utils.loadSqlQueries('voting')
       const pool = await this.dbpool
       const requests = await pool.request()
-         .query(sqlQueries.getAllJoinRequests)
-         return requests
-    } catch(err) {
+        .query(sqlQueries.getAllJoinRequests)
+      return requests
+    } catch (err) {
       console.log(err)
     }
   }
@@ -156,12 +210,11 @@ class votesRepository {
       const sqlQueries = await utils.loadSqlQueries('voting')
       const pool = await this.dbpool
       const removeItem = await pool.request()
-          .input('userId', sql.VarChar(50), user.email)
-          .query(sqlQueries.removeRequest)
-          console.log(removeItem)
-          return removeItem
+        .input('userId', sql.VarChar(50), user.email)
+        .query(sqlQueries.removeRequest)
+      return removeItem
     } catch (err) {
-       console.log(err)
+      console.log(err)
     }
   }
 
@@ -170,40 +223,37 @@ class votesRepository {
       const sqlQueries = await utils.loadSqlQueries('voting')
       const pool = await this.dbpool
       const getDate = await pool.request()
-           .query(sqlQueries.getCurrentDate)
-           console.log(getDate)
-           return getDate
+        .query(sqlQueries.getCurrentDate)
+      return getDate
     } catch (err) {
       console.log(err)
     }
   }
 
-  async getExpiryDate(date) {
+  async getExpiryDate (date) {
     try {
       const sqlQueries = await utils.loadSqlQueries('voting')
       const pool = await this.dbpool
       const expiryDate = await pool.request()
-            .input('date', sql.DateTime, date)
-            .query(sqlQueries.getExpiryDate)
-            return expiryDate
+        .input('date', sql.DateTime, date)
+        .query(sqlQueries.getExpiryDate)
+      return expiryDate
     } catch (err) {
-       console.log(err)
+      console.log(err)
     }
   }
-  
+
   async getRequestTimeStamp (groupId) {
-     try {
+    try {
       const sqlQueries = await utils.loadSqlQueries('voting')
       const pool = await this.dbpool
       const timeStamp = await pool.request()
-           .input('group_Id', sql.Int, groupId)
-           .query(sqlQueries.getRequestTimeStamp)
-           console.log(groupId)
-           console.log(timeStamp)
-           return timeStamp
-     } catch (err) {
-       console.log(err)
-     }
+        .input('group_Id', sql.Int, groupId)
+        .query(sqlQueries.getRequestTimeStamp)
+      return timeStamp
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   async acceptRequest (email, group) {

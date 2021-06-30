@@ -1,0 +1,14 @@
+extend groupLayout
+
+block content
+        h1=title
+           ul(class='list-group' )
+            - for(var i = 0;i < user.length;i++)
+              li(class="list-group-item" style="font-size:15px" )
+                  a(href="#")=`Someone wants to terminate ${user[i].memberToBeTerminated} group membership`
+                  p=`Reason for termination: ${user[i].terminationReason}`
+                  form(action=`/group/vote/${groupId}/${user[i].terminationId}/${logged}/${1}`, method='post')
+                    input(type='submit' name="accept" value="accept" class='btn btn-primary btn-sm')
+                    |
+                    |
+                    input(type='submit' name="decline" value="decline" class='btn btn-light btn-sm' formaction=`/group/vote/${user[i].terminationId}/${logged}/${-1}`)

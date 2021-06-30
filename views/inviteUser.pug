@@ -1,0 +1,27 @@
+extend layout 
+
+block content
+    h4= title 
+    form(action="/inviteUser" method="POST")
+        div.mb-3 
+            label(for="searchBarfName" class="form-label") First Name
+            input(type="text" placeholder="Kaddy" name="searchBarfName" class="form-control" id="searchBarfName")
+        div.mb-3 
+            label(for="searchBarSurname" class="form-label") Surname
+            input(type="text" placeholder="Marindi" name="searchBarSurname" class="form-control" id="searchBarSurname")
+        div.mb-3 
+            select( name="yearOfStudy" class="form-select")
+                <option selected>Select your year of study</option>
+                each year in YOS
+                    option(value=`${year}`)= year
+        div.mb-3 
+            select( name="school" class="form-select") 
+                <option selected>Select your field of study</option>
+                each school in schools
+                    option(value=`${school}`)= school
+        div.mb-3 
+        button(type='submit', class ='btn btn-primary') Search
+        
+            
+        
+    

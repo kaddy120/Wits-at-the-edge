@@ -1,0 +1,1 @@
+SELECT *FROM [dbo].[User] WHERE firstName = @firstName

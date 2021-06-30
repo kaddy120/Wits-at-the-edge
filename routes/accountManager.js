@@ -47,12 +47,14 @@ function accountManagerRouters ({ userManager, passport }) {
       failureFlash: true
     }),
     function (req, res) {
-      res.redirect('/')
+      const redirectTo = req.session.redirectTo
+      req.session.redirectTo = null
+      res.redirect(redirectTo || '/group/dashboard')
     })
 
   router.get('/logout', (req, res) => {
     req.logout()
-    res.redirect('/')
+    res.redirect('/group/all/1')
   })
 
   return router
