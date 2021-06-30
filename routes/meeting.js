@@ -66,13 +66,15 @@ function meetingRouters ({ groupRepository, meetingRepository, userRepository })
     res.render('response', { title: 'Respond To a meeting', userMeetings: meetings, groupNames: groupNames, user: user, notifications: getNotifications })
   })
 
-  router.get('/meetings/:notificationId/:response', async (req, res, next) => {
+  router.post('/meetings/:notificationId/:response', async (req, res, next) => {
     const notificationId = req.params.notificationId
     const response = req.params.response
     if (response === 'Available') {
       await meetingRepository.updateNotification(notificationId, 1)
     } else if (response === 'risky') {
       await meetingRepository.updateNotification(notificationId, 2)
+    } else if (response === 'meetingFinished') {
+      await meetingRepository.updateNotification(notificationId, 3)
     } else {
       await meetingRepository.updateNotification(notificationId, -1)
     }
@@ -88,17 +90,20 @@ function meetingRouters ({ groupRepository, meetingRepository, userRepository })
       const minutes = duration.asMinutes()
       return minutes >= 40
     })
-    res.render('trackLocation', { title: 'Track Users', meetings: filteredMeetings })
+    const useraddress = await meetingRepository.getUserAddress(user)
+    res.render('trackLocation', { title: 'Track Users', meetings: filteredMeetings, lat: useraddress[0].lat, long: useraddress[0].long })
   })
   router.post('/meetingFinished/:meetingId/:finishTime', async (req, res, next) => {
     const meetingId = req.params.meetingId
     const finishTime = req.params.finishTime
     const user = req.user.email
     const users = await meetingRepository.getNotificationMember(user, meetingId)
-    for (let i = 0; i < users.length; i++) {
-      meetingRepository.setFinishTime(users[i].userId[0], meetingId, finishTime, null)
-      const agenda = 'Please do not log out of the app for tracking to be effective'
-      meetingRepository.sendEmail(users[i].userId[0], agenda)
+    if (await meetingRepository.getFinishedMeetingById(meetingId) === 0) {
+      for (let i = 0; i < users.length; i++) {
+        meetingRepository.setFinishTime(users[i].userId[0], meetingId, finishTime, null)
+        const agenda = 'Please do not log out of the app for tracking to be effective'
+        meetingRepository.sendEmail(users[i].userId[0], agenda)
+      }
     }
     res.send({ meeting: 'Updated' })
   })
@@ -108,12 +113,7 @@ function meetingRouters ({ groupRepository, meetingRepository, userRepository })
     meetingRepository.sendEmail(user)
     res.send('message went')
   })
-  router.get('/calculateDistance', async (req, res, next) => {
-    const user = req.user.email
-    const userAddressDetails = await meetingRepository.getUserAddress(user)
 
-    res.render('userTracker', { userId: user, meetingId: userAddressDetails[0].meetingId, lat: userAddressDetails[0].lat, long: userAddressDetails[0].long })
-  })
   router.post('/updateUserDistance/:meetingId/:distance', async (req, res, next) => {
     const user = req.user.email
     const distance = req.params.distance

@@ -1,11 +1,12 @@
-const input = document.getElementsByClassName('distance')
-const input1 = document.getElementsByClassName('distance1')
-console.log(input)
+const meetingId = sessionStorage.getItem('tracking')
+const lat = sessionStorage.getItem('userLat')
+const long = sessionStorage.getItem('userLong')
+
 const destination = {
-  lat: parseFloat(input1.useraddress.defaultValue),
-  lng: parseFloat(input1.useraddress.id)
+  lat: parseFloat(lat),
+  lng: parseFloat(long)
 }
-console.log(destination)
+
 async function getDistance (origin1, destinationA) {
   // initialize services
   const service = new google.maps.DistanceMatrixService()
@@ -23,10 +24,9 @@ async function getDistance (origin1, destinationA) {
   // get distance matrix response
   service.getDistanceMatrix(request).then(async (response) => {
     // put response
-
-    console.log(response.rows[0].elements[0].distance.value)
+    // if (response.rows[0].elements[0].distance.value < 1000) { sessionStorage.removeItem('tracking') }
     try {
-      await fetch(`/meeting/updateUserDistance/${parseInt(input.distance.id)}/${response.rows[0].elements[0].distance.value}`, { method: 'post' })
+      await fetch(`/meeting/updateUserDistance/${parseInt(meetingId)}/${response.rows[0].elements[0].distance.value}`, { method: 'post' })
     } catch (err) {
       console.log(err)
     }
@@ -35,7 +35,7 @@ async function getDistance (origin1, destinationA) {
 
 function getLocation () {
   if (navigator.geolocation) {
-    navigator.geolocation.watchPosition(showLocation)
+    navigator.geolocation.getCurrentPosition(showLocation)
   }
 }
 
@@ -44,7 +44,10 @@ async function showLocation (position) {
     lat: position.coords.latitude,
     lng: position.coords.longitude
   }
+  console.log(location)
   await getDistance(location, destination)
 }
 
-getLocation()
+if (meetingId) {
+  setInterval(getLocation, 1000 * 60 * 5)
+}

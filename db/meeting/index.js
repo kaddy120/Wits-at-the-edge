@@ -143,6 +143,19 @@ class meetingRepository {
     }
   }
 
+  async getFinishedMeetingById (meetingId) {
+    try {
+      const sqlQueries = await utils.loadSqlQueries('meeting')
+      const pool = await this.dbpool
+      const meetings = await pool.request()
+        .input('meetingId', sql.Int, meetingId)
+        .query(sqlQueries.getFinishedMeetingById)
+      return meetings.recordset.length
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   async sendEmail (userId, agenda) {
     const transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
