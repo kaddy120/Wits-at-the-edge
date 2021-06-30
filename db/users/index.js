@@ -367,7 +367,7 @@ class userRepository {
       const getUser = await pool.request()
         .input('start', sql.DateTime, logger.start)
         .input('end', sql.DateTime, logger.end)
-        .input('userId', sql.VarChar(50), logger.userEmail)
+        .input('userid', sql.VarChar(50), logger.userEmail)
         .query(sqlQueries.getUserLog)
       return getUser.recordset
     } catch (err) {

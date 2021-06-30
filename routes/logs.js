@@ -15,12 +15,7 @@ router.post('/logs',
       res.redirect(400, '/logs')
     }
 
-    const email = req.user.email
-    const groupId = req.params.groupId
-
     const logger = { ...req.body }
-    logger.userId = email
-    logger.groupId = groupId
-    await users.getUserLog(logger)
-    res.redirect('/LogResults')
+    const logs = await users.getUserLog(logger)
+    res.render('logResults', { title: 'Log Results', logs: logs })
   })
