@@ -1,6 +1,5 @@
 const list = document.getElementsByClassName('list-group-item')
-// const button = document.getElementById('addUser')
-// button.style.backgroundColor = '#E8E8E8'
+
 
 for (let i = 0; i < list.length; i++) {
   list[i].style.backgroundColor = '#E8E8E8'
