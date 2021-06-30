@@ -41,7 +41,7 @@ class votesRepository {
           .query(sqlQueries.getNotifications)
           return votes
     } catch (err) {
-       console.log(err)
+      console.log(err)
     }
   }
 

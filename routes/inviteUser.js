@@ -6,12 +6,12 @@ const constants = require('../constants')
 const verify = require('../models/verification')
 
 router.get('/inviteUser', function (req, res, next) {
-  // res.render('inviteUser', { title: 'Invite Users To A Group' })
   res.render('inviteUser', constants)
 })
 
 router.post('/inviteUser', async function (req, res, next) {
   // Get search filter inputs
+  console.log('I am here inside Invite User')
   const firstName = req.body.searchBarfName
   const surname = req.body.searchBarSurname
   const yearOfStudy = req.body.yearOfStudy
@@ -21,7 +21,7 @@ router.post('/inviteUser', async function (req, res, next) {
   if (evaluate === 0) {
     // Filter by name only
     const usersToInvite = await userRepo.getUserByfName(firstName)
-    if (usersToInvite.length > 0) res.render('inviteUserRequest', { users: usersToInvite, groupId: 58 })
+    if (usersToInvite.length > 0) res.render('inviteUserRequest', { users: usersToInvite, groupId: 3 })
     else res.redirect('/inviteUsers')
   } else if (evaluate === 1) {
     // Filter by Surname only
@@ -94,12 +94,13 @@ router.post('/inviteUser', async function (req, res, next) {
   } else {
     res.redirect('/')
   }
-  // res.send('Hello World')
 })
 router.post('/inviteUser/:userId/:groupId', async function (req, res, next) {
   const userId = req.params.userId
   const groupId = req.params.groupId
+  console.log('Request Id', groupId)
   const response = null
+  // Fix invite user
   await userRepo.addGroupJoinRequest(groupId, userId, response)
   return res.sendStatus(200)
 })

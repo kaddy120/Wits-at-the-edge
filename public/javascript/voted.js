@@ -1,7 +1,7 @@
 const items = document.getElementsByClassName('list-group-item')
 
 for (var i = 0; i < items.length; i++) {
-    items[i].style.backgroundColor = '#E8E8E8'
+  items[i].style.backgroundColor = '#E8E8E8'
 }
 
 for (i of items) {
@@ -35,8 +35,3 @@ for (i of items) {
         }
     })
 }
-
-
-
-
-
