@@ -1,1 +1,1 @@
-insert into dbo.meetingTracking (userId,meetingId,finishTime,lat,long) values (@userId,@meetingId,@finishTime,@lat,@long)
+insert into dbo.meetingTracking (userId,meetingId,finishTime,distance) values (@userId,@meetingId,@finishTime,@distance)

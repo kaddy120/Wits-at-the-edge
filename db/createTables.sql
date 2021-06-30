@@ -2,6 +2,7 @@ DROP TABLE IF EXISTS [UserGroup]
 DROP TABLE IF EXISTS [Group]
 DROP TABLE IF EXISTS [User]
 
+
 CREATE TABLE dbo.[User]
 (
     email VARCHAR(50) PRIMARY KEY,
@@ -63,6 +64,5 @@ CREATE TABLE dbo.[meetingTracking](
     userId VARCHAR(250) NOT NULL,
     meetingId int not NULL,
     finishTime datetime NULL,  
-    lat VARCHAR(250) null,
-    long VARCHAR(250) null 
+    distance real NULL
 )

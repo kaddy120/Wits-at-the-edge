@@ -1,0 +1,7 @@
+extends groupLayout
+
+block content 
+    input(type='hidden' class ='distance' name='distance' value =`${userId}` id=`${meetingId}`)
+    input(type="hidden", class = 'distance1' name="useraddress" value=`${lat}` id=`${long}`)
+    script(type='text/javascript' defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkQxBECh9wAHS7nrfLvpeEbxD8_I7UWD0&libraries=places&language=en" )
+    script(src="/javascript/trackAllUsers.js")  

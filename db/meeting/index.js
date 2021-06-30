@@ -93,26 +93,51 @@ class meetingRepository {
       const pool = await this.dbpool
       const meetings = await pool.request()
         .input('userId', sql.VarChar(250), userId)
-        .input('meetingId', sql.int, meetingId)
+        .input('meetingId', sql.Int, meetingId)
         .query(sqlQueries.getNotificationMember)
-      console.log('not good: ', meetings)
       return meetings.recordset
     } catch (err) {
       console.log(err)
     }
   }
 
-  async setFinishTime (userId, meetingId, finishTime, lat, long) {
+  async setFinishTime (userId, meetingId, finishTime, distance) {
     try {
       const sqlQueries = await utils.loadSqlQueries('meeting')
       const pool = await this.dbpool
       await pool.request()
         .input('userId', sql.VarChar(250), userId)
-        .input('meetingId', sql.int, meetingId)
+        .input('meetingId', sql.Int, meetingId)
         .input('finishTime', sql.DateTime, finishTime)
-        .input('lat', sql.VarChar(250), lat)
-        .input('long', sql.VarChar(250), long)
+        .input('distance', sql.Real, distance)
         .query(sqlQueries.setFinishTime)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  async updateDistance (userId, meetingId, distance) {
+    try {
+      const sqlQueries = await utils.loadSqlQueries('meeting')
+      const pool = await this.dbpool
+      await pool.request()
+        .input('userId', sql.VarChar(250), userId)
+        .input('meetingId', sql.Int, meetingId)
+        .input('distance', sql.Real, distance)
+        .query(sqlQueries.updateDistance)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  async getUserAddress (userId) {
+    try {
+      const sqlQueries = await utils.loadSqlQueries('meeting')
+      const pool = await this.dbpool
+      const useraddress = await pool.request()
+        .input('userId', sql.VarChar(250), userId)
+        .query(sqlQueries.getUserAddress)
+      return useraddress.recordset
     } catch (err) {
       console.log(err)
     }
