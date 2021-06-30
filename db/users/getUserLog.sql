@@ -1,0 +1,1 @@
+SELECT  * FROM [dbo].[userTracking] WHERE CAST(activityTime as date) BETWEEN @start and @end and userid = @userid
