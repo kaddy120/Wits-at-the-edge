@@ -1,5 +1,7 @@
 /* eslint-env jest */
 const model = require('../models/voteValidation')
+const request = require('supertest')
+const app = require('../app')
 
 // get votes from database
 const votes = [
@@ -14,7 +16,7 @@ const votes = [
 ]
 
 // get terminate requests
-const Requests = [
+let Requests = [
     {
         memberToBeTerminated: 'ronald@gmail.com',
         terminationId: 25
@@ -25,14 +27,42 @@ const Requests = [
     },
     {
         memberToBeTerminated: 'dasy@gmail.com',
-        terminationIdId: 19
+        terminationId: 19
     }
 ]
 
+let terminateRequests = [
+    {terminationId: 80},
+    {terminationId: 80},
+    {terminationId: 80}
+]
 
-describe ('tests associated with termination logic', function () {
-    test('test that relevant terminate request are filtered so that requests that have been voted for do not appear', ()=>{
-        const requests = model.relevantTerminateRequest(Requests, votes)
-        expect(requests.length).toBe(1)
-    })
+
+
+test('test that relevant terminate request are filtered so that requests that have been voted for do not appear', ()=>{
+    let requests = Requests
+    requests = model.relevantTerminateRequest(requests, votes)
+    expect(requests.length).toBe(1)
 })
+
+test('test that when a user has voted for all relevant requests, they are all filtered out', () => {
+    let requests = Requests
+    requests.forEach(element => {
+        element.terminationId = 25
+    })
+    requests = model.relevantTerminateRequest(requests, votes)
+    expect(requests.length).toBe(0)
+})
+
+test ('test that when a user has not voted, no requests are filtered', () => {
+    let requests = terminateRequests
+    requests = model.relevantTerminateRequest(requests, votes)
+    expect(requests.length).toBe(3)
+})
+
+
+
+
+    
+    
+

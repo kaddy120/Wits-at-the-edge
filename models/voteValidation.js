@@ -1,6 +1,7 @@
 
 function relevantRequest(requests, votes) {
     let size_ = requests.length
+    console.log(requests)
     for (let i = 0; i < size_; i++) {
         for (let j = 0; j < votes.length; j++) {
             if (votes[j].requestId == requests[i].requestId) {

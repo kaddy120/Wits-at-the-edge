@@ -11,6 +11,7 @@ const region = document.getElementById('region')
 
 for (var i = 0; i < items.length; i++) {
   items[i].style.backgroundColor = '#E3F9E1'
+  items[i].style.margin = '10px'
 }
 
 park.style.display = "none"
@@ -39,17 +40,6 @@ address.addEventListener('input', (e) => {
     geocode(address.value)
   }
 })
-
-function isAddressValid() {
-
-  if(address.value.length == 0 || address.value == `${region.innerHTML}, Meet at a Library` ||
-  address.value == `${region.innerHTML}, Meet at a Restaurant` || address.value == `${region.innerHTML}, Meet at a Park`
-  || address.value == `${region.innerHTML}, Meet at a Cafe`){
-    
-     return false
-  }
-  else return true
-}
 
 cafe.addEventListener('click', (e) => {
   if(cafe.value == 'Meet at a Cafe') {
