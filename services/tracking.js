@@ -10,7 +10,7 @@ async function updateDistance () {
   if ((meetings.length - arrived.length !== 0)) {
     const duration = moment.duration(moment(new Date()).diff(meetings[0].finishTime))
     const minutes = duration.asMinutes()
-    if (minutes >= 60) {
+    if (minutes >= 5) {
       for (let i = 0; i < meetings.length; i++) {
         const agenda = `${meetings.length - arrived.length} People are still on their way`
         meetingRepository.sendEmail(meetings[i].userId, agenda)
