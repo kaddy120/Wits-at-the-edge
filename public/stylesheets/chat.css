@@ -90,6 +90,11 @@
     transition: background-color .3s ease;
     height: 100vh;
 }
+
+.body{
+    padding: 0 17px;
+}
+
 header{
     height: 90px;
 }

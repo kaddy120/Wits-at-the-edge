@@ -43,9 +43,8 @@ router.get('/all/:pageNo', async (req, res) => {
   if (req.user) {
     recommendations = await engine.recommendGroups(req.user)
   }
-  // const userId = 'test@gmail.com'
   const groups = await groupRepository.firstTop(offset, groupsPerPage, userId)
-  res.render('groups', { title: 'Discover more groups to join', groups, recommendations })
+  res.render('groups', { title: 'Discover more groups to join', groups, recommendations, userId })
 })
 
 // from here, it is for signed in users only
@@ -78,27 +77,24 @@ router.post('/createGroup', body('groupName', 'Group name cant be empty').notEmp
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() })
     }
-    const email = req.body.adminId
+    const email = req.user.email
     const imageUrl = await imageSaver(req.file)
-    const found = await groupRepository.userIsRegistered(email)
-    if (found) {
-      const groups = await groupRepository.getNumberOfGroups(email).then((data) => {
+
+    const groups = await groupRepository.getNumberOfGroups(email).then((data) => {
+      return data.recordset
+    })
+    if (verify.canCreateGroup(groups)) {
+      const creater = new groupCreator(req.body.groupName, req.body.adminId, req.body.school, imageUrl)
+      groupRepository.addingGroup(creater)
+      const allgroups = await groupRepository.getNumberOfGroups(email).then((data) => {
         return data.recordset
       })
-      if (verify.canCreateGroup(groups)) {
-        const creater = new groupCreator(req.body.groupName, req.body.adminId, req.body.school, imageUrl)
-        groupRepository.addingGroup(creater)
-        const allgroups = await groupRepository.getNumberOfGroups(email).then((data) => {
-          return data.recordset
-        })
 
-        groupRepository.addFirstMember(allgroups[allgroups.length - 1].groupId, allgroups[allgroups.length - 1].adminId)
-        res.redirect('/group')
-      } else {
-        res.redirect('/group')
-      }
+      groupRepository.addFirstMember(allgroups[allgroups.length - 1].groupId, allgroups[allgroups.length - 1].adminId)
+      res.redirect('/group')
     } else {
-      res.redirect('/signup')
+      res.redirect('/group')
+      // s
     }
   })
 
@@ -120,6 +116,7 @@ router.get('/:groupId/members', async (req, res) => {
   res.render('members', { title: 'Group Members', members: members, image: profile, groupId: req.params.groupId, terminator: terminatingUser })
 })
 
+// i need to fix this
 router.post('/:groupId/terminate/:user/:terminator/:reason', async (req, res) => {
   const terminatee = req.params.user
   const terminateReason = req.params.reason

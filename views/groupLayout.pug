@@ -17,9 +17,9 @@ html
         .h4 Group Name  
       .sidenav-group
         a(href="/group/:groupId")=groupName
-        a( href="#") Chat 
-        a(href="/group/links") Links
-        a( href="#") Create Meeting
+        a( href=`/group/${groupId}/chat`) Chat 
+        a(href=`/group/${groupId}/links`) Links
+        a( href=`/group/${groupId}/meeting/create`) Create Meeting
         a( href="#") JoinRequest List
         a( href=`/group/members/${groupId}`) Group Members
         a( href=`/group/notifications/${groupId}`) notofications

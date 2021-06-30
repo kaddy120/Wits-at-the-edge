@@ -102,6 +102,7 @@ box-shadow: 0 8px 16px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
 .main {
   margin-left: 200px; /* Same as the width of the sidenav */
   margin-top: 0;
+  padding: 0 20px;
 }
 
 @media screen and (max-height: 450px) {
@@ -113,6 +114,14 @@ box-shadow: 0 8px 16px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
 .required:after {
   content:" *";
   color: red;
+}
+
+.rec-card{
+  background-color: rgb(57, 176, 212);
+    padding: 10px 35px 10px 35px;
+    margin: 12px 0px; 
+    border-radius: 6px;
+    margin-top: 20px;
 }
 
 * {

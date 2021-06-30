@@ -136,11 +136,11 @@ io.on('connection', (socket) => {
 })
 
 // app.use() // all end-points under this middleware can only be accessed by signed in user
-app.use('/', authorization, voteRouter)
-app.use('/meeting', authorization, meetingRouter)
-app.use('/', authorization, covidFormRouter)
-app.use('/', authorization, inviteUserRouter)
-app.use('/', authorization, acceptRequestRouter)
+app.use('/', voteRouter)
+app.use('/meeting', meetingRouter)
+app.use('/', covidFormRouter)
+app.use('/', inviteUserRouter)
+app.use('/', acceptRequestRouter)
 
 app.use('/group', groupRouter)
 app.use('/group', linkRouter)
