@@ -10,6 +10,9 @@ router.get('/groupJoinRequest', async function (req, res, next) {
   const myRequest = await userRepo.getRequests(email)
   const numberOfGroups = await userRepo.getNumberOfGroups(email)
 
+  if (myRequest.length > 0) res.render('acceptDemoRequest', { notification: myRequest, groupId: 58 })
+  else res.redirect('/')
+
   if (myRequest.length > 0) {
     const getGroups = await userRepo.getGroups()
     const groupNames = verify.getGroupName(myRequest, getGroups)

@@ -1,31 +1,32 @@
 extends layout
 block content
-    h4= title
+    h3(style="margin-top:5px; margin-bottom: 20px")= title
     form(action="/group/search" method="POST")
         div.mb-3 
             input(type="text" placeholder="Search group by name" name="groupName" class="form-control" id="exampleInputEmail1")
-        button(type="submit" class="btn btn-primary") Search 
-    div(style="background-color: rgb(57, 176, 212); padding: 0px 50px; margin: 12px 0px")
-        h3 Groups you might like
-        .row
-            each group in recommendations
-                .col(style='margin:15px 0;')
-                    .card
-                        img.card-img-top(src="https://www.seekpng.com/png/detail/215-2156215_diversity-people-in-group-icon.png")
-                        .card-body
-                            h5.card-title= group.groupName
-                            div(id=`${group.groupId}`)
-                                a(href=`/request/join/${group.groupId}`)
-                                    button.btn.btn-info#req(data-groupId=`${group.groupId}`) join
-                            p.card-text Group description
+        button(type="submit" class="btn btn-primary") Search
+    if(userId) 
+        .rec-card
+            h4(style="color: rgb(242, 246, 250); text-align: center") Groups you you may like
+            .row
+                each group in recommendations
+                    .col(style='margin:15px 0;  height: 220px')
+                        .card(style='background-color: #cecece;height: 100%')
+                            img.card-img-top(src=group.thumbnail style="height: 55%")
+                            .card-body
+                                h5.card-title= group.groupName
+                                div(id=`${group.groupId}`)
+                                    a(href=`/request/join/${group.groupId}`)
+                                        button.btn.btn-info#req(data-groupId=`${group.groupId}`) join
+                                p.card-text Group description
     if groups.length == 0 
         h4 Group is not found 
     else
         .row.row-cols-1.row-cols-md-3.g-4
             each group in groups 
-                .col(style='margin:15px 0;')
-                    .card
-                        img.card-img-top(src="https://www.seekpng.com/png/detail/215-2156215_diversity-people-in-group-icon.png")
+                .col(style='margin:15px 0;  height: 275px')
+                    .card(style='background-color: #cecece;height: 100%')
+                        img.card-img-top(src=group.thumbnail style="height: 55%")
                         .card-body
                             h5.card-title=group.groupName
                             div(id=`${group.groupId}`)

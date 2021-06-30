@@ -92,15 +92,16 @@ class userRepository {
     }
   }
 
-  async addUserAddress (userId, address) {
+  async addUserAddress (userId, address, lat, long) {
     try {
       const sqlQueries = await utils.loadSqlQueries('users')
       const pool = await this.pools
-      await pool.request()
+      pool.request()
         .input('email', sql.VarChar(50), userId)
         .input('address', sql.VarChar(150), address)
+        .input('lat', sql.Float, lat)
+        .input('long', sql.Float, long)
         .query(sqlQueries.addUserAddress)
-      console.log('addes')
     } catch (err) {
       console.log(err)
     }
@@ -355,18 +356,6 @@ class userRepository {
         .input('userId', sql.VarChar(50), userId)
         .input('response', sql.Int, response)
         .query(sqlQueries.addGroupJoinRequest)
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
-  async deleteGroupRequest (joinRequestId) {
-    try {
-      const sqlQueries = await utils.loadSqlQueries('users')
-      const pool = await this.pools
-      const insertUser = await pool.request()
-        .input('joinRequestId', sql.Int, joinRequestId)
-        .query(sqlQueries.deleteGroupRequest)
       console.log(insertUser)
     } catch (err) {
       console.log(err)
