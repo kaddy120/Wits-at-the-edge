@@ -16,7 +16,7 @@ function meetingRouters ({ groupRepository, meetingRepository, userRepository, g
   })
 
   router.get('/:groupId/meeting/create', async (req, res) => {
-    res.render('createMeeting')
+    res.render('createMeeting', {groupId: req.params.groupId})
   })
 
   router.post('/:groupId/meeting/create',

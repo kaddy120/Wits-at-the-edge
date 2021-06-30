@@ -31,7 +31,7 @@ class geoManager{
       }
       
       console.log(place[0])
-      res.render('locations', {title: 'Location suggestions', place})
+      res.render('locations', {title: 'Location suggestions', place, groupId: req.params.groupId})
     }
 }
 

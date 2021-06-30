@@ -3,11 +3,11 @@ extend layout
 block content
     div.
     h4= title
-    form(action="/meeting/place" method="GET")
+    form(action=`/group/${groupId}/meeting/place` method="GET")
         .mb-3 
           p='Switch to '
             input(type='submit' class='btn btn-primary' value='face-to-face Meeting' id='face-to-face') 
-    form(action="/meeting/create" method="POST") 
+    form(action=`/group/${groupId}/meeting/create` method="POST") 
         div.mb-3 
             label(for="meetingDate" class="form-label") Meeting Date
             input(type="datetime-local"  name="time" class="form-control" id="date")

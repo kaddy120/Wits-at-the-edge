@@ -38,22 +38,21 @@ class voteManager {
   async placeVote(req, res) {
     const voter = req.user
     const groupId = req.params.groupId
+  
     const requestId = req.params.requestId
-    console.log(groupId)
-    console.log("VOTED")
     await this.votesRepository.addVotes(requestId, voter.email, req.params.choice)
     const voteCount = await this.votesRepository.countVotes(requestId).then(result => { return result.recordset })
     const getNumOfGroupMembers = await this.votesRepository.getNumOfGroupMembers(groupId)
     const counter = model.countVotes(voteCount, getNumOfGroupMembers)
     const email = await this.votesRepository.getRequesteeEmail(requestId).then(result => { return result.recordset })
-    console.log(email)
     const requesteeGroups = await this.votesRepository.getRequesteeGroups(email[0].email).then(result => { return result.recordset })
-    console.log(requesteeGroups)
-    console.log(requesteeGroups.length)
+
     // user can only join 10 groups at most;
     if (counter === true && requesteeGroups.length <= 10) {
-      await this.votesRepository.acceptRequest(email[0].email, groupId)
-      await this.votesRepository.removeFromJoinRequests(requestId)
+      this.userRepository.createMutualFriends(groupId, email[0].email)
+      this.votesRepository.acceptRequest(email[0].email, groupId)
+      // if a user joins a group, add his mutual friends from the group
+      this.votesRepository.removeFromJoinRequests(requestId)
     }
   }
 

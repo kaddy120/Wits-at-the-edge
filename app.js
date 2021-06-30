@@ -139,10 +139,12 @@ app.use('/', covidFormRouter)
 app.use('/', inviteUserRouter)
 app.use('/', acceptRequestRouter)
 
+
 app.use('/group', groupRouter)
+app.use('/group', voteRouter)
 app.use('/group/', meetingRouter)
 app.use('/group', linkRouter)
-app.use('/group/', voteRouter)
+
 
 
 app.use('/request', requestRouter)

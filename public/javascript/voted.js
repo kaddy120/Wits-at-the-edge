@@ -6,7 +6,7 @@ for (var i = 0; i < items.length; i++) {
 
 for (i of items) {
     i.children[1].lastChild.addEventListener("click", async function (e) {
-        e.preventDefault()
+       // e.preventDefault()
         this.parentNode.parentNode.style.backgroundColor = '#E8E8E8'
         this.parentNode.parentNode.innerHTML = 'You declined this join request!'
         try {
@@ -21,7 +21,7 @@ for (i of items) {
 
 
     i.children[1].firstChild.addEventListener("click", async function (e) {
-        e.preventDefault()
+        //e.preventDefault()
 
         this.parentNode.parentNode.style.backgroundColor = '#E8E8E8'
         this.parentNode.parentNode.innerHTML = 'You accepted this join request!'

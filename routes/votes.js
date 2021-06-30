@@ -8,7 +8,7 @@ function votingRouters ({ voteManager }) {
 
   router.get('/:groupId/notifications', voteManager.terminationRequests.bind(voteManager))
 
-  router.post('/:groupId/vote/:requestId/:email/:voteChoice', voteManager.placeTerminateVote.bind(voteManager))
+  router.post('/:groupId/terminationVote/:requestId/:email/:voteChoice', voteManager.placeTerminateVote.bind(voteManager))
   
   return router
 }
