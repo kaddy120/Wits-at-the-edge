@@ -32,6 +32,19 @@ class votesRepository {
     }
   }
 
+  async getNotifications (userId) {
+    try {
+      const sqlQueries = await utils.loadSqlQueries('voting')
+      const pool = await this.dbpool
+      const votes = await pool.request()
+          .input('userId', sql.VarChar(50), userId)
+          .query(sqlQueries.getNotifications)
+          return votes
+    } catch (err) {
+       console.log(err)
+    }
+  }
+
   async getUserVotes (userId) {
     try {
       const sqlQueries = await utils.loadSqlQueries('voting')
@@ -129,14 +142,15 @@ class votesRepository {
     }
   }
 
-  async deleteMember (user, groupId) {
+  async deleteMember (user, groupId, requestId) {
     try {
       const sqlQueries = await utils.loadSqlQueries('voting')
       const pool = await this.dbpool
-      const getMember = await pool.request()
-        .input('groupId', sql.Int, groupId)
-        .input('email', sql.VarChar(50), user)
-        .query(sqlQueries.removeMemberFromGroup)
+      await pool.request()
+      .input('groupId', sql.Int, groupId)
+      .input('email', sql.VarChar(50), user)
+      .input('requestId', sql.Int, requestId)
+      .query(sqlQueries.removeMemberFromGroup)
     } catch (err) {
       console.log(err)
     }

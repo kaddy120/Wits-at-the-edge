@@ -135,16 +135,17 @@ io.on('connection', (socket) => {
 })
 
 // app.use() // all end-points under this middleware can only be accessed by signed in user
-app.use('/', voteRouter)
-app.use('/meeting', meetingRouter)
 app.use('/', covidFormRouter)
 app.use('/', inviteUserRouter)
 app.use('/', acceptRequestRouter)
 
+
 app.use('/group', groupRouter)
+app.use('/group', voteRouter)
 app.use('/group/', meetingRouter)
 app.use('/group', linkRouter)
-app.use('/', voteRouter)
+
+
 
 app.use('/request', requestRouter)
 // catch 404 and forward to error handler

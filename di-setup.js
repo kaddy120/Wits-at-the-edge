@@ -12,6 +12,7 @@ const userRepository = require('./db/users')
 const votesRepository = require('./db/voting')
 const requestRepository = require('./db/requests')
 const groupRepository = require('./db/groups')
+const geoManager = require('./controllers/geoManager')
 const linkRepository = require('./db/links')
 const { accountManagerRouters } = require('./routes/accountManager')
 const requestRouters = require('./routes/request')
@@ -30,6 +31,7 @@ container.register(
     dbpool: awilix.asValue(pools),
     userManager: awilix.asClass(userManager, { lifetime: Lifetime.SINGLETON }),
     voteManager: awilix.asClass(voteManager, { lifetime: Lifetime.SINGLETON }),
+    geoManager: awilix.asClass(geoManager, { lifetime: Lifetime.SINGLETON}),
     votesRepository: awilix.asClass(votesRepository, { lifetime: Lifetime.SINGLETON }),
     votingRouters: awilix.asFunction(votingRouters),
     userRepository: awilix.asClass(userRepository, { lifetime: Lifetime.SCOPED }),

@@ -92,13 +92,15 @@ class userRepository {
     }
   }
 
-  async addUserAddress (userId, address) {
+  async addUserAddress (userId, address, lat, long) {
     try {
       const sqlQueries = await utils.loadSqlQueries('users')
       const pool = await this.pools
       pool.request()
         .input('email', sql.VarChar(50), userId)
         .input('address', sql.VarChar(150), address)
+        .input('lat', sql.Float, lat)
+        .input('long', sql.Float, long)
         .query(sqlQueries.addUserAddress)
     } catch (err) {
       console.log(err)
