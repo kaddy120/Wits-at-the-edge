@@ -18,18 +18,22 @@ const imageSaver = require('../models/saveImagesToCloud')
 const defaultThumbnail = 'https://www.seekpng.com/png/detail/215-2156215_diversity-people-in-group-icon.png'
 const authorization = container.resolve('authorization')
 
+function sanitizeThumbnail (group_) {
+  const result = group_.map(group => {
+    if (group.thumbnail == null || group.thumbnail.length < 25) {
+      group.thumbnail = defaultThumbnail
+    }
+    return group
+  })
+  return result
+}
 
 router.post('/search', async function (req, res) {
   const userId = req.session.passport.user
   const groupName = req.body.groupName
   const results = await groupRepository.searchGroupByName(groupName, userId)
-  if (results.length > 0) {
-    const groups = results.map(group => {
-      if (group.thumbnail == null || group.thumbnail.length < 15) {
-        group.thumbnail = defaultThumbnail
-      }
-      return group
-    })
+  if (results) {
+    const groups = sanitizeThumbnail(results)
     res.render('groups', { title: 'Discover more groups to join', groups })
     return
   }
@@ -43,10 +47,14 @@ router.get('/all/:pageNo', async (req, res) => {
   let recommendations = []
   if (req.user) {
     recommendations = await engine.recommendGroups(req.user)
+    recommendations = sanitizeThumbnail(recommendations)
   }
   // const userId = 'test@gmail.com'
-  const groups = await groupRepository.firstTop(offset, groupsPerPage, userId)
-  res.render('groups', { title: 'Discover more groups to join', groups, recommendations })
+  let groups = await groupRepository.firstTop(offset, groupsPerPage, userId)
+  if (groups.length > 0) {
+    groups = sanitizeThumbnail(groups)
+  }
+  res.render('groups', { title: 'Discover more groups to join', groups, recommendations, userId })
 })
 
 // from here, it is for signed in users only
@@ -111,8 +119,8 @@ router.post('/createGroup', body('groupName', 'Group name cant be empty').notEmp
   })
 
 // the following actions can only be perfomed by group members
-router.get('/:groupId/*', authorization.groupMembers)
-router.post('/:groupId/*', authorization.groupMembers)
+// router.get('/:groupId/*', authorization.groupMembers)
+// router.post('/:groupId/*', authorization.groupMembers)
 
 router.get('/:groupId', async (req, res) => {
   const groupName = await groupRepository.getUserGroupName(req.params.groupId)

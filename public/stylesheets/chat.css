@@ -89,6 +89,7 @@
     flex-direction: column;
     transition: background-color .3s ease;
     height: 100vh;
+    padding: 0%;
 }
 
 .body{
@@ -98,6 +99,11 @@
 header{
     height: 90px;
 }
+
+.h4{
+    margin-left: 16px;
+}
+
 
 .msg-left{
     background-color: rgb(39, 91, 151);
