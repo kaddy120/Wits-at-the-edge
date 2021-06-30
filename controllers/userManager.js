@@ -50,11 +50,6 @@ class userManager {
           console.log(err)
         })
       })
-      // user.password = req.body.password
-      // req.login(user, function (err) {
-      //   if (err) { return next(err) }
-      //   return res.redirect('/')
-      // })
     })
   }
 }

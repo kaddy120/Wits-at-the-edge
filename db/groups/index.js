@@ -48,6 +48,19 @@ class groupRepository {
     }
   }
 
+  async getUserGroups (userId) {
+    try {
+      const pool = await this.dbpool
+      const sqlQueries = await utils.loadSqlQueries('groups')
+      const groups = await pool.request()
+        .input('user', sql.VarChar(50), userId)
+        .query(sqlQueries.getUserGroups)
+      return groups.recordset
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   async searchGroupByName (groupName, userId) {
     const like = `%${groupName}%`
     try {
@@ -174,19 +187,6 @@ class groupRepository {
     }
   }
 
-  async getUserGroups (userId) {
-    try {
-      const pool = await this.dbpool
-      const sqlQueries = await utils.loadSqlQueries('groups')
-      const groups = await pool.request()
-        .input('user', sql.VarChar(50), userId)
-        .query(sqlQueries.getUserGroups)
-      return groups.recordset
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
   async getUserGroupName (groupId) {
     try {
       const pool = await this.dbpool
@@ -194,6 +194,17 @@ class groupRepository {
       const groupName = await pool.request()
         .input('groupId', sql.Int, groupId)
         .query(sqlQueries.getGroupName)
+      return groupName.recordset
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  async getUserGroupId (groupId) {
+    try {
+      const pool = await this.dbpool
+      const groupName = await pool.request()
+        .query(`select groupId from UserGroup where userId='${groupId}'`)
       return groupName.recordset
     } catch (err) {
       console.log(err)

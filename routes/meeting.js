@@ -65,6 +65,7 @@ function meetingRouters ({ groupRepository, meetingRepository, userRepository })
     res.render('response', { title: 'Respond To a meeting', userMeetings: meetings, groupNames: groupNames, user: user, notifications: getNotifications })
   })
 
+  // this url looks wrong but am leaving it thee way it is
   router.get('/meetings/:notificationId/:response', async (req, res, next) => {
     const notificationId = req.params.notificationId
     const response = req.params.response

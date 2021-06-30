@@ -16,19 +16,24 @@ const { memoryStorage } = require('multer')
 const upload = multer({ storage: memoryStorage() })
 const imageSaver = require('../models/saveImagesToCloud')
 const defaultThumbnail = 'https://www.seekpng.com/png/detail/215-2156215_diversity-people-in-group-icon.png'
-// const authorization = container.resolve('authorization')
+const authorization = container.resolve('authorization')
+
+function sanitizeThumbnail (group_) {
+  const result = group_.map(group => {
+    if (group.thumbnail == null || group.thumbnail.length < 25) {
+      group.thumbnail = defaultThumbnail
+    }
+    return group
+  })
+  return result
+}
 
 router.post('/search', async function (req, res) {
   const userId = req.session.passport.user
   const groupName = req.body.groupName
   const results = await groupRepository.searchGroupByName(groupName, userId)
-  if (results.length > 0) {
-    const groups = results.map(group => {
-      if (group.thumbnail == null || group.thumbnail.length < 15) {
-        group.thumbnail = defaultThumbnail
-      }
-      return group
-    })
+  if (results) {
+    const groups = sanitizeThumbnail(results)
     res.render('groups', { title: 'Discover more groups to join', groups })
     return
   }
@@ -42,13 +47,18 @@ router.get('/all/:pageNo', async (req, res) => {
   let recommendations = []
   if (req.user) {
     recommendations = await engine.recommendGroups(req.user)
+    recommendations = sanitizeThumbnail(recommendations)
   }
-  const groups = await groupRepository.firstTop(offset, groupsPerPage, userId)
+  // const userId = 'test@gmail.com'
+  let groups = await groupRepository.firstTop(offset, groupsPerPage, userId)
+  if (groups.length > 0) {
+    groups = sanitizeThumbnail(groups)
+  }
   res.render('groups', { title: 'Discover more groups to join', groups, recommendations, userId })
 })
 
 // from here, it is for signed in users only
-// router.use(authorization.signedinUsers)
+router.use(authorization.signedinUsers)
 
 router.get('/dashboard', async (req, res) => {
   const user = req.user
@@ -61,6 +71,13 @@ router.get('/dashboard', async (req, res) => {
 
   res.render('dashboard', { title: 'Dashboard', userGroups: groups, groupIcon: thumbnail })
 })
+
+// from here, it is for signed in users only
+// router.use(authorization.signedinUsers)
+
+// what group are you terminating
+
+// you atleast need to be signed in to access the following endpoint
 
 // what group are you terminating
 
@@ -77,29 +94,31 @@ router.post('/createGroup', body('groupName', 'Group name cant be empty').notEmp
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() })
     }
-    const email = req.user.email
+    const email = req.body.adminId
     const imageUrl = await imageSaver(req.file)
-
-    const groups = await groupRepository.getNumberOfGroups(email).then((data) => {
-      return data.recordset
-    })
-    if (verify.canCreateGroup(groups)) {
-      const creater = new groupCreator(req.body.groupName, req.body.adminId, req.body.school, imageUrl)
-      groupRepository.addingGroup(creater)
-      const allgroups = await groupRepository.getNumberOfGroups(email).then((data) => {
+    const found = await groupRepository.userIsRegistered(email)
+    if (found) {
+      const groups = await groupRepository.getNumberOfGroups(email).then((data) => {
         return data.recordset
       })
+      if (verify.canCreateGroup(groups)) {
+        const creater = new groupCreator(req.body.groupName, req.body.adminId, req.body.school, imageUrl)
+        groupRepository.addingGroup(creater)
+        const allgroups = await groupRepository.getNumberOfGroups(email).then((data) => {
+          return data.recordset
+        })
 
-      groupRepository.addFirstMember(allgroups[allgroups.length - 1].groupId, allgroups[allgroups.length - 1].adminId)
-      res.redirect('/group')
+        groupRepository.addFirstMember(allgroups[allgroups.length - 1].groupId, allgroups[allgroups.length - 1].adminId)
+        res.redirect('/group')
+      } else {
+        res.redirect('/group')
+      }
     } else {
-      res.redirect('/group')
-      // s
+      res.redirect('/signup')
     }
   })
 
 // the following actions can only be perfomed by group members
-// group/
 // router.get('/:groupId/*', authorization.groupMembers)
 // router.post('/:groupId/*', authorization.groupMembers)
 
@@ -116,7 +135,6 @@ router.get('/:groupId/members', async (req, res) => {
   res.render('members', { title: 'Group Members', members: members, image: profile, groupId: req.params.groupId, terminator: terminatingUser })
 })
 
-// i need to fix this
 router.post('/:groupId/terminate/:user/:terminator/:reason', async (req, res) => {
   const terminatee = req.params.user
   const terminateReason = req.params.reason

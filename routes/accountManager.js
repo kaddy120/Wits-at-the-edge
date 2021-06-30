@@ -1,17 +1,16 @@
 const express = require('express')
 const router = express.Router()
 const { body } = require('express-validator')
-const { alreadyLogedin } = require('../middleware/authorization')
 const constants = require('../constants')
 
-function accountManagerRouters ({ userManager, passport }) {
-  router.get('/signup', alreadyLogedin, function (req, res, next) {
+function accountManagerRouters ({ userManager, passport, authorization }) {
+  router.get('/signup', authorization.alreadyLogedin, function (req, res, next) {
     res.render('signup', constants)
   })
 
-  router.post('/address', alreadyLogedin, userManager.addUser.bind(userManager))
+  router.post('/address', authorization.alreadyLogedin, userManager.addUser.bind(userManager))
 
-  router.post('/signup', alreadyLogedin,
+  router.post('/signup', authorization.alreadyLogedin,
     body('name', 'Name is required').notEmpty(),
     body('surname', 'Surname is required').notEmpty(),
     body('email', 'Enter a valid email address').isEmail(),
@@ -37,11 +36,11 @@ function accountManagerRouters ({ userManager, passport }) {
     userManager.postUser.bind(userManager)
   )
 
-  router.get('/login', alreadyLogedin, (req, res) => {
+  router.get('/login', authorization.alreadyLogedin, (req, res) => {
     res.render('login')
   })
 
-  router.post('/login', alreadyLogedin,
+  router.post('/login', authorization.alreadyLogedin,
     passport.authenticate('local', {
       failureRedirect: '/login',
       failureFlash: true
