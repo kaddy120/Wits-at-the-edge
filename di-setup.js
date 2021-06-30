@@ -12,8 +12,10 @@ const userRepository = require('./db/users')
 const votesRepository = require('./db/voting')
 const requestRepository = require('./db/requests')
 const groupRepository = require('./db/groups')
+const linkRepository = require('./db/links')
 const { accountManagerRouters } = require('./routes/accountManager')
 const requestRouters = require('./routes/request')
+const { linkRouters } = require('./routes/link')
 const { meetingRouters } = require('./routes/meeting')
 const passport = require('passport')
 
@@ -39,7 +41,9 @@ container.register(
     requestRouters: awilix.asFunction(requestRouters),
     accountManagerRouters: awilix.asFunction(accountManagerRouters),
     recommendationEngine: awilix.asClass(recommendationEngine, { lifetime: Lifetime.SINGLETON }),
-    authorization: awilix.asClass(authorization, { lifetime: Lifetime.SCOPED })
+    authorization: awilix.asClass(authorization, { lifetime: Lifetime.SCOPED }),
+    linkRouters: awilix.asFunction(linkRouters),
+    linkRepository: awilix.asClass(linkRepository, { lifetime: Lifetime.SINGLETON })
   })
 
 module.exports = {

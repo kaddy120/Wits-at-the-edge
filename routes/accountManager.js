@@ -48,12 +48,12 @@ function accountManagerRouters ({ userManager, passport, authorization }) {
     function (req, res) {
       const redirectTo = req.session.redirectTo
       req.session.redirectTo = null
-      res.redirect(redirectTo || '/')
+      res.redirect(redirectTo || '/group/dashboard')
     })
 
   router.get('/logout', (req, res) => {
     req.logout()
-    res.redirect('/')
+    res.redirect('/group/all/1')
   })
 
   return router

@@ -29,28 +29,26 @@ class userManager {
     const address = `${req.body.streetAddress}, ${req.body.suburb}, ${req.body.city}, ${req.body.postalCode}`
     console.log(user)
     const repo = this.userRepository
-    console.log(address)
     bcrypt.genSalt(saltRounds, function (err, salt) {
       if (err) {
         console.log(err)
       }
       bcrypt.hash(user.password, salt, function (err, hash) {
         user.password = hash
-
-        repo.addUser(user).then(addUser => {
-          repo.addUserAddress(user.email, address)
-        }).catch(err => {
-          console.log(err)
-        })
-
         if (err) {
           console.log(err)
         }
-      })
-      user.password = req.body.password
-      req.login(user, function (err) {
-        if (err) { return next(err) }
-        return res.redirect('/')
+        repo.addUser(user).then(addUser => {
+          repo.addUserAddress(user.email, address)
+          //once the
+          addUser.password = req.body.password
+          req.login(user, function (err) {
+            if (err) { return next(err) }
+            return res.redirect('/')
+          })
+        }).catch(err => {
+          console.log(err)
+        })
       })
     })
   }

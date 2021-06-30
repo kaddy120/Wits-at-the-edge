@@ -16,12 +16,10 @@ function geocode (location) {
     const updateStrtName = response.data.results[0].address_components[1].short_name
     const updateSuburb = response.data.results[0].address_components[2].long_name
     const updatePostalCode = response.data.results[0].address_components[7].short_name
-    console.log(updateSuburb)
     suburb.value = updateSuburb
     street.value = `${updateStrtNumber} ${updateStrtName}`
     postalCode.value = updatePostalCode
     document.getElementById('button').disabled = false
-    console.log(address)
   })
     .catch(err => {
       err = 'Address not found, Enter a valid address'

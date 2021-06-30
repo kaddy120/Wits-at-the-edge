@@ -18,6 +18,7 @@ const imageSaver = require('../models/saveImagesToCloud')
 const defaultThumbnail = 'https://www.seekpng.com/png/detail/215-2156215_diversity-people-in-group-icon.png'
 const authorization = container.resolve('authorization')
 
+
 router.post('/search', async function (req, res) {
   const userId = req.session.passport.user
   const groupName = req.body.groupName
@@ -62,6 +63,13 @@ router.get('/dashboard', async (req, res) => {
 
   res.render('dashboard', { title: 'Dashboard', userGroups: groups, groupIcon: thumbnail })
 })
+
+// from here, it is for signed in users only
+// router.use(authorization.signedinUsers)
+
+// what group are you terminating
+
+// you atleast need to be signed in to access the following endpoint
 
 // what group are you terminating
 

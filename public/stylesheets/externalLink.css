@@ -1,0 +1,33 @@
+
+.lin-container{
+    box-shadow: 0px 1px 4px rgb(0 0 0 / 30%);
+    border-radius: 0.6em; 
+    border-radius: 0.6em; 
+    overflow: hidden;
+}
+
+.link-head{
+    background-color:rgb(19, 76, 129);
+    color: aliceblue;
+}
+
+ul{
+    list-style: none;
+    
+}
+
+.link-head {
+    display: block;
+    text-align: center;
+    padding: .2em
+}
+
+a.button:hover,
+a.button:focus,
+a.button:active {
+    color: aliceblue;
+  }
+
+.link-head h3{
+    margin: 12px;
+}
