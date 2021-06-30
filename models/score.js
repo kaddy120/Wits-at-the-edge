@@ -8,7 +8,11 @@ async function getScore (userId) {
   const score = numCreateMeating * 2 + numJoinMeating * 0.5 + numJoinGroup
   console.log('The score is')
   console.log(score)
-
+  if (typeof score === 'undefined') {
+    return 'Not Avalible'
+  } else if (score === null) {
+    return 0
+  }
   return score
 }
 
