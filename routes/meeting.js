@@ -14,11 +14,11 @@ function meetingRouters ({ groupRepository, meetingRepository, userRepository })
     res.send(`${groupName} group home page`)
   })
 
-  router.get('/create', async (req, res) => {
+  router.get('/meeting/create', async (req, res) => {
     res.render('createMeeting')
   })
 
-  router.post('/create',
+  router.post('/meeting/create',
     body('agenda', 'Agenda cannot be empy').notEmpty(),
     body('time', 'time can not be null').notEmpty(),
     async (req, res) => {
@@ -51,7 +51,7 @@ function meetingRouters ({ groupRepository, meetingRepository, userRepository })
       }
     })
 
-  router.get('/response', async (req, res, next) => {
+  router.get('/meeting/response', async (req, res, next) => {
     const user = req.user.email
     const getNotifications = await meetingRepository.getAllUserNotifications(user)
     const meetings = []
@@ -65,37 +65,9 @@ function meetingRouters ({ groupRepository, meetingRepository, userRepository })
 
     res.render('response', { title: 'Respond To a meeting', userMeetings: meetings, groupNames: groupNames, user: user, notifications: getNotifications })
   })
-
-  router.post('/meetings/:notificationId/:response', async (req, res, next) => {
-    const notificationId = req.params.notificationId
-    const response = req.params.response
-    if (response === 'Available') {
-      await meetingRepository.updateNotification(notificationId, 1)
-    } else if (response === 'risky') {
-      await meetingRepository.updateNotification(notificationId, 2)
-    } else if (response === 'meetingFinished') {
-      await meetingRepository.updateNotification(notificationId, 3)
-    } else {
-      await meetingRepository.updateNotification(notificationId, -1)
-    }
-
-    res.redirect('/meeting/response')
-  })
-
-  router.get('/trackUser', async (req, res, next) => {
-    const user = req.user.email
-    const attendedMeetings = await meetingRepository.getAttendedMeetings(user)
-    const filteredMeetings = attendedMeetings.filter((meeting) => {
-      const duration = moment.duration(moment(new Date()).diff(meeting.meetingTime))
-      const minutes = duration.asMinutes()
-      return minutes >= 40
-    })
-    const useraddress = await meetingRepository.getUserAddress(user)
-    res.render('trackLocation', { title: 'Track Users', meetings: filteredMeetings, lat: useraddress[0].lat, long: useraddress[0].long })
-  })
-  router.post('/meetingFinished/:meetingId/:finishTime', async (req, res, next) => {
+  router.post('/:groupId/meeting/meetingFinished/:meetingId', async (req, res, next) => {
     const meetingId = req.params.meetingId
-    const finishTime = req.params.finishTime
+    const finishTime = req.body.finishtime
     const user = req.user.email
     const users = await meetingRepository.getNotificationMember(user, meetingId)
     if (await meetingRepository.getFinishedMeetingById(meetingId) === 0) {
@@ -108,18 +80,47 @@ function meetingRouters ({ groupRepository, meetingRepository, userRepository })
     res.send({ meeting: 'Updated' })
   })
 
-  router.get('/sendEmail', async (req, res, next) => {
-    const user = 'mullertest23@gmail.com'
-    meetingRepository.sendEmail(user)
-    res.send('message went')
+  router.get('/:groupId/meeting/trackUser', async (req, res, next) => {
+    const user = req.user.email
+    const attendedMeetings = await meetingRepository.getAttendedMeetings(user)
+    const filteredMeetings = attendedMeetings.filter((meeting) => {
+      const duration = moment.duration(moment(new Date()).diff(meeting.meetingTime))
+      const minutes = duration.asMinutes()
+      return minutes >= 40
+    })
+    const useraddress = await meetingRepository.getUserAddress(user)
+    res.render('trackLocation', { title: 'Track Users', meetings: filteredMeetings, lat: useraddress[0].lat, long: useraddress[0].long })
   })
 
-  router.post('/updateUserDistance/:meetingId/:distance', async (req, res, next) => {
+  router.post('/:groupId/meeting/updateUserDistance/:meetingId', async (req, res, next) => {
     const user = req.user.email
-    const distance = req.params.distance
+    const distance = req.body.distance
     const meetingId = req.params.meetingId
     await meetingRepository.updateDistance(user, meetingId, distance)
     res.send({ distance: 'updated' })
+  })
+  router.get('/:groupId/meeting/findUsers', async (req, res, next) => {
+    const meetings = await meetingRepository.getAllMemberDistances()
+    const arrived = meetings.filter((meeting) => {
+      return (meeting.distance <= 1600 && meeting.distance !== null)
+    })
+    res.render('userTracker', { title: 'Find ALL users', peopleArrived: arrived.length, peopleOnWay: (meetings.length - arrived.length) })
+  })
+
+  router.post('/:groupId/meeting/:notificationId/:response', async (req, res, next) => {
+    const notificationId = req.params.notificationId
+    const response = req.params.response
+    if (response === 'Available') {
+      await meetingRepository.updateNotification(notificationId, 1)
+    } else if (response === 'risky') {
+      await meetingRepository.updateNotification(notificationId, 2)
+    } else if (response === 'meetingFinished') {
+      await meetingRepository.updateNotification(notificationId, 3)
+    } else {
+      await meetingRepository.updateNotification(notificationId, -1)
+    }
+
+    res.redirect('/group/meeting/response')
   })
   return router
 }

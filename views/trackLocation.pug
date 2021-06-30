@@ -13,5 +13,6 @@ block content
                   |
                   |
                   input(type="hidden", name="useraddress" value=`${lat}` id=`${long}` class='useraddress')
+                  input(type="hidden", name="groupId" value=`${meetings[x].groupId}` class = 'groupId')
                   input(type='hidden' value=`${meetings[x].meetingId[0]}` id=`${meetings[x].notificationId}`)
     script(src="/javascript/trackUser.js") 

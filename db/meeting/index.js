@@ -156,6 +156,43 @@ class meetingRepository {
     }
   }
 
+  async getAllMemberDistances () {
+    try {
+      const sqlQueries = await utils.loadSqlQueries('meeting')
+      const pool = await this.dbpool
+      const meetings = await pool.request()
+        .query(sqlQueries.getAllMemberDistances)
+      return meetings.recordset
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  async updateTime (finishTime, meetingId) {
+    try {
+      const sqlQueries = await utils.loadSqlQueries('meeting')
+      const pool = await this.dbpool
+      await pool.request()
+        .input('finishTime', sql.DateTime, finishTime)
+        .input('meetingId', sql.Int, meetingId)
+        .query(sqlQueries.updateTime)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  async deleteMeeting (meetingId) {
+    try {
+      const sqlQueries = await utils.loadSqlQueries('meeting')
+      const pool = await this.dbpool
+      await pool.request()
+        .input('meetingId', sql.Int, meetingId)
+        .query(sqlQueries.deleteMeeting)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   async sendEmail (userId, agenda) {
     const transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',

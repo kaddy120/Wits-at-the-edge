@@ -32,7 +32,7 @@ const configPassport = require('./config/passportConfig')
 configPassport(user, passport)
 const joinExpiryDate = require('./services/groupJoinRequests')
 const tracker = require('./services/tracking')
-// setInterval(tracker.updateDistance, 1000 * 60 * 5)
+setInterval(tracker.updateDistance, 1000 * 60 * 30)
 setInterval(joinExpiryDate.joinRequestExpiryDate, 10 * 60 * 1000)
 
 const indexRouter = require('./routes/index')
@@ -137,7 +137,6 @@ io.on('connection', (socket) => {
 
 // app.use() // all end-points under this middleware can only be accessed by signed in user
 app.use('/', voteRouter)
-app.use('/meeting', meetingRouter)
 app.use('/', covidFormRouter)
 app.use('/', inviteUserRouter)
 app.use('/', acceptRequestRouter)

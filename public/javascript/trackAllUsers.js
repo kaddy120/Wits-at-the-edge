@@ -1,7 +1,7 @@
 const meetingId = sessionStorage.getItem('tracking')
 const lat = sessionStorage.getItem('userLat')
 const long = sessionStorage.getItem('userLong')
-
+const groupId = sessionStorage.getItem('groupId')
 const destination = {
   lat: parseFloat(lat),
   lng: parseFloat(long)
@@ -26,7 +26,14 @@ async function getDistance (origin1, destinationA) {
     // put response
     // if (response.rows[0].elements[0].distance.value < 1000) { sessionStorage.removeItem('tracking') }
     try {
-      await fetch(`/meeting/updateUserDistance/${parseInt(meetingId)}/${response.rows[0].elements[0].distance.value}`, { method: 'post' })
+      await fetch(`/group/${groupId}/meeting/updateUserDistance/${parseInt(meetingId)}`, {
+        method: 'post',
+        body: JSON.stringify({ distance: response.rows[0].elements[0].distance.value }),
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        }
+      })
     } catch (err) {
       console.log(err)
     }
