@@ -22,7 +22,7 @@ const authorization = container.resolve('authorization')
 
 router.get('/dashboard', async (req, res) => {
   const user = req.user
-  const groups = await groupRepository.getUserGroups(user.email).then(result => { return result.recordset })
+  const groups = await groupRepository.getUserGroups(user.email)
   const groupThumbnail = await groupRepository.getGroupThumbnail(user.email).then(result => { return result.recordset })
   const thumbnail = []
   for (let index = 0; index < groupThumbnail.length; index++) {
