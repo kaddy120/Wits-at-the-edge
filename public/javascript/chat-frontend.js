@@ -8,7 +8,6 @@ console.log(input)
 
 form.addEventListener('submit', function (e) {
   e.preventDefault()
-  console.log(input.value)
   if (input.value) {
     socket.emit('chat message', input.value)
     input.value = ''
@@ -17,8 +16,17 @@ form.addEventListener('submit', function (e) {
 socket.emit('join', { groupId })
 
 socket.on('chat message', function (msg) {
+  let class_ = 'msg-left'
+  if (msg.userName === 2) {
+    class_ = 'msg-right'
+  }
+  // class_ = 'msg-right'
+  const message = `<div class="${class_}">
+                   <div class="color-5">${msg.userName}</div>
+                   <div class="message">${msg.message}</div>
+                   <small>${msg.timeSent}</small>`
   const item = document.createElement('li')
-  item.textContent = msg
+  item.innerHTML = message
   messages.appendChild(item)
   window.scrollTo(0, document.body.scrollHeight)
 })

@@ -96,7 +96,7 @@ class userRepository {
     try {
       const sqlQueries = await utils.loadSqlQueries('users')
       const pool = await this.pools
-      await pool.request()
+      pool.request()
         .input('email', sql.VarChar(50), userId)
         .input('address', sql.VarChar(150), address)
         .input('lat', sql.Float, lat)
@@ -356,7 +356,6 @@ class userRepository {
         .input('userId', sql.VarChar(50), userId)
         .input('response', sql.Int, response)
         .query(sqlQueries.addGroupJoinRequest)
-      console.log('nEW FUNCTION!!!!!!!!')
       console.log(insertUser)
     } catch (err) {
       console.log(err)

@@ -8,7 +8,7 @@ function meetingRouters ({ groupRepository, meetingRepository, userRepository, g
     res.render('group')
   })
 
-  router.get('/place', geoManager.suggestions.bind(geoManager))
+  router.get('/:groupId/place', geoManager.suggestions.bind(geoManager))
 
   router.get('/groupName/:groupId', async (req, res) => {
     const groupName = req.params.groupId
@@ -57,7 +57,6 @@ function meetingRouters ({ groupRepository, meetingRepository, userRepository, g
     const getNotifications = await meetingRepository.getAllUserNotifications(user)
     const meetings = []
     const groupNames = []
-    console.log(getNotifications)
     for (let x = 0; x < getNotifications.length; x++) {
       const meeting = await meetingRepository.getAllUserMeetings(getNotifications[x].meetingId)
       const groupName = await groupRepository.getUserGroupName(meeting[0].groupId)
@@ -68,6 +67,7 @@ function meetingRouters ({ groupRepository, meetingRepository, userRepository, g
     res.render('response', { title: 'Respond To a meeting', userMeetings: meetings, groupNames: groupNames, user: user, notifications: getNotifications })
   })
 
+  // this url looks wrong but am leaving it thee way it is
   router.get('/meetings/:notificationId/:response', async (req, res, next) => {
     const notificationId = req.params.notificationId
     const response = req.params.response
