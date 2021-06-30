@@ -17,7 +17,6 @@ async function joinRequestExpiryDate () {
   for (let i = 0; i < filteredRequest.length; i++) {
     votes = await votesRepository.getNumOfPeopleVoted(filteredRequest[i].requestId).then(result => { return result.recordset })
     getNumOfGroupMembers = await votesRepository.getNumOfGroupMembers(filteredRequest[i].groupId)
-    console.log(votes[0].numOfPeopleVoted)
     if (votes[0].numOfPeopleVoted >= Math.floor(0.3 * getNumOfGroupMembers)) {
       voteCount = await votesRepository.countVotes(filteredRequest[i].requestId).then(result => { return result.recordset })
       counter = model.countVotes(voteCount, votes[0].numOfPeopleVoted)

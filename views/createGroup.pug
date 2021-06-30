@@ -1,20 +1,16 @@
 extends layout
 
 block content
-    a(href="/") Home page
-    h1= title
+    h3= title
     form(action='/group/createGroup',enctype ='multipart/form-data', method='post')
-        div.creating
-            label(for='groupName') GroupName
-            input(type='text', name='groupName', id = 'groupName',class ='Group-info', placeholder='Enter Group name')
-        div.creating
-            label(for='school') School
-            input(type='text', name='school', id ='school',class ='Group-info', placeholder='Enter your school')
-        div.creating
-            label(for='thumbnail') Thumbnail
-            input(type='file', name='thumbnail', id='thumbnail',class ='Group-info', placeholder='Group Icon')
-        div.creating
-            label(for='adminId') adminId
-            input(type='email', name='adminId', id='adminId',class ='Group-info', placeholder='Enter your email')
+        div.mb-3
+            label(for='groupName' class="form-label") GroupName
+            input.form-control(type='text', name='groupName', id = 'groupName',class ='Group-info', placeholder='Enter Group name')
+        div.mb-3
+            label(for='school' class="form-label") Field of study
+            input.form-control(type='text', name='school', id ='school',class ='Group-info', placeholder='Enter your school')
+        div.mb-3
+            label(for='thumbnail' class="form-label") Group thumbnail
+            input.form-control-file(type='file', accept="image/*", name='thumbnail', id='thumbnail',class ='Group-info', placeholder='Group Icon')
         button(type='submit', class ='btn btn-primary') Submit
         

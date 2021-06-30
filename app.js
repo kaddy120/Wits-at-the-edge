@@ -11,7 +11,6 @@ const server = http.createServer(app)
 const { Server } = require('socket.io')
 const io = new Server(server)
 
-require('./di-setup')
 const redis = require('redis')
 const session = require('express-session')
 const RedisStore = require('connect-redis')(session)
@@ -20,15 +19,14 @@ const redisClient = redis.createClient(6380, 'wits.redis.cache.windows.net',
     auth_pass: process.env.primaryKey,
     tls: { servername: process.env.redisServername }
   })
-const bodyParser = require('body-parser')
-app.use(bodyParser.urlencoded({ extended: true }))
+
 const flash = require('express-flash')
 
-require('./di-setup')
 const { container } = require('./di-setup')
 const user = container.resolve('userRepository')
 // const groupRouter = require('./routes/group')
 const voteRouter = container.resolve('votingRouters')
+const linkRouter = container.resolve('linkRouters')
 const groupRouter = require('./routes/group')
 const passport = container.resolve('passport')
 const configPassport = require('./config/passportConfig')
@@ -46,6 +44,7 @@ const requestRouter = container.resolve('requestRouters')
 const { authorization } = require('./middleware/authorization')
 
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'))
+app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js'))
 
 passport.serializeUser(function (user, cb) {
   cb(null, user.email)
@@ -63,6 +62,7 @@ app.set('view engine', 'pug')
 app.use(logger('dev'))
 app.use(require('morgan')('combined'))
 app.use(require('body-parser').urlencoded({ extended: true }))
+app.use(express.json())
 app.use(express.static(path.join(__dirname, 'public')))
 
 app.set('trust proxy', 1)
@@ -101,17 +101,18 @@ io.use((socket, next) => {
 })
 
 function sendMessage (socket, roomname) {
-  redisClient.lrange(roomname, '0', '-1', (err, data) => {
+  redisClient.lrange(roomname, '0', '100', (err, data) => {
     if (err) {
       console.log(err)
       return
     }
     data.map(x => {
       const usernameMessage = x.split(':')
-      const redisUsername = usernameMessage[0]
-      const redisMessage = usernameMessage[1]
+      const userName = usernameMessage[0]
+      const message = usernameMessage[1]
+      const timeSent = '12h00'
 
-      socket.emit('chat message', redisMessage
+      socket.emit('chat message', { userName, message, timeSent }
       )
     })
   })
@@ -127,19 +128,22 @@ io.on('connection', (socket) => {
   })
   // console.log(socket.request.session.passport.user)
   socket.on('chat message', (msg) => {
-    redisClient.rpush(roomname, `${userId}:${msg}`)
-    io.to(roomname).emit('chat message', msg)
+    const timeSent = new Date().toISOString().slice(0, 19).replace('T', ' ')
+    redisClient.rpush(roomname, `${userId}:${msg}:${timeSent}`)
+
+    io.to(roomname).emit('chat message', { userName: userId, message: msg, timeSent: '15:45' })
   })
 })
 
 // app.use() // all end-points under this middleware can only be accessed by signed in user
-app.use('/', authorization, voteRouter)
-app.use('/meeting', authorization, meetingRouter)
-app.use('/', authorization, covidFormRouter)
-app.use('/', authorization, inviteUserRouter)
-app.use('/', authorization, acceptRequestRouter)
+app.use('/', voteRouter)
+app.use('/meeting', meetingRouter)
+app.use('/', covidFormRouter)
+app.use('/', inviteUserRouter)
+app.use('/', acceptRequestRouter)
 
 app.use('/group', groupRouter)
+app.use('/group', linkRouter)
 app.use('/', voteRouter)
 
 app.use('/request', authorization, requestRouter)

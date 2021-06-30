@@ -8,7 +8,6 @@ function meetingRouters ({ groupRepository, meetingRepository, userRepository })
     res.render('group')
   })
 
-
   router.get('/groupName/:groupId', async (req, res) => {
     const groupName = req.params.groupId
     res.send(`${groupName} group home page`)
@@ -56,7 +55,6 @@ function meetingRouters ({ groupRepository, meetingRepository, userRepository })
     const getNotifications = await meetingRepository.getAllUserNotifications(user)
     const meetings = []
     const groupNames = []
-    console.log(getNotifications)
     for (let x = 0; x < getNotifications.length; x++) {
       const meeting = await meetingRepository.getAllUserMeetings(getNotifications[x].meetingId)
       const groupName = await groupRepository.getUserGroupName(meeting[0].groupId)
