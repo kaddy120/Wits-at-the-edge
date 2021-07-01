@@ -19,12 +19,9 @@ async function getDistance (origin1, destinationA) {
     avoidHighways: false,
     avoidTolls: false
   }
-  // put request on page
-  console.log(request)
   // get distance matrix response
   service.getDistanceMatrix(request).then(async (response) => {
-    // put response
-    // if (response.rows[0].elements[0].distance.value < 1000) { sessionStorage.removeItem('tracking') }
+    if (response.rows[0].elements[0].distance.value < 300) { sessionStorage.removeItem('tracking') }
     try {
       await fetch(`/group/${groupId}/meeting/updateUserDistance/${parseInt(meetingId)}`, {
         method: 'post',
@@ -42,7 +39,7 @@ async function getDistance (origin1, destinationA) {
 
 function getLocation () {
   if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(showLocation)
+    navigator.geolocation.getCurrentPosition(showLocation) /// get the current user location
   }
 }
 
@@ -51,7 +48,6 @@ async function showLocation (position) {
     lat: position.coords.latitude,
     lng: position.coords.longitude
   }
-  console.log(location)
   await getDistance(location, destination)
 }
 
