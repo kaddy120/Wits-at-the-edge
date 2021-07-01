@@ -29,6 +29,6 @@ for (let i = 0; i < items.length; i++) {
     }
 
     items[i].children[3].firstChild.parentNode.parentNode.style.backgroundColor = '#E8E8E8'
-    items[i].children[3].firstChild.parentNode.parentNode.innerHTML = 'The tracker has started!'
+    items[i].children[3].firstChild.parentNode.parentNode.innerHTML = 'The tracker has started! Please do not log out for tracking to be effective'
   })
 }

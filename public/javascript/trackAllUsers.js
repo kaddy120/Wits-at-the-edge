@@ -21,20 +21,23 @@ async function getDistance (origin1, destinationA) {
   }
   // get distance matrix response
   service.getDistanceMatrix(request).then(async (response) => {
-    if (response.rows[0].elements[0].distance.value < 300) { sessionStorage.removeItem('tracking') }
-    try {
-      await fetch(`/group/${groupId}/meeting/updateUserDistance/${parseInt(meetingId)}`, {
-        method: 'post',
-        body: JSON.stringify({ distance: response.rows[0].elements[0].distance.value }),
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json'
-        }
-      })
-    } catch (err) {
-      console.log(err)
+    if (response.rows[0].elements[0].distance.value > 500) {
+      sessionStorage.removeItem('tracking')
+      try {
+        await fetch(`/group/${groupId}/meeting/updateUserDistance/${parseInt(meetingId)}`, {
+          method: 'post',
+          body: JSON.stringify({ distance: response.rows[0].elements[0].distance.value }),
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+          }
+        })
+      } catch (err) {
+        console.log(err)
+      }
     }
-  })
+  }
+  )
 }
 
 function getLocation () {

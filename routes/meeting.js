@@ -4,21 +4,23 @@ const { body, validationResult } = require('express-validator')
 const router = express.Router()
 const moment = require('moment')
 
-function meetingRouters ({ groupRepository, meetingRepository, userRepository }) {
-  router.get('/', async (req, res) => {
+function meetingRouters ({ groupRepository, meetingRepository, userRepository, geoManager }) {
+  router.get('/:groupId', async (req, res) => {
     res.render('group')
   })
 
-  router.get('/groupName/:groupId', async (req, res) => {
+  router.get('/:groupId/meeting/place', geoManager.suggestions.bind(geoManager))
+
+  router.get(':groupId/meeting/groupName/', async (req, res) => {
     const groupName = req.params.groupId
     res.send(`${groupName} group home page`)
   })
 
-  router.get('/meeting/create', async (req, res) => {
-    res.render('createMeeting')
+  router.get('/:groupId/meeting/create', async (req, res) => {
+    res.render('createMeeting', { groupId: req.params.groupId })
   })
 
-  router.post('/meeting/create',
+  router.post('/:groupId/meeting/create',
     body('agenda', 'Agenda cannot be empy').notEmpty(),
     body('time', 'time can not be null').notEmpty(),
     async (req, res) => {
@@ -51,7 +53,7 @@ function meetingRouters ({ groupRepository, meetingRepository, userRepository })
       }
     })
 
-  router.get('/meeting/response', async (req, res, next) => {
+  router.get('/:groupId/meeting/response', async (req, res, next) => {
     const user = req.user.email
     const getNotifications = await meetingRepository.getAllUserNotifications(user)
     const meetings = []
@@ -102,9 +104,13 @@ function meetingRouters ({ groupRepository, meetingRepository, userRepository })
   router.get('/:groupId/meeting/findUsers', async (req, res, next) => {
     const meetings = await meetingRepository.getAllMemberDistances()
     const arrived = meetings.filter((meeting) => {
-      return (meeting.distance <= 1600 && meeting.distance !== null)
+      return (meeting.distance <= 500 && meeting.distance !== null)
     })
-    res.render('userTracker', { title: 'Find ALL users', peopleArrived: arrived.length, peopleOnWay: (meetings.length - arrived.length) })
+    const onWay = meetings.filter((meeting) => {
+      return (meeting.distance > 500 || meeting.distance === null)
+    })
+
+    res.render('userTracker', { title: 'Find ALL users', peopleArrived: arrived.length, peopleOnWay: (meetings.length - arrived.length), arrived: arrived, onWay: onWay })
   })
 
   router.post('/:groupId/meeting/:notificationId/:response', async (req, res, next) => {
@@ -120,8 +126,9 @@ function meetingRouters ({ groupRepository, meetingRepository, userRepository })
       await meetingRepository.updateNotification(notificationId, -1)
     }
 
-    res.redirect('/group/meeting/response')
+    res.redirect(`/group/${req.params.groupId}/meeting/response`)
   })
   return router
 }
+
 module.exports = { meetingRouters }

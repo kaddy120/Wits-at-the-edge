@@ -1,48 +1,120 @@
 'use strict'
 let num = 0
-const onlineButton = document.getElementById('online')
-const faceToFaceButton = document.getElementById('face-to-face')
-onlineButton.addEventListener('click', (e) => {
-  onlineButton.style.background = '#e60000'
-  faceToFaceButton.style.background = 'DodgerBlue'
+const cafe = document.getElementById('cafe')
+const park = document.getElementById('park')
+const library = document.getElementById('library')
+const restaurant = document.getElementById('restaurant')
+const submit = document.getElementById('submit')
+const address = document.getElementById('address')
+const items = document.getElementsByClassName('list-group-item')
+const region = document.getElementById('region')
 
-  if (num !== 0) {
-    const div = document.getElementById('address-div')
-    const child = document.getElementById('address-label')
-    const child2 = document.getElementById('address')
-    div.removeChild(child)
-    div.removeChild(child2)
-    num = 0
+for (var i = 0; i < items.length; i++) {
+  items[i].style.backgroundColor = '#E3F9E1'
+  items[i].style.margin = '10px'
+}
+
+park.style.display = "none"
+restaurant.style.display = "none"
+cafe.style.display = "none"
+library.style.display = "none"
+
+function geocode(location) {
+  axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
+      params: {
+          address: location,
+          key: 'AIzaSyBQpS8Gb2C1coUXAIMFk-sTGmcclvup-GE'
+      }
+  }).then(async response => {
+            address.value = `${response.data.results[0].address_components[0].short_name} ${response.data.results[0].address_components[1].short_name}, ${response.data.results[0].address_components[2].long_name}, ${response.data.results[0].address_components[7].short_name}`
+          }).catch(err => {
+          console.log("Enter a valid address")
+      })
+}
+
+address.addEventListener('input', (e) => {
+  if(address.value.length == 0)
+  submit.disabled = true
+  else{
+    submit.disabled = false
+    geocode(address.value)
+  }
+})
+
+cafe.addEventListener('click', (e) => {
+  if(cafe.value == 'Meet at a Cafe') {
+    document.getElementById('address').value = ''
+    submit.disabled = true
+  }
+  else {
+    document.getElementById('address').value = `${region.innerHTML}, ${cafe.value}`
+    submit.disabled = false
+  }
+  
+})
+
+park.addEventListener('click', (e) => {
+  if(park.value == 'Meet at a Park') {
+    document.getElementById('address').value = ''
+    submit.disabled = true
+  }
+  else { 
+    document.getElementById('address').value = `${region.innerHTML}, ${park.value}`
+    submit.disabled = false
+   }
+ 
+})
+
+library.addEventListener('click', (e) => {
+  if(library.value == 'Meet at a Library') {
+    document.getElementById('address').value = ''
+    submit.disabled = true
+  } 
+  else { 
+  document.getElementById('address').value = `${region.innerHTML}, ${library.value}`
+    submit.disabled = false
   }
 
-  document.getElementById('submit').disabled = false
 })
-faceToFaceButton.addEventListener('click', (e) => {
-  document.getElementById('submit').disabled = true
-  faceToFaceButton.style.background = '#e60000'
-  onlineButton.style.background = 'DodgerBlue'
-  const div = document.getElementById('address-div')
-  const addressLabel = document.createElement('label')
-  addressLabel.title = 'Meeting Address'
-  addressLabel.id = 'address-label'
-  addressLabel.innerText = 'Meeting Address'
-  const address = document.createElement('input')
-  address.className = 'form-control'
-  address.id = 'address'
-  address.name = 'address'
-  address.type = 'text'
-  if (num === 0) {
-    div.appendChild(addressLabel)
-    div.appendChild(address)
-    num++
-  }
-  const addresslister = document.getElementById('address')
 
-  addresslister.addEventListener('input', (e) => {
-    if (addresslister.value !== '') {
-      document.getElementById('submit').disabled = false
-    } else {
-      document.getElementById('submit').disabled = true
-    }
-  })
+restaurant.addEventListener('click', (e) => {
+  if(restaurant.value == 'Meet at a Restaurant') {
+    document.getElementById('address').value = ''
+    submit.disabled = true
+  } 
+  else { 
+    document.getElementById('address').value = `${region.innerHTML}, ${restaurant.value}`
+    submit.disabled = false
+   }
+ 
 })
+
+document.getElementById('res').addEventListener('click', (e) => {
+  park.style.display = "none"
+  restaurant.style.display = ""
+  cafe.style.display = "none"
+  library.style.display = "none"
+})
+
+document.getElementById('lib').addEventListener('click', (e) => {
+  park.style.display = "none"
+  restaurant.style.display = "none"
+  cafe.style.display = "none"
+  library.style.display = ""
+})
+
+document.getElementById('pak').addEventListener('click', (e) => {
+  park.style.display = ""
+  restaurant.style.display = "none"
+  cafe.style.display = "none"
+  library.style.display = "none"
+})
+
+document.getElementById('caf').addEventListener('click', (e) => {
+  park.style.display = "none"
+  restaurant.style.display = "none"
+  cafe.style.display = ""
+  library.style.display = "none"
+})
+
+

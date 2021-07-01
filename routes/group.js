@@ -15,8 +15,42 @@ const multer = require('multer')
 const { memoryStorage } = require('multer')
 const upload = multer({ storage: memoryStorage() })
 const imageSaver = require('../models/saveImagesToCloud')
+const voteManager = require('../controllers/voteManager')
 const defaultThumbnail = 'https://www.seekpng.com/png/detail/215-2156215_diversity-people-in-group-icon.png'
 const authorization = container.resolve('authorization')
+
+
+router.get('/dashboard', async (req, res) => {
+  const user = req.user
+  const groups = await groupRepository.getUserGroups(user.email)
+  const groupThumbnail = await groupRepository.getGroupThumbnail(user.email).then(result => { return result.recordset })
+  const thumbnail = []
+  for (let index = 0; index < groupThumbnail.length; index++) {
+    if (groupThumbnail[index].thumbnail == null) { thumbnail[index] = 'https://www.seekpng.com/png/detail/215-2156215_diversity-people-in-group-icon.png' } else thumbnail[index] = groupThumbnail[index].thumbnail
+  }
+
+  res.render('dashboard', { title: 'Dashboard', userGroups: groups, groupIcon: thumbnail })
+})
+
+router.get('/:groupId', async (req, res) => {
+  const groupName = await groupRepository.getUserGroupName(req.params.groupId)
+  res.render('groupHomePage', { title: 'Group Home Page', groupName: groupName[0].groupName, groupId: req.params.groupId })
+})
+
+
+router.get('/:groupId/members', async (req, res) => {
+  const terminatingUser = req.user
+  const members = await groupRepository.getGroupMembers(req.params.groupId, terminatingUser).then(result => {return result.recordset})
+  console.log(members)
+  res.render('groupMembers', {title: 'Group Members', members: members, groupId: req.params.groupId, terminator: terminatingUser})
+})
+
+router.get('/:groupId/:email/:firstName/:surname', async (req, res) =>{
+  let terminator = req.user
+  console.log(terminator)
+  let groupId = req.params.groupId
+  res.render('members', {title: `${req.params.firstName} ${req.params.surname}`, email: req.params.email, terminator: terminator.email, groupId})
+})
 
 function sanitizeThumbnail (group_) {
   const result = group_.map(group => {
@@ -27,6 +61,11 @@ function sanitizeThumbnail (group_) {
   })
   return result
 }
+
+router.post('/:groupId/terminate/:user/:terminator/:reason', async (req, res) => {
+  await groupRepository.terminateRequest (req.params.reason, req.params.user, req.params.terminator, req.params.groupId)
+})
+
 
 router.post('/search', async function (req, res) {
   const userId = req.session.passport.user
@@ -143,29 +182,6 @@ router.post('/:groupId/terminate/:user/:terminator/:reason', async (req, res) =>
   console.log(terminateReason)
 })
 
-router.get('/:groupId/notifications/', async (req, res) => {
-  const info = await groupRepository.terminateNotification().then(result => { return result.recordset })
-  console.log(info[0].memberToBeTerminated)
-  console.log(req.user.email)
-  res.render('notifications', { title: 'notifications', user: info, logged: req.user.email, groupId: req.params.groupId })
-
-  /* else {
-    res.render('notifications', {title: 'no terminations'})
-  } */
-})
-
-router.post('/:groupId/vote/:requestId/:email/:voteChoice', async (req, res) => {
-  const requestId = req.params.requestId
-  const voter = req.params.email
-  const choice = req.params.voteChoice
-  // await votesRepository.terminationVote(requestId, voter, choice)
-  const getNumOfGroupMembers = await votesRepository.getNumOfGroupMembers(req.params.groupId)
-  const voteCount = await votesRepository.CountVotes(requestId).then(result => { return result.recordset })
-  const counter = model.countVotes(voteCount, getNumOfGroupMembers)
-  const member = await votesRepository.getMemberToBeTerminated(requestId).then(result => { return result.recordset })
-  if (counter === true) { await votesRepository.deleteMember(member[0].memberToBeTerminated, req.params.groupId) }
-  res.send('OK')
-})
 
 router.get('/:groupId/createMeeting', async (req, res) => {
   res.render('createMeeting', { groupId: req.params.groupId })

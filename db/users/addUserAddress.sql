@@ -1,2 +1,2 @@
-INSERT INTO [dbo].[UserAddress] (email, userAddress)
-VALUES (@email, @address)
+INSERT INTO [dbo].[UserAddress] (email, userAddress, lat, long)
+VALUES (@email, @address, @lat, @long)

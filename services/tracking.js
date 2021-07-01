@@ -12,7 +12,7 @@ async function updateDistance () {
     const minutes = duration.asMinutes()
     if (minutes >= 60) {
       for (let i = 0; i < meetings.length; i++) {
-        const agenda = `${meetings.length - arrived.length} People are still on their way`
+        const agenda = `${meetings.length - arrived.length} People are still on their way. check track users to see who has not arrived.`
         meetingRepository.sendEmail(meetings[i].userId, agenda)
         meetingRepository.updateTime(new Date(), meetings[0].meetingId)
       }
