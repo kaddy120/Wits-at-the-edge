@@ -7,6 +7,6 @@ block content
         ul(class='list-group'  id='names')
             each member in members
               li(class="list-group-item" style="font-size:15px" )
-                  a(href=`/group/${groupId}/${member.email}/${member.firstName}/${member.surname}`)=`${member.firstName} ${member.surname}`
+                  a(href=`/group/${groupId}/${member.email}/${member.firstName}/${member.surname}`)=`${member.firstName} ${member.surname} (${member.score})`
 
         script(src="/javascript/memberSearch.js")

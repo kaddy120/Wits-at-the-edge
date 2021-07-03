@@ -6,6 +6,7 @@ block content
     //link(rel='stylesheet', href='/css/bootstrap.min.css')
     
     h4= title
+    h5= 'Score: ' + userScore
     .row.row-cols-1.row-cols-md-4.g-4
         - for (var x = 0; x < userGroups.length; x++)
             .col(style='margin:15px 0; height: 220px')
@@ -15,3 +16,4 @@ block content
                         a(href=`/group/${userGroups[x].groupId[0]}`)
                             h5.card-title=userGroups[x].groupName
                         p.card-text Group description
+    
