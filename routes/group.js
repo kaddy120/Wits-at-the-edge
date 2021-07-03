@@ -21,7 +21,16 @@ const authorization = container.resolve('authorization')
 const score = require('../models/score')
 // const authorization = container.resolve('authorization')
 
-
+// router.get('/dashboard', async (req, res) => {
+//   const user = req.user
+//   const groups = await groupRepository.getUserGroups(user.email)
+//   const groupThumbnail = await groupRepository.getGroupThumbnail(user.email).then(result => { return result.recordset })
+//   const thumbnail = []
+//   for (let index = 0; index < groupThumbnail.length; index++) {
+//     if (groupThumbnail[index].thumbnail == null) { thumbnail[index] = 'https://www.seekpng.com/png/detail/215-2156215_diversity-people-in-group-icon.png' } else thumbnail[index] = groupThumbnail[index].thumbnail
+//   }
+//   res.render('dashboard', { title: 'Dashboard', userGroups: groups, groupIcon: thumbnail })
+// })
 router.get('/dashboard', async (req, res) => {
   const user = req.user
   const groups = await groupRepository.getUserGroups(user.email)
@@ -30,8 +39,8 @@ router.get('/dashboard', async (req, res) => {
   for (let index = 0; index < groupThumbnail.length; index++) {
     if (groupThumbnail[index].thumbnail == null) { thumbnail[index] = 'https://www.seekpng.com/png/detail/215-2156215_diversity-people-in-group-icon.png' } else thumbnail[index] = groupThumbnail[index].thumbnail
   }
-
-  res.render('dashboard', { title: 'Dashboard', userGroups: groups, groupIcon: thumbnail })
+  const userScore = await score.getScore(user.email)
+  res.render('dashboard', { title: 'Dashboard', userGroups: groups, groupIcon: thumbnail, userScore: userScore })
 })
 
 router.get('/:groupId', async (req, res) => {
@@ -39,19 +48,23 @@ router.get('/:groupId', async (req, res) => {
   res.render('groupHomePage', { title: 'Group Home Page', groupName: groupName[0].groupName, groupId: req.params.groupId })
 })
 
-
 router.get('/:groupId/members', async (req, res) => {
   const terminatingUser = req.user
-  const members = await groupRepository.getGroupMembers(req.params.groupId, terminatingUser).then(result => {return result.recordset})
+
+  const members = await groupRepository.getGroupMembers(req.params.groupId, terminatingUser)
   console.log(members)
-  res.render('groupMembers', {title: 'Group Members', members: members, groupId: req.params.groupId, terminator: terminatingUser})
+  for (let i = 0; i < members.length; i++) { members[i].score = await score.getScore(members[i].email) }
+
+  console.log(members)
+  res.render('groupMembers', { title: 'Group Members', members: members, groupId: req.params.groupId, terminator: terminatingUser })
 })
 
-router.get('/:groupId/:email/:firstName/:surname', async (req, res) =>{
-  let terminator = req.user
+router.get('/:groupId/:email/:firstName/:surname', async (req, res) => {
+  const terminator = req.user
   console.log(terminator)
-  let groupId = req.params.groupId
-  res.render('members', {title: `${req.params.firstName} ${req.params.surname}`, email: req.params.email, terminator: terminator.email, groupId})
+  const groupId = req.params.groupId
+
+  res.render('members', { title: `${req.params.firstName} ${req.params.surname}`, email: req.params.email, terminator: terminator.email, groupId })
 })
 
 function sanitizeThumbnail (group_) {
@@ -64,10 +77,9 @@ function sanitizeThumbnail (group_) {
   return result
 }
 
-router.post('/:groupId/terminate/:user/:terminator/:reason', async (req, res) => {
-  await groupRepository.terminateRequest (req.params.reason, req.params.user, req.params.terminator, req.params.groupId)
-})
-
+// router.post('/:groupId/terminate/:user/:terminator/:reason', async (req, res) => {
+//   await groupRepository.terminateRequest(req.params.reason, req.params.user, req.params.terminator, req.params.groupId)
+// })
 
 router.post('/search', async function (req, res) {
   const userId = req.session.passport.user
@@ -100,18 +112,6 @@ router.get('/all/:pageNo', async (req, res) => {
 
 // from here, it is for signed in users only
 router.use(authorization.signedinUsers)
-
-router.get('/dashboard', async (req, res) => {
-  const user = req.user
-  const groups = await groupRepository.getUserGroups(user.email)
-  const groupThumbnail = await groupRepository.getGroupThumbnail(user.email).then(result => { return result.recordset })
-  const thumbnail = []
-  for (let index = 0; index < groupThumbnail.length; index++) {
-    if (groupThumbnail[index].thumbnail == null) { thumbnail[index] = 'https://www.seekpng.com/png/detail/215-2156215_diversity-people-in-group-icon.png' } else thumbnail[index] = groupThumbnail[index].thumbnail
-  }
-  const userScore = await score.getScore(user.email)
-  res.render('dashboard', { title: 'Dashboard', userGroups: groups, groupIcon: thumbnail, userScore: userScore })
-})
 
 // from here, it is for signed in users only
 // router.use(authorization.signedinUsers)
@@ -163,18 +163,18 @@ router.post('/createGroup', body('groupName', 'Group name cant be empty').notEmp
 // router.get('/:groupId/*', authorization.groupMembers)
 // router.post('/:groupId/*', authorization.groupMembers)
 
-router.get('/:groupId', async (req, res) => {
-  const groupName = await groupRepository.getUserGroupName(req.params.groupId)
-  res.render('groupHomePage', { title: 'Group Home Page', groupName: groupName[0].groupName, groupId: req.params.groupId })
-})
+// router.get('/:groupId', async (req, res) => {
+//   const groupName = await groupRepository.getUserGroupName(req.params.groupId)
+//   res.render('groupHomePage', { title: 'Group Home Page', groupName: groupName[0].groupName, groupId: req.params.groupId })
+// })
 
-router.get('/:groupId/members', async (req, res) => {
-  const terminatingUser = req.user
-  const members = await groupRepository.getGroupMembers(req.params.groupId).then(result => { return result.recordset })
-  console.log(members)
-  const profile = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtNWVnKZZfy-1CLo75eO5vLhTWFZyeyc7QaI6GgdSalXDIJOCA6t0DSdDDMabrTOdjdYs&usqp=CAU'
-  res.render('members', { title: 'Group Members', members: members, image: profile, groupId: req.params.groupId, terminator: terminatingUser })
-})
+// router.get('/:groupId/members', async (req, res) => {
+//   const terminatingUser = req.user
+//   const members = await groupRepository.getGroupMembers(req.params.groupId)
+//   console.log(members)
+//   const profile = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRtNWVnKZZfy-1CLo75eO5vLhTWFZyeyc7QaI6GgdSalXDIJOCA6t0DSdDDMabrTOdjdYs&usqp=CAU'
+//   res.render('members', { title: 'Group Members', members: members, image: profile, groupId: req.params.groupId, terminator: terminatingUser })
+// })
 
 router.post('/:groupId/terminate/:user/:terminator/:reason', async (req, res) => {
   const terminatee = req.params.user
@@ -183,7 +183,6 @@ router.post('/:groupId/terminate/:user/:terminator/:reason', async (req, res) =>
   await groupRepository.terminateRequest(terminateReason, terminatee, terminator)
   console.log(terminateReason)
 })
-
 
 router.get('/:groupId/createMeeting', async (req, res) => {
   res.render('createMeeting', { groupId: req.params.groupId })
@@ -225,7 +224,7 @@ router.get(':groupId/exit', (req, res) => {
   userDetails.groupId = req.params.groupId
   // logging
   users.addTracking(userDetails.userId, 'exitGroup', userDetails.groupId)
-  deletUserGroups.exitUserGroup(userDetails)
+  group.exitUserGroup(userDetails)
   res.redirect('/dashboard')
 })
 

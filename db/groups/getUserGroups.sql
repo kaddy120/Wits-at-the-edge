@@ -1,4 +1,4 @@
-select groupName, [Group].groupId, thumbnail, adminId, school, YOS, userId
+select *
 from [Group]
 inner join UserGroup on [Group].groupId=UserGroup.groupId
 where userId = @user
