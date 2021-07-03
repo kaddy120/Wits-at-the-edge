@@ -6,6 +6,8 @@ html
     link(rel='stylesheet', href='/stylesheets/chat.css')
     link(rel='stylesheet', href='/css/bootstrap.min.css')
   script(src="/socket.io/socket.io.js")
+  script(type='text/javascript' defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkQxBECh9wAHS7nrfLvpeEbxD8_I7UWD0&libraries=places&language=en" )
+  script(src="/javascript/trackAllUsers.js")  
   body
     div.main
       header
@@ -24,6 +26,8 @@ html
         a( href=`/group/${groupId}/notifications/`) notofications
         a( href=`group/${groupId}/join_requests/`) JoinRequest List
         a( href="#") Group Members
+        a(href=`/group/${groupId}/meeting/trackUser`) Track Me
+        a(href=`/group/${groupId}/meeting/findUsers`) Track Users
         a( href="#") Exit Group
       block content
       

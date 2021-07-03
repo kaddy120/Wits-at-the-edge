@@ -1,0 +1,24 @@
+extends groupLayout
+
+block content 
+    h4=title 
+    .people 
+        -if((peopleArrived+peopleOnWay)!==0)
+            -if(peopleArrived!==0)
+                strong='People who have arrived'
+                br
+                .arrived
+                    -for(let i=0;i<arrived.length;i++)
+                        strong=`${i+1}: ${arrived[i].firstName}  ${arrived[i].surname}`
+                        br
+                    br
+            -if(peopleOnWay!==0)
+                strong='People who have not arrived'
+                br
+                .onway
+                    -for(let i=0;i<onWay.length;i++)
+                        strong=`${i+1}: ${onWay[i].firstName}  ${onWay[i].surname}`
+                        br
+                    strong='Travel safe.'
+        -else
+            strong='There are no current meetings attended.'

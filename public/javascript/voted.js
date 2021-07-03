@@ -1,6 +1,6 @@
 const items = document.getElementsByClassName('list-group-item')
 
-for (var i = 0; i < items.length; i++) {
+for (let i = 0; i < items.length; i++) {
   items[i].style.backgroundColor = '#E8E8E8'
 }
 
