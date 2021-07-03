@@ -210,19 +210,19 @@ class groupRepository {
       console.log(err)
     }
   }
+
   async terminateRequest (reason, email, terminator, groupId) {
-     try {
+    try {
       const pool = await this.dbpool
       const sqlQueries = await utils.loadSqlQueries('groups')
       const insertRecord = await pool.request()
-          .input('email', sql.VarChar(50), email)
-          .input('reason', sql.VarChar(500), reason)
-          .input('userId', sql.VarChar(50), terminator)
-          .input('groupId', sql.Int, groupId)
-          .query(sqlQueries.terminateRequest)
-
-     } catch (err) {
-
+        .input('email', sql.VarChar(50), email)
+        .input('reason', sql.VarChar(500), reason)
+        .input('userId', sql.VarChar(50), terminator)
+        .input('groupId', sql.Int, groupId)
+        .query(sqlQueries.terminateRequest)
+    } catch (err) {
+      console.log(err)
     }
   }
 
@@ -231,9 +231,9 @@ class groupRepository {
       const pool = await this.dbpool
       const sqlQueries = await utils.loadSqlQueries('groups')
       const info = await pool.request()
-          .input('groupId', sql.Int, groupId)
-          .query(sqlQueries.terminateNotification)
-          return info
+        .input('groupId', sql.Int, groupId)
+        .query(sqlQueries.terminateNotification)
+      return info
     } catch (err) {
       console.log(err)
     }
@@ -244,10 +244,10 @@ class groupRepository {
       const pool = await this.dbpool
       const sqlQueries = await utils.loadSqlQueries('groups')
       const members = await pool.request()
-          .input('groupId', sql.Int, groupId)
-          .input('email', sql.VarChar(50), user.email)
-          .query(sqlQueries.getGroupMembers)
-          return members
+        .input('groupId', sql.Int, groupId)
+        .input('email', sql.VarChar(50), user.email)
+        .query(sqlQueries.getGroupMembers)
+      return members.recordset
     } catch (err) {
       console.log(err)
     }
