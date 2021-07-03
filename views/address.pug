@@ -16,7 +16,10 @@ block content
       input(type="hidden" placeholder="e.g first year" name="yearOfStudy" value=user.yearOfStudy class="form-control" id="YOS")
     div.mb-3
       input(type="hidden" placeholder="password" name="password" value=user.password id="password" class="form-control")
-
+    div.mb-3
+      input(type="hidden" name="lat" id="lat" class="form-control")
+    div.mb-3
+      input(type="hidden" name="long" id="long" class="form-control")
     div(class="form-group")
       label(for="streetAddress") Street Address
       input(type="text", placeholder="eg 49 jorrisen street", name="streetAddress", class="form-control", id="streetAddress")

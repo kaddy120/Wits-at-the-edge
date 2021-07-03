@@ -10,9 +10,9 @@ block content
             h4(style="color: rgb(242, 246, 250); text-align: center") Groups you you may like
             .row
                 each group in recommendations
-                    .col(style='margin:15px 0;')
-                        .card
-                            img.card-img-top(src="https://www.seekpng.com/png/detail/215-2156215_diversity-people-in-group-icon.png")
+                    .col(style='margin:15px 0;  height: 220px')
+                        .card(style='background-color: #cecece;height: 100%')
+                            img.card-img-top(src=group.thumbnail style="height: 55%")
                             .card-body
                                 h5.card-title= group.groupName
                                 div(id=`${group.groupId}`)
@@ -24,9 +24,9 @@ block content
     else
         .row.row-cols-1.row-cols-md-3.g-4
             each group in groups 
-                .col(style='margin:15px 0;')
-                    .card
-                        img.card-img-top(src="https://www.seekpng.com/png/detail/215-2156215_diversity-people-in-group-icon.png")
+                .col(style='margin:15px 0;  height: 275px')
+                    .card(style='background-color: #cecece;height: 100%')
+                        img.card-img-top(src=group.thumbnail style="height: 55%")
                         .card-body
                             h5.card-title=group.groupName
                             div(id=`${group.groupId}`)

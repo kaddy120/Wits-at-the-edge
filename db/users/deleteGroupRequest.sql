@@ -1,0 +1,1 @@
+DELETE FROM [dbo].[joinGroupRequest] WHERE joinRequestId= @joinRequestId

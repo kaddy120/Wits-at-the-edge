@@ -41,7 +41,6 @@ const covidFormRouter = require('./routes/covidForm')
 const inviteUserRouter = require('./routes/inviteUser')
 const acceptRequestRouter = require('./routes/acceptToGroup')
 const requestRouter = container.resolve('requestRouters')
-const { authorization } = require('./middleware/authorization')
 
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'))
 app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js'))
@@ -136,17 +135,19 @@ io.on('connection', (socket) => {
 })
 
 // app.use() // all end-points under this middleware can only be accessed by signed in user
-app.use('/', voteRouter)
-app.use('/meeting', meetingRouter)
 app.use('/', covidFormRouter)
 app.use('/', inviteUserRouter)
 app.use('/', acceptRequestRouter)
 
-app.use('/group', groupRouter)
-app.use('/group', linkRouter)
-app.use('/', voteRouter)
 
-app.use('/request', authorization, requestRouter)
+app.use('/group', groupRouter)
+app.use('/group', voteRouter)
+app.use('/group/', meetingRouter)
+app.use('/group', linkRouter)
+
+
+
+app.use('/request', requestRouter)
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404))

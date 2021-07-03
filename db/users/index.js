@@ -23,8 +23,8 @@ class userRepository {
       const sqlQueries = await utils.loadSqlQueries('users') // Specify the folder I will be using under db
       const pool = await this.pools
       const insertUser = await pool.request()
-        .input('groupId', sql.Int, groupId)
         .input('email', sql.VarChar(50), userId)
+        .input('groupId', sql.Int, groupId)
         .query(sqlQueries.addJoinRequest)
       console.log(insertUser)
     } catch (err) {
@@ -92,13 +92,15 @@ class userRepository {
     }
   }
 
-  async addUserAddress (userId, address) {
+  async addUserAddress (userId, address, lat, long) {
     try {
       const sqlQueries = await utils.loadSqlQueries('users')
       const pool = await this.pools
       pool.request()
         .input('email', sql.VarChar(50), userId)
         .input('address', sql.VarChar(150), address)
+        .input('lat', sql.Float, lat)
+        .input('long', sql.Float, long)
         .query(sqlQueries.addUserAddress)
     } catch (err) {
       console.log(err)
@@ -323,7 +325,7 @@ class userRepository {
       const sqlQueries = await utils.loadSqlQueries('users')
       const pool = await this.pools
       const getUser = await pool.request()
-        .input('email', sql.VarChar(50), email)
+        .input('userId', sql.VarChar(50), email)
         .query(sqlQueries.getRequests)
       return getUser.recordset
     } catch (err) {
@@ -367,6 +369,31 @@ class userRepository {
       await pool.request()
         .input('userId', sql.Int, userId)
         .query(sqlQueries.viewUserTracking)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  async getNumberOfGroups (userId) {
+    try {
+      const sqlQueries = await utils.loadSqlQueries('users')
+      const pool = await this.pools
+      const getUser = await pool.request()
+        .input('userId', sql.VarChar(50), userId)
+        .query(sqlQueries.getNumberOfGroups)
+      return getUser.recordset
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
+  async getGroups () {
+    try {
+      const sqlQueries = await utils.loadSqlQueries('users')
+      const pool = await this.pools
+      const getUser = await pool.request()
+        .query(sqlQueries.getGroups)
+      return getUser.recordset
     } catch (err) {
       console.log(err)
     }

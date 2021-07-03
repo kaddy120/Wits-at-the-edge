@@ -1,6 +1,7 @@
 
 function relevantRequest(requests, votes) {
     let size_ = requests.length
+    console.log(requests)
     for (let i = 0; i < size_; i++) {
         for (let j = 0; j < votes.length; j++) {
             if (votes[j].requestId == requests[i].requestId) {
@@ -12,6 +13,24 @@ function relevantRequest(requests, votes) {
         }
     }
     return requests
+}
+
+function relevantTerminateRequest(terminateRequests, votes) {
+
+    let size_ = terminateRequests.length
+    
+    for (let i = 0; i < size_; i++) {
+        for (let j = 0; j < votes.length; j++) {
+
+            if (votes[j].requestId == terminateRequests[i].terminationId) {
+                terminateRequests.splice(i,1)
+                i--
+                size_--
+                break
+            }
+        }
+    }
+    return terminateRequests
 }
 
 function countVotes(voteCount, numOfGroupMembers) {
@@ -28,5 +47,6 @@ function countVotes(voteCount, numOfGroupMembers) {
 
 module.exports = {
     relevantRequest,
-    countVotes
+    countVotes,
+    relevantTerminateRequest
 }
