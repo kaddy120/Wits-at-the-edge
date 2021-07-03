@@ -1,1 +1,1 @@
-SELECT *FROM [dbo].[join_request] WHERE email= @email
+SELECT * FROM [dbo].[joinGroupRequest] WHERE userId = @userId

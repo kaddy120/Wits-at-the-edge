@@ -1,2 +1,2 @@
 select *
-from [dbo].[termination]
+from [dbo].[termination] where groupId=@groupId

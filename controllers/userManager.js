@@ -21,13 +21,14 @@ class userManager {
     }
     console.log(user)
     res.render('address', { title: 'Fill in Address', user })
-    // res.redirect(`/address/name/${user.name}/surname/${user.surname}/email/${user.email}/school/${user.school}/YOS/${user.yearOfStudy}/Password/${user.password}`)
+    
   }
 
   async addUser (req, res, next) {
     const user = { ...req.body }
     const address = `${req.body.streetAddress}, ${req.body.suburb}, ${req.body.city}, ${req.body.postalCode}`
-    console.log(user)
+    console.log(req.body.lat, req.body.long)
+    console.log("User: ", user)
     const repo = this.userRepository
     bcrypt.genSalt(saltRounds, function (err, salt) {
       if (err) {
@@ -39,7 +40,9 @@ class userManager {
           console.log(err)
         }
         repo.addUser(user).then(addUser => {
-          repo.addUserAddress(user.email, address)
+
+          repo.addUserAddress(user.email, address, req.body.lat, req.body.long)
+         
           //once the
           addUser.password = req.body.password
           req.login(user, function (err) {
@@ -50,11 +53,6 @@ class userManager {
           console.log(err)
         })
       })
-      // user.password = req.body.password
-      // req.login(user, function (err) {
-      //   if (err) { return next(err) }
-      //   return res.redirect('/')
-      // })
     })
   }
 }

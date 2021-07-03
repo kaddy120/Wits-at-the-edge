@@ -3,18 +3,18 @@ extend layout
 block content
     div.
     h4= title
-    form(action="/meeting/create" method="POST")
+    form(action=`/group/${groupId}/meeting/place` method="GET")
         .mb-3 
-            label(for="button" class='form-label') Meeting Type 
-            button(type='button' class='btn btn-primary' id='online') Online
-            button(type='button' class='btn btn-primary' id='face-to-face') face-to-face
+          p='Switch to '
+            input(type='submit' class='btn btn-primary' value='face-to-face Meeting' id='face-to-face') 
+    form(action=`/group/${groupId}/meeting/create` method="POST") 
         div.mb-3 
-            label(for="meetingDate" class="form-label") Meeeting Date
+            label(for="meetingDate" class="form-label") Meeting Date
             input(type="datetime-local"  name="time" class="form-control" id="date")
         div.mb-3 
             label(for="surname" class="form-label") Meeting agenda
             textarea(type="text" name="agenda" class="form-control" id="exampleInputEmail1")
         div(class='mb-3' id='address-div') 
          
-        button(type="submit" disabled=true class="btn btn-primary" id='submit') Arrange meeting
-    script(src="/javascript/meetingSelection.js")
+        button(type="submit" class="btn btn-primary" id='submit') Arrange meeting
+    

@@ -1,0 +1,1 @@
+SELECT [groupId],[groupName] FROM [dbo].[Group]

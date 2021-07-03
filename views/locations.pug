@@ -1,0 +1,64 @@
+extends groupLayout
+
+block content   
+
+            form(action=`/group/${groupId}/meeting/create` method="GET")
+               .mb-3 
+                  p='Switch to '
+                     input(type='submit' class='btn btn-primary' value='Online Meeting')
+            form(action=`/group/${groupId}/meeting/create` method="POST") 
+                        div.mb-3 
+                                 label(for="meetingDate" class="form-label") Meeting Date
+                                 input(type="datetime-local"  name="time" class="form-control" id="date")
+                        div.mb-3 
+                                 label(for="surname" class="form-label") Meeting agenda
+                                 textarea(type="text" name="agenda" class="form-control" id="exampleInputEmail1")
+                        h3=title
+                        h4='Nearby Region: '
+                           strong(style="color:#7F8BDA" id='region')=`${place[4]}`
+                        ul(class='list-group')
+                          li(class="list-group-item" style="font-size:15px")
+                              div(class="row")
+                                 div(class="form-group col-3")
+                                                      a(href="#" id="res")='Restaurants'
+                                                      select(name="school" class="form-select" id='restaurant' style="max-width:70%;")
+                                                         <option selected>Meet at a Restaurant</option>
+                                                         each value in place[0]
+                                                            option(value=`${value}`)= value
+                              
+                                 div(class="form-group col-3")
+                                                      a(href="#" id="lib")='Libraries'
+                                                      div(class="row")
+                                                         select( name="school" class="form-select" id='library' style="max-width:70%;")
+                                                            <option selected>Meet at a Library</option>
+                                                            each value in place[1]
+                                                               option(value=`${value}`)= value
+                              
+                                 div(class="form-group col-3")
+                                                      a(href="#" id="pak")='Parks'
+                                                      div(class="row")
+                                                         select( name="school" class="form-select" id='park' style="max-width:80%;")
+                                                            <option selected>Meet at a Park</option>
+                                                            each value in place[2]
+                                                               option(value=`${value}`)= value
+                              
+                                 div(class="form-group col-3")
+                                                      a(href="#" id="caf")='Cafes'
+                                                      div(class="row")
+                                                         select( name="school" class="form-select" id='cafe' style="max-width:70%;")
+                                                            <option selected>Meet at a Cafe</option>
+                                                            each value in place[3]
+                                                               option(value=`${value}` id='here')= value
+                                 div(class="form-group col-6")
+                        div.mb-3 
+                        div(class="form-group")
+                        strong='Enter meeting address'
+                        input(type="text", placeholder="eg 56 Jorrisen str, Braamfontein", name="address", class="form-control", id="address")
+                        div(class='mb-3') 
+
+                        button(type="submit" class="btn btn-primary" disabled=true  id='submit') Arrange meeting 
+               
+                           script(src="/javascript/meetingSelection.js")
+                           script(src="https://unpkg.com/axios/dist/axios.min.js")
+           
+            

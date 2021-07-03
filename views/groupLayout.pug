@@ -11,7 +11,7 @@ html
       header
         ul.nav
             li.nav-item
-              a.nav-link.aria-current( href="/") Home
+              a.nav-link.aria-current( href="/group/dashboard") Dashboard
             li.nav-item
               a.nav-link.aria-current( href="/logout") Logout
         .h4 Group Name  
@@ -20,10 +20,11 @@ html
         a( href=`/group/${groupId}/chat`) Chat 
         a(href=`/group/${groupId}/links`) Links
         a( href=`/group/${groupId}/meeting/create`) Create Meeting
-        a( href="#") JoinRequest List
-        a( href=`/group/members/${groupId}`) Group Members
-        a( href=`/group/notifications/${groupId}`) notofications
-        a( href=`/join_requests/${groupId}`) JoinRequest List
+        a( href=`/group/${groupId}/members`) Group Members
+        a( href=`/group/${groupId}/notifications/`) notofications
+        a( href=`group/${groupId}/join_requests/`) JoinRequest List
         a( href="#") Group Members
         a( href="#") Exit Group
       block content
+      
+    
