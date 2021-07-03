@@ -2,6 +2,7 @@ DROP TABLE IF EXISTS [UserGroup]
 DROP TABLE IF EXISTS [Group]
 DROP TABLE IF EXISTS [User]
 
+
 CREATE TABLE dbo.[User]
 (
     email VARCHAR(50) PRIMARY KEY,
@@ -58,6 +59,13 @@ CREATE TABLE dbo.[userTracking](
     activity VARCHAR(300) NOT NULL
 )
 
+CREATE TABLE dbo.[meetingTracking](
+    [trackingId] int IDENTITY(1,1) PRIMARY KEY CLUSTERED NOT NULL,
+    userId VARCHAR(250) NOT NULL,
+    meetingId int not NULL,
+    finishTime datetime NULL,  
+    distance real NULL
+)
 -- modify database column
 ALTER TABLE dbo.[Group] ADD YOS VARCHAR(60) NULL;
 

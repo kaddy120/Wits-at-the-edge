@@ -1,0 +1,1 @@
+insert into dbo.meetingTracking (userId,meetingId,finishTime,distance) values (@userId,@meetingId,@finishTime,@distance)

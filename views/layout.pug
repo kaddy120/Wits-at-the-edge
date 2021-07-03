@@ -6,6 +6,8 @@ html
     link(rel='stylesheet', href='/stylesheets/externalLink.css')
     link(rel='stylesheet', href='/stylesheets/chat.css')
     link(rel='stylesheet', href='/css/bootstrap.min.css')
+  script(type='text/javascript' defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkQxBECh9wAHS7nrfLvpeEbxD8_I7UWD0&libraries=places&language=en" )
+  script(src="/javascript/trackAllUsers.js")  
     //- link(rel="stylesheet", href="path/to/font-awesome/css/font-awesome.min.css")
     link(rel="stylesheet", href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css")
   script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js")
@@ -26,7 +28,7 @@ html
             
       .sidenav
         a( href="/group/dashboard") Dashbard
-        a( href="/response") Notifications 
+        a( href="/group/response") Notifications 
         a( href="/group/all/1") Groups
         a( href="#") Calender
         a( href="#") About

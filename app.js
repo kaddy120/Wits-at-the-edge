@@ -24,7 +24,6 @@ const flash = require('express-flash')
 
 const { container } = require('./di-setup')
 const user = container.resolve('userRepository')
-// const groupRouter = require('./routes/group')
 const voteRouter = container.resolve('votingRouters')
 const linkRouter = container.resolve('linkRouters')
 const groupRouter = require('./routes/group')
@@ -32,6 +31,8 @@ const passport = container.resolve('passport')
 const configPassport = require('./config/passportConfig')
 configPassport(user, passport)
 const joinExpiryDate = require('./services/groupJoinRequests')
+const tracker = require('./services/tracking')
+setInterval(tracker.updateDistance, 1000 * 60 * 30)
 setInterval(joinExpiryDate.joinRequestExpiryDate, 10 * 60 * 1000)
 
 const indexRouter = require('./routes/index')
@@ -139,13 +140,10 @@ app.use('/', covidFormRouter)
 app.use('/', inviteUserRouter)
 app.use('/', acceptRequestRouter)
 
-
 app.use('/group', groupRouter)
 app.use('/group', voteRouter)
 app.use('/group/', meetingRouter)
 app.use('/group', linkRouter)
-
-
 
 app.use('/request', requestRouter)
 // catch 404 and forward to error handler

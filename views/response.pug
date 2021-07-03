@@ -11,7 +11,7 @@ block content
                 .meeting 
                     h5(id='meeting-header')=groupNames[x].groupName 
                     p=`Agenda :${userMeetings[x].agenda}`
-                    p=`MeetingTime: ${userMeetings[x].meetingTime}`
+                    p=`MeetingTime: ${userMeetings[x].meetingTime.toDateString()}`
                     p=`MeetingCreator: ${user}`
                 -if(userMeetings[x].address !== null)
                     p=`Meeting Address: ${userMeetings[x].address}`

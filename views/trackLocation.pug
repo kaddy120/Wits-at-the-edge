@@ -1,0 +1,24 @@
+extends groupLayout
+
+block content 
+    h4=title
+    h6='The tracking is used to make sure that all the group memebers know that you have arrived safe to your place.'
+    h6='Please click the button so that everyone can know how you arrived at home.'
+    h6='Please click the button of the corresponding meeting you have attended and dont click before the meeting ends.'
+    h6='After clicking the button please make sure that you dont log out of the app so that the tracking can be effective.'
+    h6='Check your emails every hour to see the the updates on the where abouts of the rest of the group memers.'
+    br
+    ul(class='list-group')
+            - for (let x = 0; x < meetings.length; x++)
+              li(class="list-group-item" )
+                strong=`Meeting Agenda: ${meetings[x].agenda}`
+                br
+                strong=`Meeting Address: ${meetings[x].address}`
+                form(action='#', method='post' class ='form-group')
+                  input(type='submit' value='START TRACKING ' class='btn btn-primary ' id='track-Me')  
+                  |
+                  |
+                  input(type="hidden", name="useraddress" value=`${lat}` id=`${long}` class='useraddress')
+                  input(type="hidden", name="groupId" value=`${meetings[x].groupId}` class = 'groupId')
+                  input(type='hidden' value=`${meetings[x].meetingId[0]}` id=`${meetings[x].notificationId}`)
+    script(src="/javascript/trackUser.js") 
