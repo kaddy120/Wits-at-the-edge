@@ -78,8 +78,8 @@ class meetingRepository {
       const sqlQueries = await utils.loadSqlQueries('meeting')
       const pool = await this.dbpool
       const get = pool.request()
-         .query(sqlQueries.getUserCoordinates)
-         return get
+        .query(sqlQueries.getUserCoordinates)
+      return get
     } catch (err) {
       console.log(err)
     }

@@ -30,5 +30,8 @@ html
         a( href="/group/all/1") Groups
         a( href="#") Calender
         a( href="#") About
+        if userScore === undefined
+          - userScore = 'Not Avalible' 
+        h5= 'Score: ' + userScore
       .body
          block content
