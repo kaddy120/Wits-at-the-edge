@@ -1,0 +1,18 @@
+extends layout
+
+block content
+  h1= title
+  p #{title} Listing
+
+  table
+    thead
+      tr
+        th Date
+        th Activity 
+        th Group
+    tbody
+      each item in logs
+        tr
+          td= item.activityTime.toDateString()
+          td= item.activity
+          td= item.groupId

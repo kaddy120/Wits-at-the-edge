@@ -30,10 +30,9 @@ html
         a( href="/group/dashboard") Dashbard
         a( href="/group/response") Notifications 
         a( href="/group/all/1") Groups
+        a(href='/logs') User Logs
         a( href="#") Calender
         a( href="#") About
-        if userScore === undefined
-          - userScore = 'Not Avalible' 
-        h5= 'Score: ' + userScore
+        
       .body
          block content

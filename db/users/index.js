@@ -362,6 +362,21 @@ class userRepository {
     }
   }
 
+  async getUserLog (logger) {
+    try {
+      const sqlQueries = await utils.loadSqlQueries('users')
+      const pool = await this.pools
+      const getUser = await pool.request()
+        .input('start', sql.DateTime, logger.start)
+        .input('end', sql.DateTime, logger.end)
+        .input('userid', sql.VarChar(50), logger.userEmail)
+        .query(sqlQueries.getUserLog)
+      return getUser.recordset
+    } catch (err) {
+      console.log(err)
+    }
+  }
+
   async viewUserTracking (userId) {
     try {
       const sqlQueries = await utils.loadSqlQueries('users')

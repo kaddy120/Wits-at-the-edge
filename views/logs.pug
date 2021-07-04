@@ -1,0 +1,19 @@
+extend layout
+
+block content
+    div.
+    h4= title
+    form(action="/logs" method="POST")
+        .mb-3
+        div.mb-3 
+            label(for="startDate" class="form-label") Start Date
+            input(type="datetime-local"  name="start" class="form-control" id="date")
+        div.mb-3 
+            label(for="endDate" class="form-label") End Date
+            input(type="datetime-local"  name="end" class="form-control" id="date")
+        div.mb-3 
+            label(for="email" class="form-label") User Id
+            textarea(type="text" name="userEmail" class="form-control" id="exampleInputEmail1")
+        div(class='mb-3' id='address-div') 
+
+        button(type="submit" class="btn btn-primary" id='submit') Search
