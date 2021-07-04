@@ -14,7 +14,7 @@ const io = new Server(server)
 const redis = require('redis')
 const session = require('express-session')
 const RedisStore = require('connect-redis')(session)
-const redisClient = redis.createClient(6380, 'wits.redis.cache.windows.net',
+const redisClient = redis.createClient(6380, 'mywits.redis.cache.windows.net',
   {
     auth_pass: process.env.primaryKey,
     tls: { servername: process.env.redisServername }
