@@ -112,7 +112,7 @@ class groupRepository {
       const pool = await this.dbpool
       const getUser = await pool.request().input('email', sql.Char(50), emails)
         .query(sqlQueries.getGroupByAdminId)
-      return getUser
+      return getUser.recordset
     } catch (error) {
       console.log(error)
     }

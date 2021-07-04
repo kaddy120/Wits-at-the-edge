@@ -19,6 +19,7 @@ const voteManager = require('../controllers/voteManager')
 const defaultThumbnail = 'https://www.seekpng.com/png/detail/215-2156215_diversity-people-in-group-icon.png'
 const authorization = container.resolve('authorization')
 const score = require('../models/score')
+const constants = require('../constants')
 // const authorization = container.resolve('authorization')
 
 // router.get('/dashboard', async (req, res) => {
@@ -122,32 +123,27 @@ router.get('/createGroup', function (req, res, next) {
   res.render('createGroup', { title: 'Create Group Page' })
 })
 
-router.post('/createGroup', body('groupName', 'Group name cant be empty').notEmpty(),
+router.post('/createGroup', upload.single('thumbnail'), body('groupName', 'Group name cant be empty').notEmpty(),
   body('school', 'school name cant be empty').notEmpty()
-  , upload.single('thumbnail'), async function (req, res, next) {
+  , async function (req, res, next) {
     const errors = validationResult(req)
 
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() })
     }
-    const email = req.body.adminId
+    const email = req.user.email
     const imageUrl = await imageSaver(req.file)
     const found = await groupRepository.userIsRegistered(email)
     if (found) {
-      const groups = await groupRepository.getNumberOfGroups(email).then((data) => {
-        return data.recordset
-      })
+      const groups = await groupRepository.getNumberOfGroups(email)
       if (verify.canCreateGroup(groups)) {
-        const creater = new groupCreator(req.body.groupName, req.body.adminId, req.body.school, imageUrl)
+        const creater = new groupCreator(req.body.groupName, req.user.email, req.body.school, imageUrl)
         groupRepository.addingGroup(creater)
-        const allgroups = await groupRepository.getNumberOfGroups(email).then((data) => {
-          return data.recordset
-        })
-
+        const allgroups = await groupRepository.getNumberOfGroups(email)
         groupRepository.addFirstMember(allgroups[allgroups.length - 1].groupId, allgroups[allgroups.length - 1].adminId)
-        res.redirect('/group')
+        res.redirect(`/group/${allgroups[allgroups.length - 1].groupId}`)
       } else {
-        res.redirect('/group')
+        res.redirect('/')
       }
     } else {
       res.redirect('/signup')
