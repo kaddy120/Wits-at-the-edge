@@ -124,8 +124,9 @@ router.get('/createGroup', function (req, res, next) {
 })
 
 router.post('/createGroup', upload.single('thumbnail'), body('groupName', 'Group name cant be empty').notEmpty(),
-  body('school', 'school name cant be empty').notEmpty()
-  , async function (req, res, next) {
+  body('school', 'school name cant be empty').notEmpty(),
+  body('yearOfStudy', 'yearOfStudy name cant be empty').notEmpty(),
+  async function (req, res, next) {
     const errors = validationResult(req)
 
     if (!errors.isEmpty()) {
@@ -137,7 +138,7 @@ router.post('/createGroup', upload.single('thumbnail'), body('groupName', 'Group
     if (found) {
       const groups = await groupRepository.getNumberOfGroups(email)
       if (verify.canCreateGroup(groups)) {
-        const creater = new groupCreator(req.body.groupName, req.user.email, req.body.school, imageUrl)
+        const creater = new groupCreator(req.body.groupName, req.user.email, req.body.school, req.body.yearOfStudy, imageUrl)
         groupRepository.addingGroup(creater)
         const allgroups = await groupRepository.getNumberOfGroups(email)
         groupRepository.addFirstMember(allgroups[allgroups.length - 1].groupId, allgroups[allgroups.length - 1].adminId)

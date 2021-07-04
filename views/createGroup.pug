@@ -11,6 +11,11 @@ block content
                 <option selected>Select your field of study</option>
                 each school in schools
                     option(value=`${school}`)= school
+        div.mb-3 
+            select( name="yearOfStudy" class="form-select")
+                <option selected>Select your year of study</option>
+                each year in YOS
+                    option(value=`${year}`)= year
         div.mb-3
             label(for='thumbnail' class="form-label") Group thumbnail
             input.form-control-file(type='file', accept="image/*", name='thumbnail', id='thumbnail',class ='Group-info', placeholder='Group Icon')

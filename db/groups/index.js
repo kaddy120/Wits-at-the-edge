@@ -126,18 +126,20 @@ class groupRepository {
         .input('thumbnail_', sql.Char(250), group.thumbnail)
         .input('adminId_', sql.Char(250), group.email)
         .input('school_', sql.Char(250), group.school)
+        .input('yearOfStudy_', sql.Char(250), group.yearOfStudy)
         .query(sqlQueries.addGroup)
     } catch (error) {
       console.log(error)
     }
   }
 
-  async addFirstMember (groupId, userId) {
+  async addFirstMember (groupId, userId, school) {
     try {
       const sqlQueries = await utils.loadSqlQueries('groups')
       const pool = await this.dbpool
       await pool.request().input('adminId_', sql.Char(50), userId)
         .input('groupId_', sql.Int, groupId)
+        .input('school_', sql.Char(50), school)
         .query(sqlQueries.addFirstGroupMember)
     } catch (error) {
       console.log(error)
