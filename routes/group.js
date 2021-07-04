@@ -43,11 +43,6 @@ router.get('/dashboard', async (req, res) => {
   res.render('dashboard', { title: 'Dashboard', userGroups: groups, groupIcon: thumbnail, userScore: userScore })
 })
 
-router.get('/:groupId', async (req, res) => {
-  const groupName = await groupRepository.getUserGroupName(req.params.groupId)
-  res.render('groupHomePage', { title: 'Group Home Page', groupName: groupName[0].groupName, groupId: req.params.groupId })
-})
-
 router.get('/:groupId/members', async (req, res) => {
   const terminatingUser = req.user
 
@@ -158,7 +153,10 @@ router.post('/createGroup', body('groupName', 'Group name cant be empty').notEmp
       res.redirect('/signup')
     }
   })
-
+router.get('/:groupId', async (req, res) => {
+  const groupName = await groupRepository.getUserGroupName(req.params.groupId)
+  res.render('groupHomePage', { title: 'Group Home Page', groupName: groupName[0].groupName, groupId: req.params.groupId })
+})
 // the following actions can only be perfomed by group members
 // router.get('/:groupId/*', authorization.groupMembers)
 // router.post('/:groupId/*', authorization.groupMembers)
