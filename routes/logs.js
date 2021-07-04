@@ -21,7 +21,8 @@ router.post('/logs',
 
     const logger = { ...req.body }
     const logs = await users.getUserLog(logger)
-    res.render('logResults', { title: 'Log Results', logs: logs })
+    if (logger.end < logger.start) res.redirect(400, '/logs')
+    else res.render('logResults', { title: 'Log Results', logs: logs })
   })
 
 module.exports = router
