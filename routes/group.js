@@ -120,7 +120,7 @@ router.use(authorization.signedinUsers)
 
 // you atleast need to be signed in to access the following endpoint
 router.get('/createGroup', function (req, res, next) {
-  res.render('createGroup', { title: 'Create Group Page' })
+  res.render('createGroup', constants)
 })
 
 router.post('/createGroup', upload.single('thumbnail'), body('groupName', 'Group name cant be empty').notEmpty(),
