@@ -42,6 +42,8 @@ const covidFormRouter = require('./routes/covidForm')
 const inviteUserRouter = require('./routes/inviteUser')
 const acceptRequestRouter = require('./routes/acceptToGroup')
 const requestRouter = container.resolve('requestRouters')
+const { authorization } = require('./middleware/authorization')
+const logsRouter = require('./routes/logs')
 
 app.use('/css', express.static(__dirname + '/node_modules/bootstrap/dist/css'))
 app.use('/js', express.static(__dirname + '/node_modules/bootstrap/dist/js'))
@@ -139,7 +141,7 @@ io.on('connection', (socket) => {
 app.use('/', covidFormRouter)
 app.use('/', inviteUserRouter)
 app.use('/', acceptRequestRouter)
-
+app.use('/', logsRouter)
 app.use('/group', groupRouter)
 app.use('/group', voteRouter)
 app.use('/group/', meetingRouter)

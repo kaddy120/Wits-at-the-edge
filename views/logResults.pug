@@ -8,13 +8,11 @@ block content
     thead
       tr
         th Time
-        th user Id 
         th Activity 
         th Group
     tbody
-      - each item in logs
+      each item in logs
         tr
-          td= item.activityTime
-          td= item.userId
+          td= item.activityTime.toDateString()
           td= item.activity
           td= item.groupId

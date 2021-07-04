@@ -30,8 +30,8 @@ function meetingRouters ({ groupRepository, meetingRepository, userRepository, g
         res.redirect(400, '/meeting/create')
       }
 
-      const email = 'mullertest23@gmail.com'
-      const groupId = 80
+      const email = req.user.email
+      const groupId = req.params.groupId
 
       if (await groupRepository.userIsMember(email, groupId)) {
         const meeting = { ...req.body }
